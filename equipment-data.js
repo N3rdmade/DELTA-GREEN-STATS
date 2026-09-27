@@ -59,6 +59,108 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><strong>Damage:</strong> 1D6 and Stunned</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
     },
 
+    // ── N3RDMADE EXPANDED FIREARM VARIANTS
+    {
+        category: 'Firearms', name: '.22 LR pocket pistol', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Light pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: '.380 ACP compact pistol', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Light pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: '.38 Special snub-nose revolver', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Light pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: '9mm service pistol', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Medium pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: '.40 S&W service pistol', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Medium pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: '.45 ACP service pistol', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Medium pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: '.357 Magnum revolver', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '20M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: '.44 Magnum revolver', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '20M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: '10mm Auto pistol', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy pistol; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '20M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'AR-15 carbine', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Light rifle or carbine; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10 or 30', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'M4 carbine', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Light rifle or carbine; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10 or 30', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'FN SCAR-L', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Light rifle or carbine; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10 or 30', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'H&K G3 battle rifle', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy rifle; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10 or 20', expense: 'Unusual', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'FN FAL battle rifle', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy rifle; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10 or 20', expense: 'Unusual', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'M24 sniper rifle', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy rifle; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10 or 20', expense: 'Unusual', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Barrett M82A1 anti-materiel rifle', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Very heavy rifle; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '10', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'CheyTac M200 anti-materiel rifle', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Very heavy rifle; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '10', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'H&K MP5 submachine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Submachine gun (SMG); uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D10', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'FN P90 submachine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Submachine gun (SMG); uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D10', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'IMI Uzi submachine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Submachine gun (SMG); uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D10', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },,
+
     // ── MELEE WEAPONS ─────────────────────────────────────────────────────────────
     {
         category: 'Melee Weapons', name: 'Unarmed attack', type: 'weapon',
@@ -126,6 +228,48 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><em>Requires special training.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Standard', equipped: true }
     },
 
+    // ── N3RDMADE EXPANDED MELEE VARIANTS
+    {
+        category: 'Melee Weapons', name: 'Combat dagger', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/combat-knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Long knife or combat dagger; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Nightstick', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/baton.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Club, nightstick, baton, or collapsible baton; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Collapsible baton', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/baton.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Club, nightstick, baton, or collapsible baton; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Baseball bat', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/baseball-bat.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Baseball bat or rifle butt; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Rifle butt', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/baseball-bat.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Baseball bat or rifle butt; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Machete', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Machete, tomahawk, or sword; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Tomahawk', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Machete, tomahawk, or sword; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Fixed bayonet', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/bayonet.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Spear or fixed bayonet; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+
     // ── HEAVY WEAPONS ─────────────────────────────────────────────────────────────
     {
         category: 'Heavy Weapons', name: 'Hand grenade', type: 'weapon',
@@ -183,6 +327,78 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><em><strong>RESTRICTED.</strong> Example: AEC M9A1-7.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '', armorPiercing: 0, lethality: 10, isLethal: true, killRadius: '2M', ammo: '5', expense: 'Unusual', equipped: true }
     },
 
+    // ── N3RDMADE EXPANDED HEAVY-WEAPON VARIANTS
+    {
+        category: 'Heavy Weapons', name: 'M67 fragmentation grenade', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/grenade.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Hand grenade; uses the same Delta Green game statistics.</em></p>', skill: 'athletics', skillModifier: 20, customSkillTarget: 50, range: '20M', damage: '', armorPiercing: 0, lethality: 15, isLethal: true, killRadius: '10M', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'RGO fragmentation grenade', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/grenade.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Hand grenade; uses the same Delta Green game statistics.</em></p>', skill: 'athletics', skillModifier: 20, customSkillTarget: 50, range: '20M', damage: '', armorPiercing: 0, lethality: 15, isLethal: true, killRadius: '10M', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'M203 grenade launcher', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/grenade.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Grenade launcher (GL); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 20, customSkillTarget: 50, range: '150M', damage: '', armorPiercing: 0, lethality: 15, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'M320 grenade launcher', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/grenade.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Grenade launcher (GL); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 20, customSkillTarget: 50, range: '150M', damage: '', armorPiercing: 0, lethality: 15, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'M79 grenade launcher', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/grenade.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Grenade launcher (GL); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 20, customSkillTarget: 50, range: '150M', damage: '', armorPiercing: 0, lethality: 15, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'RPG-7V launcher', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/grenade.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Rocket-propelled grenade launcher (RPG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 20, customSkillTarget: 50, range: '200M', damage: '', armorPiercing: 20, lethality: 30, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'M72 LAW', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/grenade.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Rocket-propelled grenade launcher (RPG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 20, customSkillTarget: 50, range: '200M', damage: '', armorPiercing: 20, lethality: 30, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'AT4 launcher', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/grenade.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Rocket-propelled grenade launcher (RPG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 20, customSkillTarget: 50, range: '200M', damage: '', armorPiercing: 20, lethality: 30, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'M249 SAW', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Light machine gun (LMG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '200M', damage: '', armorPiercing: 3, lethality: 10, isLethal: true, killRadius: '1M', ammo: '100 or 200', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'RPK light machine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Light machine gun (LMG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '200M', damage: '', armorPiercing: 3, lethality: 10, isLethal: true, killRadius: '1M', ammo: '100 or 200', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'M240 machine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of General-purpose machine gun (GPMG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '300M', damage: '', armorPiercing: 3, lethality: 15, isLethal: true, killRadius: '1M', ammo: '100', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'PKM machine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of General-purpose machine gun (GPMG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '300M', damage: '', armorPiercing: 3, lethality: 15, isLethal: true, killRadius: '1M', ammo: '100', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'M60 machine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of General-purpose machine gun (GPMG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '300M', damage: '', armorPiercing: 3, lethality: 15, isLethal: true, killRadius: '1M', ammo: '100', expense: 'Major', equipped: true }
+    },,
+    {
+        category: 'Heavy Weapons', name: 'Browning M2HB heavy machine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy machine gun (HMG); uses the same Delta Green game statistics.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '400M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: '1M', ammo: '100', expense: 'Major', equipped: true }
+    },,
+
     // ── ARTILLERY ─────────────────────────────────────────────────────────────────
     {
         category: 'Artillery', name: 'Light mortar', type: 'weapon',
@@ -236,6 +452,28 @@ window.DG_EQUIPMENT_CATALOG = [
         img: 'systems/deltagreen/assets/icons/penetrator-mine.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><em><strong>RESTRICTED.</strong> Example: M21. Includes +20% blast-zone bonus.</em></p>', skill: 'demolitions', skillModifier: 20, customSkillTarget: 50, range: '', damage: '', armorPiercing: 20, lethality: 25, isLethal: true, killRadius: '10M', ammo: '', expense: 'Standard', equipped: true }
     },
+
+    // ── N3RDMADE EXPANDED DEMOLITIONS VARIANTS
+    {
+        category: 'Demolitions', name: 'Improvised pipe bomb', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/ied.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Improvised explosive device (IED); uses the same Delta Green game statistics.</em></p>', skill: 'demolitions', skillModifier: 20, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 15, isLethal: true, killRadius: '10M', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Demolitions', name: 'Car bomb / vehicle IED', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/ied.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Large IED; uses the same Delta Green game statistics.</em></p>', skill: 'demolitions', skillModifier: 20, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 60, isLethal: true, killRadius: '75M', ammo: '', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Demolitions', name: 'M112 C4 demolition charge', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/c4.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of C4 plastic explosive block, 570 g; uses the same Delta Green game statistics.</em></p>', skill: 'demolitions', skillModifier: 20, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 30, isLethal: true, killRadius: '2M', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Demolitions', name: 'M21 anti-vehicle mine', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/penetrator-mine.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Explosively formed penetrator mine; uses the same Delta Green game statistics.</em></p>', skill: 'demolitions', skillModifier: 20, customSkillTarget: 50, range: '', damage: '', armorPiercing: 20, lethality: 25, isLethal: true, killRadius: '10M', ammo: '', expense: 'Standard', equipped: true }
+    },,
 
     // ── LESS-LETHAL ───────────────────────────────────────────────────────────────
     {
@@ -315,6 +553,33 @@ window.DG_EQUIPMENT_CATALOG = [
         img: 'systems/deltagreen/assets/icons/bomb-suit.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><em>Already includes a helmet. Cannot be concealed.</em></p>', protection: 10, equipped: true, expense: 'Extreme' }
     },
+
+    // ── N3RDMADE EXPANDED ARMOR VARIANTS
+    {
+        category: 'Armor', name: 'Concealable soft body armor', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/kevlar-vest.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Kevlar vest; uses the same Delta Green game statistics.</em></p>', protection: 3, equipped: true, expense: 'Standard' }
+    },,
+    {
+        category: 'Armor', name: 'Reinforced concealable body armor', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/kevlar-vest.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Reinforced Kevlar vest; uses the same Delta Green game statistics.</em></p>', protection: 4, equipped: true, expense: 'Unusual' }
+    },,
+    {
+        category: 'Armor', name: 'Plate carrier / tactical vest', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/tactical-body-armor.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Tactical body armor; uses the same Delta Green game statistics.</em></p>', protection: 5, equipped: true, expense: 'Unusual' }
+    },,
+    {
+        category: 'Armor', name: 'Ballistic helmet', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/helmet.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Kevlar helmet; uses the same Delta Green game statistics.</em></p>', protection: 1, equipped: true, expense: 'Standard' }
+    },,
+    {
+        category: 'Armor', name: 'EOD bomb suit', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/bomb-suit.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded-catalog variant of Bomb suit; uses the same Delta Green game statistics.</em></p>', protection: 10, equipped: true, expense: 'Extreme' }
+    },,
 
     // ── SURVEILLANCE ──────────────────────────────────────────────────────────────
     {
