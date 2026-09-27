@@ -419,6 +419,83 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><strong>Accuracy International AXMC</strong> — .338 Lapua Magnum, standard capacity 10. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '10', expense: 'Major', equipped: true }
     },,
 
+    // ── N3RDMADE FIREARMS — SHOTGUNS
+    {
+        category: 'Firearms', name: 'Franchi SPAS-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Franchi SPAS-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 8.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '8', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Remington 870 Police Magnum', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Remington 870 Police Magnum</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 4.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '4', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Mossberg 500 Tactical', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Mossberg 500 Tactical</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 5.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Mossberg 590A1 Tactical', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Mossberg 590A1 Tactical</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 7.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Benelli M4 EXT', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Benelli M4 EXT</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 7.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Ithaca Model 37 Defense', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Ithaca Model 37 Defense</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 4.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '4', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Winchester Model 1897 Riot Gun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Winchester Model 1897 Riot Gun</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 5.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Browning Auto-5', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Browning Auto-5</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 4.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '4', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Stoeger Coach Gun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Stoeger Coach Gun</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 2.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '2', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Sawed-off Double-Barrel Shotgun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Sawed-off Double-Barrel Shotgun</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 2.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '2', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Saiga-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Saiga-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 5.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'VEPR-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>VEPR-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 5.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'AA-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>AA-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 8.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '8', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Kel-Tec KSG', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Kel-Tec KSG</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 14.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '14', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Firearms', name: 'Standard Manufacturing DP-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Standard Manufacturing DP-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 16.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '16', expense: 'Standard', equipped: true }
+    },,
+
     // ── MELEE WEAPONS ─────────────────────────────────────────────────────────────
     {
         category: 'Melee Weapons', name: 'Unarmed attack', type: 'weapon',
@@ -436,12 +513,12 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><em>Works only from surprise. Target is pinned and cannot make a sound; does 1D6 damage per round until escape or death. A Kevlar garrote can cut through flexible cuffs.</em></p>', skill: 'unarmed_combat', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
     },
     {
-        category: 'Melee Weapons', name: 'Knife', type: 'weapon',
+        category: 'Melee Weapons', name: 'Knife', type: 'weapon', subcategory: 'Knives',
         img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
         system: { name: '', description: '', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D4', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
     },
     {
-        category: 'Melee Weapons', name: 'Long knife or combat dagger', type: 'weapon',
+        category: 'Melee Weapons', name: 'Long knife or combat dagger', type: 'weapon', subcategory: 'Knives',
         img: 'systems/deltagreen/assets/icons/combat-knife.svg', flags: {}, effects: [],
         system: { name: '', description: '', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
     },
@@ -461,7 +538,7 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
     },
     {
-        category: 'Melee Weapons', name: 'Machete, tomahawk, or sword', type: 'weapon',
+        category: 'Melee Weapons', name: 'Machete, tomahawk, or sword', type: 'weapon', subcategory: 'Swords',
         img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
         system: { name: '', description: '', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
     },
@@ -476,12 +553,12 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
     },
     {
-        category: 'Melee Weapons', name: 'Long sword', type: 'weapon',
+        category: 'Melee Weapons', name: 'Long sword', type: 'weapon', subcategory: 'Swords',
         img: 'systems/deltagreen/assets/icons/long-sword.svg', flags: {}, effects: [],
         system: { name: '', description: '', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Melee Weapons', name: 'Two-handed sword', type: 'weapon',
+        category: 'Melee Weapons', name: 'Two-handed sword', type: 'weapon', subcategory: 'Swords',
         img: 'systems/deltagreen/assets/icons/two-handed-sword.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><em>Requires special training.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Standard', equipped: true }
     },
@@ -526,6 +603,110 @@ window.DG_EQUIPMENT_CATALOG = [
         category: 'Melee Weapons', name: 'Fixed bayonet', type: 'weapon',
         img: 'systems/deltagreen/assets/icons/bayonet.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><em>Expanded-catalog variant of Spear or fixed bayonet; uses the same Delta Green game statistics.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+
+    // ── N3RDMADE MELEE — SWORDS
+    {
+        category: 'Melee Weapons', name: 'Katana', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/long-sword.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Katana</strong> — expanded catalog variant using the existing Long sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Wakizashi', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Wakizashi</strong> — expanded catalog variant using the existing Machete, tomahawk, or sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'European Longsword', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/long-sword.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>European Longsword</strong> — expanded catalog variant using the existing Long sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Standard', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Rapier', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Rapier</strong> — expanded catalog variant using the existing Machete, tomahawk, or sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Cavalry Saber', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Cavalry Saber</strong> — expanded catalog variant using the existing Machete, tomahawk, or sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Cutlass', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Cutlass</strong> — expanded catalog variant using the existing Machete, tomahawk, or sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Jian', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Jian</strong> — expanded catalog variant using the existing Machete, tomahawk, or sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Dao', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Dao</strong> — expanded catalog variant using the existing Machete, tomahawk, or sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Falchion', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/tomahawk.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Falchion</strong> — expanded catalog variant using the existing Machete, tomahawk, or sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Claymore', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/two-handed-sword.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Claymore</strong> — expanded catalog variant using the existing Two-handed sword Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Standard', equipped: true }
+    },,
+
+    // ── N3RDMADE MELEE — KNIVES
+    {
+        category: 'Melee Weapons', name: 'Kukri', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/combat-knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Kukri</strong> — expanded catalog variant using the existing Long knife or combat dagger Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Arkansas Toothpick', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/combat-knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Arkansas Toothpick</strong> — expanded catalog variant using the existing Long knife or combat dagger Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Bowie Knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/combat-knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Bowie Knife</strong> — expanded catalog variant using the existing Long knife or combat dagger Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Fairbairn-Sykes Fighting Knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/combat-knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Fairbairn-Sykes Fighting Knife</strong> — expanded catalog variant using the existing Long knife or combat dagger Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'KA-BAR Fighting Knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/combat-knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>KA-BAR Fighting Knife</strong> — expanded catalog variant using the existing Long knife or combat dagger Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'M1918 Trench Knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/combat-knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>M1918 Trench Knife</strong> — expanded catalog variant using the existing Long knife or combat dagger Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Tanto Knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Tanto Knife</strong> — expanded catalog variant using the existing Knife Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D4', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Karambit', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Karambit</strong> — expanded catalog variant using the existing Knife Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D4', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Stiletto', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Stiletto</strong> — expanded catalog variant using the existing Knife Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D4', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },,
+    {
+        category: 'Melee Weapons', name: 'Puukko', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><strong>Puukko</strong> — expanded catalog variant using the existing Knife Delta Green profile.</p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D4', armorPiercing: 3, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
     },,
 
     // ── HEAVY WEAPONS ─────────────────────────────────────────────────────────────
