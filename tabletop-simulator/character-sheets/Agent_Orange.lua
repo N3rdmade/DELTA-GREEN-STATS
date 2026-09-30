@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Orange
--- Version: r65
+-- Version: r66
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -42,7 +42,7 @@ PHYSICAL_DICE_TIMEOUT_FRAMES = 2400
 
 -- Multi-die pools are launched as a stream instead of waiting for each die
 -- to settle before the next one is taken from storage.
-DICE_POOL_SPAWN_INTERVAL = 0.30
+DICE_POOL_SPAWN_INTERVAL = 0.40
 
 -- Random angular impulse applied to every physical die rolled by this sheet.
 DICE_SPIN_MIN = 22
@@ -2107,7 +2107,7 @@ local function buildDicePoolPanel()
         simpleOptionList(diceChoices, state.multiDie2 or "d4"),
         simpleOptionList({"0","1","2","3","4","5","6"}, state.multiQty3 or 0),
         simpleOptionList(diceChoices, state.multiDie3 or "d8"),
-        simpleOptionList({"0","1"}, state.multiQty4 or 0),
+        simpleOptionList({"0","1","2","3","4","5","6"}, state.multiQty4 or 0),
         simpleOptionList(diceChoices, state.multiDie4 or "Hit Location"),
         esc(tostring(state.multiModifier or "0"))
     )
@@ -13484,7 +13484,7 @@ startPhysicalPercentileRoll = function(playerColor, label, target, extra, skillN
                         onDieReady("ones", onesObj)
                     end
                 })
-            end, 0.30)
+            end, 0.40)
         end
     })
 
