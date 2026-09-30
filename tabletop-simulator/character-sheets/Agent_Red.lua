@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Red
--- Version: r79
+-- Version: r80
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -5461,6 +5461,166 @@ local function buildAddItemPanel()
     )
 end
 
+
+
+local COMMON_CURRENCIES = {
+    {code="USD", label="US DOLLARS"},
+    {code="EUR", label="EUROS"},
+    {code="GBP", label="BRITISH POUNDS"},
+    {code="JPY", label="JAPANESE YEN"},
+    {code="CNY", label="CHINESE YUAN"},
+    {code="CAD", label="CANADIAN DOLLARS"},
+    {code="AUD", label="AUSTRALIAN DOLLARS"},
+    {code="CHF", label="SWISS FRANCS"},
+    {code="HKD", label="HONG KONG DOLLARS"},
+    {code="SGD", label="SINGAPORE DOLLARS"},
+    {code="NZD", label="NEW ZEALAND DOLLARS"},
+    {code="SEK", label="SWEDISH KRONA"},
+    {code="NOK", label="NORWEGIAN KRONE"},
+    {code="DKK", label="DANISH KRONE"},
+    {code="MXN", label="MEXICAN PESOS"},
+    {code="BRL", label="BRAZILIAN REAL"},
+    {code="INR", label="INDIAN RUPEES"},
+    {code="KRW", label="SOUTH KOREAN WON"},
+    {code="ZAR", label="SOUTH AFRICAN RAND"},
+    {code="AED", label="UAE DIRHAMS"},
+    {code="GOLD", label="GOLD"},
+    {code="SILVER", label="SILVER"},
+    {code="COPPER", label="COPPER"}
+}
+
+local function currencyDisplayAmount(value)
+    local n = tonumber(value) or 0
+    if math.abs(n - math.floor(n)) < 0.000001 then
+        return tostring(math.floor(n))
+    end
+    return string.format("%.2f", n):gsub("0+$",""):gsub("%.$","")
+end
+
+local CURRENCY_SYMBOLS = {
+    USD="$", EUR="€", GBP="£", JPY="¥", CNY="¥", CAD="C$", AUD="A$",
+    CHF="CHF ", HKD="HK$", SGD="S$", NZD="NZ$", SEK="kr ", NOK="kr ",
+    DKK="kr ", MXN="MX$", BRL="R$", INR="₹", KRW="₩", ZAR="R",
+    AED="AED ", GOLD="Au ", SILVER="Ag ", COPPER="Cu "
+}
+
+local function currencySymbol(code)
+    return CURRENCY_SYMBOLS[tostring(code or "")] or (tostring(code or "") .. " ")
+end
+
+local function currencyDisplayWithSymbol(code, value)
+    return currencySymbol(code) .. currencyDisplayAmount(value)
+end
+
+local function currencyDefinition(code)
+    code = tostring(code or "")
+    for _, entry in ipairs(COMMON_CURRENCIES) do
+        if entry.code == code then return entry end
+    end
+    return nil
+end
+
+local function buildCurrencyBalanceRows()
+    local balances = state.equipment.currencyBalances or {}
+    local xml = ""
+    local y = 0
+    local shown = 0
+
+    for _, entry in ipairs(COMMON_CURRENCIES) do
+        local hasBalance = balances[entry.code] ~= nil
+        local amount = tonumber(balances[entry.code]) or 0
+
+        if hasBalance then
+            local safe = entry.code
+            xml = xml .. string.format([[
+              <Panel rectAlignment="UpperLeft" width="1000" height="46"
+                  offsetXY="0 %d" color="#17201BCC">
+
+                <Text text="%s / %s"
+                    rectAlignment="UpperLeft" width="300" height="34"
+                    offsetXY="12 -6" fontSize="12" fontStyle="Bold"
+                    color="#C8D8CC" alignment="MiddleLeft"/>
+
+                <Text id="currency_balance_%s" text="%s"
+                    rectAlignment="UpperLeft" width="120" height="34"
+                    offsetXY="310 -6" fontSize="15" fontStyle="Bold"
+                    color="#FFFFFF" alignment="MiddleCenter"/>
+
+                <Button id="currency_adjust_%s_minus100" onClick="adjustCurrencyBalance"
+                    text="-100" rectAlignment="UpperLeft" width="72" height="30"
+                    offsetXY="438 -8" fontSize="10" color="#5B3030" textColor="#FFFFFF"/>
+                <Button id="currency_adjust_%s_minus10" onClick="adjustCurrencyBalance"
+                    text="-10" rectAlignment="UpperLeft" width="66" height="30"
+                    offsetXY="516 -8" fontSize="10" color="#5B3030" textColor="#FFFFFF"/>
+                <Button id="currency_adjust_%s_minus1" onClick="adjustCurrencyBalance"
+                    text="-1" rectAlignment="UpperLeft" width="60" height="30"
+                    offsetXY="588 -8" fontSize="10" color="#5B3030" textColor="#FFFFFF"/>
+
+                <Button id="currency_adjust_%s_plus1" onClick="adjustCurrencyBalance"
+                    text="+1" rectAlignment="UpperLeft" width="60" height="30"
+                    offsetXY="662 -8" fontSize="10" color="#355845" textColor="#FFFFFF"/>
+                <Button id="currency_adjust_%s_plus10" onClick="adjustCurrencyBalance"
+                    text="+10" rectAlignment="UpperLeft" width="66" height="30"
+                    offsetXY="728 -8" fontSize="10" color="#355845" textColor="#FFFFFF"/>
+                <Button id="currency_adjust_%s_plus100" onClick="adjustCurrencyBalance"
+                    text="+100" rectAlignment="UpperLeft" width="72" height="30"
+                    offsetXY="800 -8" fontSize="10" color="#355845" textColor="#FFFFFF"/>
+              </Panel>]],
+                -y,
+                esc(entry.code), esc(entry.label),
+                esc(safe), esc(currencyDisplayWithSymbol(entry.code, amount)),
+                esc(safe), esc(safe), esc(safe),
+                esc(safe), esc(safe), esc(safe)
+            )
+            y = y + 52
+            shown = shown + 1
+        end
+    end
+
+    if shown == 0 then
+        return [[
+          <Text text="No currency balances yet."
+              rectAlignment="UpperLeft" width="970" height="34"
+              offsetXY="8 0" fontSize="13" color="#748179"/>
+        ]], 38
+    end
+
+    return xml, y
+end
+
+local function buildCurrencyChoiceButtons()
+    local xml = ""
+    local buttonW = 310
+    local buttonH = 42
+    local gapX = 14
+    local gapY = 10
+    local cols = 3
+
+    for i, entry in ipairs(COMMON_CURRENCIES) do
+        local index = i - 1
+        local col = index % cols
+        local row = math.floor(index / cols)
+        local x = 18 + col * (buttonW + gapX)
+        local y = -88 - row * (buttonH + gapY)
+
+        xml = xml .. string.format([[
+          <Button id="currency_pick_%s"
+              onClick="chooseCurrencyForFunds"
+              text="%s / %s"
+              rectAlignment="UpperLeft"
+              width="%d" height="%d"
+              offsetXY="%d %d"
+              fontSize="11" fontStyle="Bold"
+              color="#2B4033" textColor="#FFFFFF"/>]],
+            esc(entry.code),
+            esc(entry.code),
+            esc(entry.label),
+            buttonW, buttonH, x, y
+        )
+    end
+
+    return xml
+end
 
 
 local function buildFundsPanel()
