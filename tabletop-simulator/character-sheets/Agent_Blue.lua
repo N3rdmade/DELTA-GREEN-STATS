@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Blue
--- Version: r64
+-- Version: r65
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -11823,7 +11823,9 @@ local function finalizeDiceBatch()
 
         if normalizeDieName(result.die) == normalizeDieName("Hit Location") then
             local location =
-                HIT_LOCATION_RESULTS[math.floor(n)] or "Unknown Location"
+                (HIT_LOCATION_RESULTS and
+                 HIT_LOCATION_RESULTS[math.floor(n)]) or
+                "Unknown Location"
             table.insert(parts, "HIT LOCATION=" .. string.upper(location))
         else
             total = total + n
@@ -12030,6 +12032,8 @@ end
 
 
 local diceBatchMonitorRunning = false
+
+local HIT_LOCATION_RESULTS
 
 local function batchDieDropPoint(config, index, totalDice)
     local tower = getObjectFromGUID(config.tower)
@@ -12579,7 +12583,7 @@ local function genericDieDropPoint(config)
 end
 
 
-local HIT_LOCATION_RESULTS = {
+HIT_LOCATION_RESULTS = {
     [1]  = "Left Foot",
     [2]  = "Right Foot",
     [3]  = "Left Leg",
