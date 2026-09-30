@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.4
+-- Version: v3.5
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -2283,6 +2283,21 @@ local function handlerItemsForSubcategory(snapshot, subcategory)
     return result
 end
 
+local function handlerSubcategoryHasFilteredItems(snapshot, subcategory)
+    local filter = tostring(state.addCaliberFilter or "ALL")
+
+    for _, item in ipairs(snapshot.items or {}) do
+        if tostring(item.subcategory or "") == tostring(subcategory or "") and
+           (tostring(state.addCategory or "") ~= "Firearms" or
+            handlerItemMatchesCaliber(item, filter))
+        then
+            return true
+        end
+    end
+
+    return false
+end
+
 local function handlerBrowseTitle()
     local level = tostring(state.addBrowseLevel or "root")
     if level == "root" then return "ALL EQUIPMENT" end
@@ -2347,7 +2362,13 @@ local function buildHandlerBrowseRows(snapshot)
     elseif level == "category" then
         local subs = snapshot.subcategories or {}
         if #subs > 0 then
-            for _, sub in ipairs(subs) do addRow(sub, sub, "subcategory") end
+            for _, sub in ipairs(subs) do
+                if tostring(state.addCategory or "") ~= "Firearms" or
+                   handlerSubcategoryHasFilteredItems(snapshot, sub)
+                then
+                    addRow(sub, sub, "subcategory")
+                end
+            end
         else
             for _, item in ipairs(snapshot.items or {}) do
                 if tostring(state.addCategory or "") ~= "Firearms" or
