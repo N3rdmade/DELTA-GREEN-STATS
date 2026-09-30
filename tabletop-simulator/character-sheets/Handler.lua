@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.9
+-- Version: v3.10
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -55,6 +55,7 @@ local state = {
     addCatalogSourceColor = "",
     addItemKey = "",
     addCaliberFilter = "ALL",
+    addArmorRatingFilter = "ALL",
     addSelectedCaliber = "",
     addSelectedCapacity = "",
     addQuantity = 1,
@@ -2239,6 +2240,27 @@ local function handlerAvailableCalibers(snapshot)
     return result
 end
 
+local function handlerItemMatchesArmorRating(item, filter)
+    filter = tostring(filter or "ALL")
+    if filter == "" or filter == "ALL" then return true end
+    local rating = tonumber(tostring(item and item.armor or ""):match("(%d+)"))
+    return rating ~= nil and tostring(rating) == filter
+end
+
+local function handlerAvailableArmorRatings(snapshot)
+    local found = {}
+    for _, item in ipairs(snapshot.items or {}) do
+        local rating = tonumber(tostring(item.armor or ""):match("(%d+)"))
+        if rating then found[rating] = true end
+    end
+    local values = {}
+    for rating in pairs(found) do table.insert(values, rating) end
+    table.sort(values)
+    local result = {"ALL"}
+    for _, rating in ipairs(values) do table.insert(result, tostring(rating)) end
+    return result
+end
+
 local function handlerSelectedVariant(item)
     if not item then return "", nil end
 
@@ -2418,9 +2440,13 @@ local function buildHandlerBrowseRows(snapshot)
             end
         else
             for _, item in ipairs(snapshot.items or {}) do
-                if tostring(state.addCategory or "") ~= "Firearms" or
-                   handlerItemMatchesCaliber(item, state.addCaliberFilter)
-                then
+                local visible = true
+                if tostring(state.addCategory or "") == "Firearms" then
+                    visible = handlerItemMatchesCaliber(item, state.addCaliberFilter)
+                elseif tostring(state.addCategory or "") == "Body Armor" then
+                    visible = handlerItemMatchesArmorRating(item, state.addArmorRatingFilter)
+                end
+                if visible then
                     addRow(item.key, item.name or item.key, "item")
                 end
             end
@@ -2623,6 +2649,31 @@ local function buildAddItemToAgent()
               itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
               dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4"
               arrowColor="#FFFFFF" dropdownHeight="360" itemHeight="32">%s</Dropdown>
+        ]], dropdownOptions(values, selectedFilter))
+    elseif tostring(state.addCategory or "") == "Body Armor" and
+           tostring(state.addBrowseLevel or "") ~= "root"
+    then
+        local values = handlerAvailableArmorRatings(snapshot)
+        local selectedFilter = tostring(state.addArmorRatingFilter or "ALL")
+        local valid = false
+        for _, value in ipairs(values) do
+            if tostring(value) == selectedFilter then valid = true break end
+        end
+        if not valid then
+            selectedFilter = "ALL"
+            state.addArmorRatingFilter = "ALL"
+        end
+
+        filterXml = string.format([[
+          <Text text="ARMOR RATING" rectAlignment="UpperLeft" width="110" height="28"
+              offsetXY="405 -124" fontSize="11" fontStyle="Bold" color="#A9B8AD"/>
+          <Dropdown id="handler_armor_rating_filter" onValueChanged="handlerSelectArmorRatingFilter"
+              rectAlignment="UpperLeft" width="170" height="34" offsetXY="525 -120"
+              fontSize="12" color="#1D2B24" textColor="#F1F7F2"
+              itemTextColor="#F1F7F2"
+              itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+              dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4"
+              arrowColor="#FFFFFF" dropdownHeight="260" itemHeight="32">%s</Dropdown>
         ]], dropdownOptions(values, selectedFilter))
     end
 
@@ -3073,6 +3124,7 @@ function handlerEquipmentBreadcrumbClick(player, value, id)
         state.addSubcategory = ""
         state.addItemKey = ""
         state.addCaliberFilter = "ALL"
+        state.addArmorRatingFilter = "ALL"
         handlerResetSelectedVariant(nil)
     elseif target == "category" then
         state.addBrowseLevel = "category"
@@ -3106,6 +3158,7 @@ function handlerEquipmentBrowseRowClick(player, value, id)
         state.addBrowseLevel = "category"
         state.addItemKey = ""
         state.addCaliberFilter = "ALL"
+        state.addArmorRatingFilter = "ALL"
         handlerResetSelectedVariant(nil)
 
     elseif kind == "subcategory" then
@@ -3146,6 +3199,13 @@ end
 
 function handlerSelectCaliberFilter(player, value, id)
     state.addCaliberFilter = tostring(value or "ALL")
+    state.addItemKey = ""
+    handlerResetSelectedVariant(nil)
+    rebuildUI()
+end
+
+function handlerSelectArmorRatingFilter(player, value, id)
+    state.addArmorRatingFilter = tostring(value or "ALL")
     state.addItemKey = ""
     handlerResetSelectedVariant(nil)
     rebuildUI()
