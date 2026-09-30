@@ -2403,10 +2403,17 @@ local function buildHandlerBrowseRows(snapshot)
         local subs = snapshot.subcategories or {}
         if #subs > 0 then
             for _, sub in ipairs(subs) do
-                if tostring(state.addCategory or "") ~= "Firearms" or
-                   handlerSubcategoryHasFilteredItems(snapshot, sub)
-                then
+                if handlerSubcategoryHasFilteredItems(snapshot, sub) then
                     addRow(sub, sub, "subcategory")
+                end
+            end
+
+            for _, item in ipairs(snapshot.items or {}) do
+                if tostring(item.subcategory or "") == "" and
+                   (tostring(state.addCategory or "") ~= "Firearms" or
+                    handlerItemMatchesCaliber(item, state.addCaliberFilter))
+                then
+                    addRow(item.key, item.name or item.key, "item")
                 end
             end
         else
