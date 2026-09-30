@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.5
+-- Version: v3.6
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -2552,16 +2552,16 @@ local function buildAddItemToAgent()
             <InputField id="handler_add_reserve_rounds" onValueChanged="captureHandlerReserveRounds"
                 text="%d" rectAlignment="UpperLeft" width="90" height="30" offsetXY="10 -32"
                 fontSize="14" color="#17231C" textColor="#FFFFFF"/>
-            <Text text="SPARE MAGS" rectAlignment="UpperLeft" width="90" height="18"
-                offsetXY="112 -14" fontSize="10" color="#A9B8AD"/>
+            <Text text="SPARE MAGS" rectAlignment="UpperLeft" width="104" height="18"
+                offsetXY="96 -4" fontSize="10" color="#A9B8AD"/>
             <Button id="handler_add_mags_minus" onClick="adjustHandlerAddReserveMags" text="-"
-                rectAlignment="UpperLeft" width="28" height="30" offsetXY="112 -34"
+                rectAlignment="UpperLeft" width="28" height="30" offsetXY="96 -28"
                 fontSize="16" color="#563434" textColor="#FFFFFF"/>
             <Text id="handler_add_mags_count" text="%d" rectAlignment="UpperLeft"
-                width="38" height="30" offsetXY="143 -34" fontSize="14"
+                width="38" height="30" offsetXY="127 -28" fontSize="14"
                 fontStyle="Bold" color="#FFFFFF" alignment="MiddleCenter"/>
             <Button id="handler_add_mags_plus" onClick="adjustHandlerAddReserveMags" text="+"
-                rectAlignment="UpperLeft" width="28" height="30" offsetXY="184 -34"
+                rectAlignment="UpperLeft" width="28" height="30" offsetXY="168 -28"
                 fontSize="16" color="#355845" textColor="#FFFFFF"/>
             <Text id="handler_add_mag_hint" text="%s" rectAlignment="UpperLeft"
                 width="225" height="34" offsetXY="10 -72" fontSize="9"
