@@ -1762,29 +1762,29 @@ window.DG_EQUIPMENT_CATALOG = [
 
     // ARMOR
     {
-        category: 'Armor', name: 'Soft armor vest NIJ II', type: 'armor',
+        category: 'Armor', name: 'Soft Armor Vest — NIJ Level II', type: 'armor',
         img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
-        system: { name: '', description: '<p><em>Low-profile soft body armor.</em></p>', protection: 3, equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Legacy NIJ Level II (current NIJ HG1 terminology). For Delta Green play, use the Kevlar vest profile: Armor Rating 3.</em></p>', protection: 3, equipped: true, expense: 'Standard' }
     },
     {
-        category: 'Armor', name: 'Soft armor vest NIJ IIIA', type: 'armor',
+        category: 'Armor', name: 'Soft Armor Vest — NIJ Level IIIA', type: 'armor',
         img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
-        system: { name: '', description: '<p><em>Heavier soft body armor.</em></p>', protection: 4, equipped: true, expense: 'Unusual' }
+        system: { name: '', description: '<p><em>Legacy NIJ Level IIIA (current NIJ HG2 terminology). For Delta Green play, use the Reinforced Kevlar vest profile: Armor Rating 4.</em></p>', protection: 4, equipped: true, expense: 'Unusual' }
     },
     {
-        category: 'Armor', name: 'Plate carrier with Level III plates', type: 'armor',
+        category: 'Armor', name: 'Plate Carrier — NIJ Level III Plates', type: 'armor',
         img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
-        system: { name: '', description: '<p><em>Plate carrier with rifle-rated hard plates.</em></p>', protection: 5, equipped: true, expense: 'Major' }
+        system: { name: '', description: '<p><em>Legacy NIJ Level III rifle-rated plates (current NIJ RF1 terminology). Delta Green has no separate NIJ armor ladder; use the Tactical body armor profile: Armor Rating 5.</em></p>', protection: 5, equipped: true, expense: 'Unusual' }
     },
     {
-        category: 'Armor', name: 'Plate carrier with Level IV plates', type: 'armor',
+        category: 'Armor', name: 'Plate Carrier — NIJ Level IV Plates', type: 'armor',
         img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
-        system: { name: '', description: '<p><em>Heavy rifle-rated hard armor.</em></p>', protection: 6, equipped: true, expense: 'Major' }
+        system: { name: '', description: '<p><em>Legacy NIJ Level IV rifle/AP-rated plates (current NIJ RF3 terminology). Delta Green has no separate Level IV body-armor profile; use the Tactical body armor profile: Armor Rating 5.</em></p>', protection: 5, equipped: true, expense: 'Unusual' }
     },
     {
         category: 'Armor', name: 'Ballistic helmet', type: 'armor',
         img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
-        system: { name: '', description: '<p><em>Modern ballistic helmet; Handler adjudicates location-specific protection if used.</em></p>', protection: 2, equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Expanded-catalog variant of the Kevlar helmet. Adds its Armor Rating to other armor; use Armor Rating +1.</em></p>', protection: 1, equipped: true, expense: 'Standard' }
     },
 
     // SURVEILLANCE
