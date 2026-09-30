@@ -1,5 +1,6 @@
 /**
  * DELTA GREEN STATS — Equipment Catalog
+ * Firearm data audit: 2026-09-30
  * Sourced from the Delta Green: Agent's Handbook Foundry VTT compendium.
  * Used by the equipment picker to build character loadouts for Foundry export.
  */
@@ -123,12 +124,12 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><em>Expanded-catalog variant of Light rifle or carbine; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'H&K G3 battle rifle', type: 'weapon', caliber: '7.62x51mm NATO', subcategory: 'Battle Rifles',
+        category: 'Firearms', name: 'H&K G3 battle rifle', type: 'weapon', subcategory: 'Battle Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy rifle; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'FN FAL battle rifle', type: 'weapon', caliber: '7.62x51mm NATO', subcategory: 'Battle Rifles',
+        category: 'Firearms', name: 'FN FAL battle rifle', type: 'weapon', subcategory: 'Battle Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><em>Expanded-catalog variant of Heavy rifle; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
@@ -165,335 +166,335 @@ window.DG_EQUIPMENT_CATALOG = [
 
     // ── N3RDMADE FIREARMS — PISTOLS
     {
-        category: 'Firearms', name: 'Chiappa Rhino 60DS', type: 'weapon', subcategory: 'Pistols', caliber: '.357 Magnum', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Chiappa Rhino 60DS', type: 'weapon', subcategory: 'Pistols', caliber: '.357 Magnum',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Chiappa Rhino 60DS</strong> — .357 Magnum, standard capacity 6. Delta Green game stats are based on the existing Heavy pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '20M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '6', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Glock 17 Gen5', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Glock 17 Gen5', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Glock 17 Gen5</strong> — 9x19mm, standard capacity 17. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Glock 19 Gen5', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Glock 19 Gen5', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Glock 19 Gen5</strong> — 9x19mm, standard capacity 15. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'SIG Sauer P320 Full Size', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'SIG Sauer P320 Full Size', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>SIG Sauer P320 Full Size</strong> — 9x19mm, standard capacity 17. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'SIG Sauer P226', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'SIG Sauer P226', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>SIG Sauer P226</strong> — 9x19mm, standard capacity 15. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Beretta 92FS', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Beretta 92FS', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Beretta 92FS</strong> — 9x19mm, standard capacity 15. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'HK USP45', type: 'weapon', subcategory: 'Pistols', caliber: '.45 ACP', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'HK USP45', type: 'weapon', subcategory: 'Pistols', caliber: '.45 ACP',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>HK USP45</strong> — .45 ACP, standard capacity 12. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '12', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'HK VP9', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'HK VP9', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>HK VP9</strong> — 9x19mm, standard capacity 15. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'CZ 75 B', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'CZ 75 B', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>CZ 75 B</strong> — 9x19mm, standard capacity 16. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '16', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'CZ P-10 C', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'CZ P-10 C', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>CZ P-10 C</strong> — 9x19mm, standard capacity 15. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Walther PDP Compact', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Walther PDP Compact', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Walther PDP Compact</strong> — 9x19mm, standard capacity 15. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '15', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Smith & Wesson M&P9 M2.0', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Smith & Wesson M&P9 M2.0', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Smith & Wesson M&P9 M2.0</strong> — 9x19mm, standard capacity 17. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Colt Python', type: 'weapon', subcategory: 'Pistols', caliber: '.357 Magnum', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Colt Python', type: 'weapon', subcategory: 'Pistols', caliber: '.357 Magnum',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Colt Python</strong> — .357 Magnum, standard capacity 6. Delta Green game stats are based on the existing Heavy pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '20M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '6', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Ruger GP100', type: 'weapon', subcategory: 'Pistols', caliber: '.357 Magnum', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Ruger GP100', type: 'weapon', subcategory: 'Pistols', caliber: '.357 Magnum',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Ruger GP100</strong> — .357 Magnum, standard capacity 6. Delta Green game stats are based on the existing Heavy pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '20M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '6', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'FN 509', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'FN 509', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>FN 509</strong> — 9x19mm, standard capacity 17. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'FN Five-seveN MRD', type: 'weapon', subcategory: 'Pistols', caliber: '5.7x28mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'FN Five-seveN MRD', type: 'weapon', subcategory: 'Pistols', caliber: '5.7x28mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>FN Five-seveN MRD</strong> — 5.7x28mm, standard capacity 20. Delta Green game stats are based on the existing Light pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Springfield Armory Echelon', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Springfield Armory Echelon', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Springfield Armory Echelon</strong> — 9x19mm, standard capacity 17. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Colt Government 1911', type: 'weapon', subcategory: 'Pistols', caliber: '.45 ACP', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Colt Government 1911', type: 'weapon', subcategory: 'Pistols', caliber: '.45 ACP',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Colt Government 1911</strong> — .45 ACP, standard capacity 7. Delta Green game stats are based on the existing Medium pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Desert Eagle Mark XIX', type: 'weapon', subcategory: 'Pistols', caliber: '.50 AE', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'Desert Eagle Mark XIX', type: 'weapon', subcategory: 'Pistols', caliber: '.50 AE',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Desert Eagle Mark XIX</strong> — .50 AE, standard capacity 7. Delta Green game stats are based on the existing Heavy pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '20M', damage: '1D12', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'SIG Sauer P365', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm', subcategory: 'Pistols', caliber: 'various',
+        category: 'Firearms', name: 'SIG Sauer P365', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>SIG Sauer P365</strong> — 9x19mm, standard capacity 10. Delta Green game stats are based on the existing Light pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Standard', equipped: true }
     },
 
     // ── N3RDMADE FIREARMS — CARBINES
     {
-        category: 'Firearms', name: 'HK416 A5', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'HK416 A5', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>HK416 A5</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'SIG MCX SPEAR LT', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'SIG MCX SPEAR LT', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>SIG MCX SPEAR LT</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'IWI Tavor X95', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'IWI Tavor X95', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>IWI Tavor X95</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Steyr AUG A3', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'Steyr AUG A3', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Steyr AUG A3</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Ruger Mini-14', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'Ruger Mini-14', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Ruger Mini-14</strong> — 5.56x45mm / .223 Rem, standard capacity 20. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'CZ BREN 2 Ms Carbine', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'CZ BREN 2 Ms Carbine', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>CZ BREN 2 Ms Carbine</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Beretta ARX100', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'Beretta ARX100', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Beretta ARX100</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'IWI Galil ACE Gen II', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'IWI Galil ACE Gen II', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>IWI Galil ACE Gen II</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Kel-Tec RDB', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'Kel-Tec RDB', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Kel-Tec RDB</strong> — 5.56x45mm NATO, standard capacity 20. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Bushmaster ACR', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO', subcategory: 'Carbines', caliber: 'various',
+        category: 'Firearms', name: 'Bushmaster ACR', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Bushmaster ACR</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
 
     // ── N3RDMADE FIREARMS — MARKSMAN RIFLES
     {
-        category: 'Firearms', name: 'M110 SASS', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'M110 SASS', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>M110 SASS</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Knight\'s Armament SR-25', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'Knight\'s Armament SR-25', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Knight\'s Armament SR-25</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'HK417', type: 'weapon', subcategory: 'Battle Rifles', caliber: '7.62x51mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'HK417', type: 'weapon', subcategory: 'Battle Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>HK417</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'HK G28', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'HK G28', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>HK G28</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'FN SCAR 20S', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'FN SCAR 20S', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>FN SCAR 20S</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'SIG Sauer 716i TREAD', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'SIG Sauer 716i TREAD', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>SIG Sauer 716i TREAD</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'M14 EBR', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'M14 EBR', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>M14 EBR</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'SVD Dragunov', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x54R', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'SVD Dragunov', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x54R',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>SVD Dragunov</strong> — 7.62x54R, standard capacity 10. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Mk 12 SPR', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '5.56x45mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'Mk 12 SPR', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Mk 12 SPR</strong> — 5.56x45mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Daniel Defense DD5 V4', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO', subcategory: 'Marksman Rifles', caliber: 'various',
+        category: 'Firearms', name: 'Daniel Defense DD5 V4', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Daniel Defense DD5 V4</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
 
     // ── N3RDMADE FIREARMS — HEAVY SNIPERS
     {
-        category: 'Firearms', name: 'Barrett M107A1', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Barrett M107A1', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Barrett M107A1</strong> — .50 BMG, standard capacity 10. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '10', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Barrett Model 95', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Barrett Model 95', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Barrett Model 95</strong> — .50 BMG, standard capacity 5. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '5', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Barrett Model 99', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Barrett Model 99', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Barrett Model 99</strong> — .50 BMG, standard capacity 1. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '1', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Accuracy International AX50', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Accuracy International AX50', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Accuracy International AX50</strong> — .50 BMG, standard capacity 5. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '5', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'McMillan TAC-50', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'McMillan TAC-50', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>McMillan TAC-50</strong> — .50 BMG, standard capacity 5. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '5', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Desert Tech HTI', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Desert Tech HTI', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Desert Tech HTI</strong> — .50 BMG, standard capacity 5. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '5', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Steyr HS .50 M1', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Steyr HS .50 M1', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Steyr HS .50 M1</strong> — .50 BMG, standard capacity 5. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '5', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Sako TRG M10', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.338 Lapua Magnum', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Sako TRG M10', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.338 Lapua Magnum',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Sako TRG M10</strong> — .338 Lapua Magnum, standard capacity 8. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '8', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Barrett MRAD', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.338 Lapua Magnum', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Barrett MRAD', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.338 Lapua Magnum',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Barrett MRAD</strong> — .338 Lapua Magnum, standard capacity 10. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '10', expense: 'Major', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Accuracy International AXMC', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.338 Lapua Magnum', subcategory: 'Heavy Snipers', caliber: 'various',
+        category: 'Firearms', name: 'Accuracy International AXMC', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.338 Lapua Magnum',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Accuracy International AXMC</strong> — .338 Lapua Magnum, standard capacity 10. Delta Green game stats are based on the existing Very heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '10', expense: 'Major', equipped: true }
     },
 
     // ── N3RDMADE FIREARMS — SHOTGUNS
     {
-        category: 'Firearms', name: 'Franchi SPAS-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Franchi SPAS-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Franchi SPAS-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 8.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '8', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Remington 870 Police Magnum', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Remington 870 Police Magnum', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Remington 870 Police Magnum</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 4.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '4', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Mossberg 500 Tactical', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Mossberg 500 Tactical', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Mossberg 500 Tactical</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 5.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Mossberg 590A1 Tactical', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Mossberg 590A1 Tactical', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Mossberg 590A1 Tactical</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 7.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '8', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Benelli M4 EXT', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Benelli M4 EXT', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Benelli M4 EXT</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 7.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Ithaca Model 37 Defense', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Ithaca Model 37 Defense', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Ithaca Model 37 Defense</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 4.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '4', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Winchester Model 1897 Riot Gun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Winchester Model 1897 Riot Gun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Winchester Model 1897 Riot Gun</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 5.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Browning Auto-5', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Browning Auto-5', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Browning Auto-5</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 4.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '4', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Stoeger Coach Gun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Stoeger Coach Gun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Stoeger Coach Gun</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 2.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '2', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Sawed-off Double-Barrel Shotgun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Sawed-off Double-Barrel Shotgun', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Sawed-off Double-Barrel Shotgun</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 2.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '2', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Saiga-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Saiga-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Saiga-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 5.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'VEPR-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'VEPR-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>VEPR-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 5.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'AA-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'AA-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>AA-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 8.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '8', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Kel-Tec KSG', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Kel-Tec KSG', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Kel-Tec KSG</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 14.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '14', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Standard Manufacturing DP-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge', subcategory: 'Shotguns', caliber: '12 gauge',
+        category: 'Firearms', name: 'Standard Manufacturing DP-12', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
         img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Standard Manufacturing DP-12</strong> — expanded catalog variant using the existing Shotgun (firing shot) Delta Green profile; chambering 12 gauge; standard capacity 16.</p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '16', expense: 'Standard', equipped: true }
     },
