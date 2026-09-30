@@ -2919,7 +2919,7 @@ local function parseGithubEquipmentCatalog(text)
                 current.capacity = textField("ammo")
                 current.expense = textField("expense")
                 current.consumable = equipmentCatalogConsumable(
-                    current.sourceCategory,
+                    current.originalCategory,
                     current.name,
                     current.capacity
                 )
