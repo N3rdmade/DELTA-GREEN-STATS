@@ -243,7 +243,7 @@ window.DG_EQUIPMENT_CATALOG = [
     {
         category: 'Firearms', name: 'FN Five-seveN MRD', type: 'weapon', subcategory: 'Pistols', caliber: '5.7x28mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
-        system: { name: '', description: '<p><strong>FN Five-seveN MRD</strong> — 5.7x28mm, standard capacity 20. Delta Green game stats are based on the existing Light pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Standard', equipped: true }
+        system: { name: '', description: '<p><strong>FN Five-seveN MRD</strong> — 5.7x28mm, standard capacity 20. This catalog treats it as a Medium pistol for Delta Green play; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Standard', equipped: true }
     },
     {
         category: 'Firearms', name: 'Springfield Armory Echelon', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
@@ -263,7 +263,7 @@ window.DG_EQUIPMENT_CATALOG = [
     {
         category: 'Firearms', name: 'SIG Sauer P365', type: 'weapon', subcategory: 'Pistols', caliber: '9x19mm',
         img: 'systems/deltagreen/assets/icons/pistol.svg', flags: {}, effects: [],
-        system: { name: '', description: '<p><strong>SIG Sauer P365</strong> — 9x19mm, standard capacity 10. Delta Green game stats are based on the existing Light pistol profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Standard', equipped: true }
+        system: { name: '', description: '<p><strong>SIG Sauer P365</strong> — 9x19mm, standard capacity 10. Delta Green classifies 9x19mm with Medium pistols; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '15M', damage: '1D10', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Standard', equipped: true }
     },
 
     // ── N3RDMADE FIREARMS — CARBINES
@@ -1120,12 +1120,12 @@ window.DG_EQUIPMENT_CATALOG = [
     {
         category: 'Surveillance', name: 'Simple directional microphone', type: 'gear',
         img: 'systems/deltagreen/assets/icons/microphone.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Incidental' }
+        system: { name: '', description: '<p><em>10 m. range in typical urban conditions.</em></p>', equipped: true, expense: 'Incidental' }
     },
     {
         category: 'Surveillance', name: 'Voice-activated recorder', type: 'gear',
         img: 'systems/deltagreen/assets/icons/sound.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Portable audio recorder that begins recording when sound is detected.</em></p>', equipped: true, expense: 'Standard' }
     },
     {
         category: 'Surveillance', name: 'Directional microphone & acoustic software', type: 'gear',
@@ -1135,27 +1135,27 @@ window.DG_EQUIPMENT_CATALOG = [
     {
         category: 'Surveillance', name: 'Fiber optic scope', type: 'gear',
         img: 'systems/deltagreen/assets/icons/optics.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Flexible inspection scope for viewing through narrow openings and around obstructions.</em></p>', equipped: true, expense: 'Standard' }
     },
     {
         category: 'Surveillance', name: 'Bug detector', type: 'gear',
         img: 'systems/deltagreen/assets/icons/bug-detector.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Detects nearby electronic surveillance transmitters and hidden listening devices.</em></p>', equipped: true, expense: 'Standard' }
     },
     {
         category: 'Surveillance', name: 'GPS tracking device', type: 'gear',
         img: 'systems/deltagreen/assets/icons/gps-tracking.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Unusual' }
+        system: { name: '', description: '<p><em>Portable tracker used to monitor the location of a person, vehicle, or object.</em></p>', equipped: true, expense: 'Unusual' }
     },
     {
         category: 'Surveillance', name: 'GPS jammer', type: 'gear',
         img: 'systems/deltagreen/assets/icons/jammer.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Disrupts nearby GPS reception while active.</em></p>', equipped: true, expense: 'Standard' }
     },
     {
         category: 'Surveillance', name: 'Audio jammer (RF/cellular)', type: 'gear',
         img: 'systems/deltagreen/assets/icons/jammer.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Unusual' }
+        system: { name: '', description: '<p><em>Disrupts nearby RF/cellular communications while active.</em></p>', equipped: true, expense: 'Unusual' }
     },
     {
         category: 'Surveillance', name: 'Basic, open-market drone', type: 'gear',
@@ -1182,37 +1182,37 @@ window.DG_EQUIPMENT_CATALOG = [
     {
         category: 'Comms & Tech', name: 'Burner phone', type: 'gear',
         img: 'systems/deltagreen/assets/icons/phone.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Incidental' }
+        system: { name: '', description: '<p><em>Low-cost prepaid phone intended for temporary or disposable communications.</em></p>', equipped: true, expense: 'Incidental' }
     },
     {
         category: 'Comms & Tech', name: 'Short-range walkie talkie or early-generation mobile phone', type: 'gear',
         img: 'systems/deltagreen/assets/icons/walkie-talkie.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Incidental' }
+        system: { name: '', description: '<p><em>Basic short-range voice communications equipment.</em></p>', equipped: true, expense: 'Incidental' }
     },
     {
         category: 'Comms & Tech', name: 'Earpiece communication set', type: 'gear',
         img: 'systems/deltagreen/assets/icons/sound.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Discreet hands-free communications earpiece and microphone set.</em></p>', equipped: true, expense: 'Standard' }
     },
     {
         category: 'Comms & Tech', name: 'Tablet computer or smartphone', type: 'gear',
         img: 'systems/deltagreen/assets/icons/tablet.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>General-purpose mobile computer and communications device.</em></p>', equipped: true, expense: 'Standard' }
     },
     {
         category: 'Comms & Tech', name: 'Satellite phone', type: 'gear',
         img: 'systems/deltagreen/assets/icons/satellite-phone.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Unusual' }
+        system: { name: '', description: '<p><em>Provides voice communications by satellite where ordinary cellular service is unavailable.</em></p>', equipped: true, expense: 'Unusual' }
     },
     {
         category: 'Comms & Tech', name: 'Ordinary computer', type: 'gear',
         img: 'systems/deltagreen/assets/icons/computer.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Standard desktop or laptop suitable for ordinary office and investigative computing.</em></p>', equipped: true, expense: 'Standard' }
     },
     {
         category: 'Comms & Tech', name: 'Powerful computer', type: 'gear',
         img: 'systems/deltagreen/assets/icons/computer.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Major' }
+        system: { name: '', description: '<p><em>High-performance workstation for demanding analysis and computing tasks.</em></p>', equipped: true, expense: 'Major' }
     },
     {
         category: 'Comms & Tech', name: 'Portable IMSI catcher for cell surveillance', type: 'gear',
@@ -1237,12 +1237,12 @@ window.DG_EQUIPMENT_CATALOG = [
     {
         category: 'Comms & Tech', name: '3D printer (plastic)', type: 'gear',
         img: 'systems/deltagreen/assets/icons/3d-printer.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Standard' }
+        system: { name: '', description: '<p><em>Produces plastic parts and prototypes from digital models.</em></p>', equipped: true, expense: 'Standard' }
     },
     {
         category: 'Comms & Tech', name: '3D printer (metal)', type: 'gear',
         img: 'systems/deltagreen/assets/icons/3d-printer.svg', flags: {}, effects: [],
-        system: { name: '', description: '', equipped: true, expense: 'Major' }
+        system: { name: '', description: '<p><em>Produces metal parts from digital models using industrial additive manufacturing.</em></p>', equipped: true, expense: 'Major' }
     },
 
     // ── OPTICS & VISION ───────────────────────────────────────────────────────────
