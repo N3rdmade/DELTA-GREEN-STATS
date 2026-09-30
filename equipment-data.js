@@ -119,7 +119,7 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><em>Expanded-catalog variant of Light rifle or carbine; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'FN SCAR-L', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        category: 'Firearms', name: 'FN SCAR-L', type: 'weapon', subcategory: 'Assault Rifles', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><em>Expanded-catalog variant of Light rifle or carbine; uses the same Delta Green game statistics.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
@@ -268,22 +268,22 @@ window.DG_EQUIPMENT_CATALOG = [
 
     // ── N3RDMADE FIREARMS — CARBINES
     {
-        category: 'Firearms', name: 'HK416 A5', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        category: 'Firearms', name: 'HK416 A5', type: 'weapon', subcategory: 'Assault Rifles', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>HK416 A5</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'SIG MCX SPEAR LT', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        category: 'Firearms', name: 'SIG MCX SPEAR LT', type: 'weapon', subcategory: 'Assault Rifles', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>SIG MCX SPEAR LT</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'IWI Tavor X95', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        category: 'Firearms', name: 'IWI Tavor X95', type: 'weapon', subcategory: 'Assault Rifles', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>IWI Tavor X95</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
     {
-        category: 'Firearms', name: 'Steyr AUG A3', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        category: 'Firearms', name: 'Steyr AUG A3', type: 'weapon', subcategory: 'Assault Rifles', caliber: '5.56x45mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>Steyr AUG A3</strong> — 5.56x45mm NATO, standard capacity 30. Delta Green game stats are based on the existing Light rifle or carbine profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
     },
@@ -345,7 +345,7 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><strong>FN SCAR 20S</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
     {
-        category: 'Firearms', name: 'SIG Sauer 716i TREAD', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
+        category: 'Firearms', name: 'SIG Sauer 716i TREAD', type: 'weapon', subcategory: 'Battle Rifles', caliber: '7.62x51mm NATO',
         img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
         system: { name: '', description: '<p><strong>SIG Sauer 716i TREAD</strong> — 7.62x51mm NATO, standard capacity 20. Delta Green game stats are based on the existing Heavy rifle profile; real-world chambering/capacity is preserved for inventory tracking.</p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
     },
