@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.6
+-- Version: v3.7
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -2517,19 +2517,21 @@ local function buildAddItemToAgent()
         local capacities = handlerItemCapacityOptions(selectedItem, chosenCaliber)
 
         variantPanel = string.format([[
-          <Panel rectAlignment="UpperLeft" width="250" height="82" offsetXY="18 -270" color="#101712CC">
+          <Panel rectAlignment="UpperLeft" width="250" height="94" offsetXY="18 -266" color="#0F1712CC">
+            <Panel rectAlignment="MiddleCenter" width="246" height="90"
+                color="#00000000" outline="#44584A" outlineSize="1"/>
             <Text text="CALIBER" rectAlignment="UpperLeft" width="110" height="20"
-                offsetXY="8 -6" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
+                offsetXY="10 -10" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
             <Dropdown id="handler_variant_caliber" onValueChanged="handlerSelectVariantCaliber"
-                rectAlignment="UpperLeft" width="112" height="32" offsetXY="8 -28"
+                rectAlignment="UpperLeft" width="112" height="32" offsetXY="10 -34"
                 fontSize="11" color="#1D2B24" textColor="#F1F7F2"
                 itemTextColor="#F1F7F2" itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
                 dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4" arrowColor="#FFFFFF"
                 dropdownHeight="300" itemHeight="30">%s</Dropdown>
             <Text text="MAG" rectAlignment="UpperLeft" width="105" height="20"
-                offsetXY="132 -6" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
+                offsetXY="132 -10" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
             <Dropdown id="handler_variant_capacity" onValueChanged="handlerSelectVariantCapacity"
-                rectAlignment="UpperLeft" width="105" height="32" offsetXY="132 -28"
+                rectAlignment="UpperLeft" width="105" height="32" offsetXY="132 -34"
                 fontSize="11" color="#1D2B24" textColor="#F1F7F2"
                 itemTextColor="#F1F7F2" itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
                 dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4" arrowColor="#FFFFFF"
@@ -2541,30 +2543,35 @@ local function buildAddItemToAgent()
         )
     end
 
-    local optionsY = hasVariants and -360 or -282
+    local optionsY = hasVariants and -374 or -282
 
     local ammoPanel = ""
     if showAmmo then
         ammoPanel = string.format([[
-          <Panel rectAlignment="UpperLeft" width="250" height="116" offsetXY="18 %d" color="#111812AA">
-            <Text text="STARTING RESERVE" rectAlignment="UpperLeft" width="220" height="20"
-                offsetXY="10 -6" fontSize="11" fontStyle="Bold" color="#A9B8AD"/>
+          <Panel rectAlignment="UpperLeft" width="250" height="126" offsetXY="18 %d" color="#0F1712CC">
+            <Panel rectAlignment="MiddleCenter" width="246" height="122"
+                color="#00000000" outline="#44584A" outlineSize="1"/>
+
+            <Text text="STARTING RESERVE" rectAlignment="UpperLeft" width="110" height="18"
+                offsetXY="10 -10" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
             <InputField id="handler_add_reserve_rounds" onValueChanged="captureHandlerReserveRounds"
-                text="%d" rectAlignment="UpperLeft" width="90" height="30" offsetXY="10 -32"
+                text="%d" rectAlignment="UpperLeft" width="92" height="30" offsetXY="10 -34"
                 fontSize="14" color="#17231C" textColor="#FFFFFF"/>
-            <Text text="SPARE MAGS" rectAlignment="UpperLeft" width="104" height="18"
-                offsetXY="96 -4" fontSize="10" color="#A9B8AD"/>
+
+            <Text text="SPARE MAGS" rectAlignment="UpperLeft" width="112" height="18"
+                offsetXY="126 -10" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
             <Button id="handler_add_mags_minus" onClick="adjustHandlerAddReserveMags" text="-"
-                rectAlignment="UpperLeft" width="28" height="30" offsetXY="96 -28"
+                rectAlignment="UpperLeft" width="28" height="30" offsetXY="126 -34"
                 fontSize="16" color="#563434" textColor="#FFFFFF"/>
             <Text id="handler_add_mags_count" text="%d" rectAlignment="UpperLeft"
-                width="38" height="30" offsetXY="127 -28" fontSize="14"
+                width="34" height="30" offsetXY="157 -34" fontSize="14"
                 fontStyle="Bold" color="#FFFFFF" alignment="MiddleCenter"/>
             <Button id="handler_add_mags_plus" onClick="adjustHandlerAddReserveMags" text="+"
-                rectAlignment="UpperLeft" width="28" height="30" offsetXY="168 -28"
+                rectAlignment="UpperLeft" width="28" height="30" offsetXY="194 -34"
                 fontSize="16" color="#355845" textColor="#FFFFFF"/>
+
             <Text id="handler_add_mag_hint" text="%s" rectAlignment="UpperLeft"
-                width="225" height="34" offsetXY="10 -72" fontSize="9"
+                width="225" height="38" offsetXY="10 -78" fontSize="9"
                 color="#84968B" alignment="UpperLeft" horizontalOverflow="Wrap"/>
           </Panel>
         ]], optionsY,
@@ -2631,7 +2638,7 @@ local function buildAddItemToAgent()
           %s
 
           <Button id="handler_prepare_add_item" onClick="handlerPrepareAddItem"
-              text="ADD ITEM" rectAlignment="LowerLeft" width="250" height="42" offsetXY="18 14"
+              text="ADD ITEM" rectAlignment="LowerLeft" width="250" height="42" offsetXY="18 10"
               fontSize="15" fontStyle="Bold" color="#355845" textColor="#FFFFFF"/>
         </Panel>
 
