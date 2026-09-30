@@ -17,7 +17,7 @@ Free to use, modify, and share provided the Hellhorde credit header remains inta
 
 The Agent scripts are the same feature set with sheet-specific color, nameplate, and dice-tower GUID configuration.
 
-### r72 equipment / session updates
+### r73 equipment / session updates
 - Failed-skill advancement is labeled as an **End Session** action; all marked failed skills improve by 1D4 and clear their marks.
 - Weapon attack chat output no longer repeats ammo, fire mode, or modifier bookkeeping.
 - Equipment rows include **REMOVE** and **REPLACE** controls. Removing a firearm leaves shared reserve ammunition in the Agent's caliber pool.
@@ -26,7 +26,7 @@ The Agent scripts are the same feature set with sheet-specific color, nameplate,
 
 ## Current versions
 
-- Agent sheets: **r72**
+- Agent sheets: **r73**
 - Handler dashboard: **v3.8**
 
 ## Notes
