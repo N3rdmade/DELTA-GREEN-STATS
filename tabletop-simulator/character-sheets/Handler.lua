@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.0
+-- Version: v3.1
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -459,8 +459,8 @@ local function startHandlerRoll(choice)
     if choice == "GUMSHOE" then
         names = {"d10s", "d10"}
         points = {
-            towerPoint(0.01875),
-            towerPoint(-0.01875)
+            towerPoint(0.00),
+            towerPoint(0.00)
         }
     else
         names = {choice}
@@ -528,9 +528,9 @@ local function startHandlerRoll(choice)
 
                 kickHandlerRandomSpin(obj)
 
-                Wait.frames(function()
+                Wait.time(function()
                     pullNext(index + 1)
-                end, 1)
+                end, 0.30)
             end
         })
     end
