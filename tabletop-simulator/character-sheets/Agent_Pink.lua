@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Pink
--- Version: r66
+-- Version: r67
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -4324,11 +4324,12 @@ local EQUIPMENT_SUBCATEGORY_ORDER = {
         "All",
         "Pistols",
         "Carbines",
+        "Assault Rifles",
+        "Battle Rifles",
         "Marksman Rifles",
         "Heavy Snipers",
         "SMGs",
-        "Shotguns",
-        "Other"
+        "Shotguns"
     },
 
     ["Melee Weapons"] = {
