@@ -4203,9 +4203,9 @@ local function catalogAvailableCalibers(category, subcategory)
 
     local found = {}
     for _, key in ipairs(sortedCatalogNamesForCategory("Firearms")) do
+        local item = EQUIPMENT_CATALOG[key]
         if (not subcategory or subcategory == "" or
-            itemMatchesSubcategory == nil or
-            itemMatchesSubcategory(key, subcategory))
+            tostring(item and item.subcategory or "") == tostring(subcategory))
         then
             for _, caliber in ipairs(catalogCaliberOptions(key)) do
                 if caliber ~= "" and string.lower(caliber) ~= "various" then
@@ -4464,7 +4464,7 @@ local function updateAddItemSelectionUi(previousKey, newKey)
         helper.UI.setAttribute(
             "equipment_add_selected_expense",
             "text",
-            "EXPENSE LEVEL\n" .. catalogItemExpense(newKey)
+            catalogItemExpense(newKey)
         )
 
         helper.UI.setAttribute(
