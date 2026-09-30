@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Orange
--- Version: r76
+-- Version: r77
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -4361,6 +4361,8 @@ local function displayCatalogSkill(skill)
     return map[string.lower(tostring(skill or ""))] or tostring(skill or "")
 end
 
+local catalogItemSubcategory
+
 local function catalogItemDetailsXml(key)
     local item = EQUIPMENT_CATALOG[tostring(key or "")]
     if not item then return "", 0 end
@@ -4869,7 +4871,7 @@ local EQUIPMENT_SUBCATEGORY_ORDER = {
     }
 }
 
-local function catalogItemSubcategory(key)
+catalogItemSubcategory = function(key)
     local item = EQUIPMENT_CATALOG[tostring(key or "")]
     if not item then return "Other" end
 
