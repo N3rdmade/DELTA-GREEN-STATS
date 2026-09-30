@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Red
--- Version: r67
+-- Version: r68
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -158,6 +158,9 @@ local state = {
     addItemCategory = "",
     addItemSubcategory = "",
     addItemName = "",
+    addCaliberFilter = "ALL",
+    addSelectedCaliber = "",
+    addSelectedCapacity = "",
     addReserveRounds = 0,
     addReserveMags = 0,
 
@@ -2786,7 +2789,8 @@ local function parseGithubEquipmentCatalog(text)
                 type = category,
                 name = name,
                 subcategory = line:match("subcategory:%s*'([^']+)'") or "",
-                caliber = line:match("caliber:%s*'([^']+)'") or ""
+                caliber = line:match("caliber:%s*'([^']+)'") or "",
+                variantSpec = line:match("variants:%s*'([^']+)'") or ""
             }
 
             local key = string.lower(name)
@@ -3036,34 +3040,45 @@ local function catalogDropdownOptions(names, selectedKey)
     return xml
 end
 
-local function addCatalogItemToInventory(name)
+local function addCatalogItemToInventory(name, selectedCaliber, selectedCapacity)
     ensureStructuredImportState()
 
     local key = string.lower(tostring(name or ""))
     local c = EQUIPMENT_CATALOG[key]
-    if not c then return false, "Catalog item not found." end
+    if not c then return false, "Catalog item not found.", nil end
 
     local displayName = catalogDisplayName(key)
 
     if c.kind == "weapon" then
-        -- Identical weapons/consumables use quantity rather than duplicate rows.
+        local chosenCaliber = tostring(selectedCaliber or "")
+        if chosenCaliber == "" then chosenCaliber = tostring(c.caliber or "") end
+
+        local chosenCapacity = tonumber(selectedCapacity)
+        if not chosenCapacity then
+            chosenCapacity = tonumber(tostring(c.capacity or ""):match("(%d+)"))
+        end
+
+        -- Same model with a different chambering or magazine configuration is
+        -- a distinct carried weapon. Exact matching variants may stack.
         for _, w in ipairs(state.importedWeapons) do
-            if string.lower(tostring(w.name or "")) == key then
+            if string.lower(tostring(w.name or "")) == key and
+               tostring(w.caliber or "") == chosenCaliber and
+               tonumber(tostring(w.capacity or ""):match("(%d+)")) == chosenCapacity
+            then
                 w.quantity = math.max(1, tonumber(w.quantity) or 1) + 1
-                return true, displayName .. " quantity increased."
+                return true, displayName .. " quantity increased.", w
             end
         end
 
-        local cap = tonumber(tostring(c.capacity or ""):match("(%d+)"))
-        table.insert(state.importedWeapons, {
+        local weapon = {
             name = displayName,
             skill = tostring(c.skill or ""),
             range = tostring(c.range or ""),
             damage = tostring(c.damage or ""),
             lethality = tostring(c.lethality or ""),
-            capacity = tostring(c.capacity or ""),
-            caliber = tostring(c.caliber or ""),
-            ammoCurrent = cap,
+            capacity = chosenCapacity and tostring(chosenCapacity) or tostring(c.capacity or ""),
+            caliber = chosenCaliber,
+            ammoCurrent = chosenCapacity,
             ammoReserve = 0,
             quantity = 1,
             fireMode = "SINGLE",
@@ -3074,28 +3089,30 @@ local function addCatalogItemToInventory(name)
             consumable = c.consumable == true,
             sourceCategory = tostring(c.sourceCategory or ""),
             notes = tostring(c.notes or "")
-        })
+        }
+        table.insert(state.importedWeapons, weapon)
 
-        return true, displayName .. " added."
+        return true, displayName .. " added.", weapon
 
     elseif c.kind == "armor" then
         for _, a in ipairs(state.importedArmor) do
             if string.lower(tostring(a.name or "")) == key then
                 state.itemQuantities[key] =
                     math.max(1, tonumber(state.itemQuantities[key]) or 1) + 1
-                return true, displayName .. " quantity increased."
+                return true, displayName .. " quantity increased.", a
             end
         end
 
-        table.insert(state.importedArmor, {
+        local armor = {
             name = displayName,
             armor = tostring(c.armor or ""),
             expense = tostring(c.expense or ""),
             notes = tostring(c.notes or "")
-        })
+        }
+        table.insert(state.importedArmor, armor)
 
         state.itemQuantities[key] = math.max(1, tonumber(state.itemQuantities[key]) or 1)
-        return true, displayName .. " added."
+        return true, displayName .. " added.", armor
     end
 
     local found = false
@@ -3106,15 +3123,15 @@ local function addCatalogItemToInventory(name)
         end
     end
 
-    if not found then
-        table.insert(state.importedGear, displayName)
-    end
+    if not found then table.insert(state.importedGear, displayName) end
 
     state.itemQuantities[key] =
         math.max(0, tonumber(state.itemQuantities[key]) or (found and 1 or 0)) + 1
 
-    return true, displayName .. " added."
+    return true, displayName .. " added.", nil
 end
+
+
 
 local function mergeCatalogIntoItem(item)
     local catalog = catalogEntryForItem(item.name)
@@ -4050,8 +4067,10 @@ local function catalogItemDetailsText(key)
         table.insert(pieces, "CLASS: " .. tostring(item.subcategory))
     end
 
-    if tostring(item.caliber or "") ~= "" and
-       tostring(item.caliber or "") ~= "various"
+    if tostring(item.variantSpec or "") ~= "" then
+        table.insert(pieces, "CONFIGURABLE CALIBER / MAGAZINE")
+    elseif tostring(item.caliber or "") ~= "" and
+           tostring(item.caliber or "") ~= "various"
     then
         table.insert(pieces, "CALIBER: " .. tostring(item.caliber))
     end
@@ -4081,7 +4100,9 @@ local function catalogItemDetailsText(key)
             table.insert(pieces, "BLAST: " .. tostring(item.killRadius))
         end
 
-        if tostring(item.capacity or "") ~= "" then
+        if tostring(item.variantSpec or "") == "" and
+           tostring(item.capacity or "") ~= ""
+        then
             table.insert(pieces, "MAG/CAPACITY: " .. tostring(item.capacity))
         end
 
@@ -4098,6 +4119,167 @@ local function catalogItemMagazineCapacity(key)
 
     return tonumber(tostring(item.capacity or ""):match("(%d+)"))
 end
+
+local function parseCatalogVariants(item)
+    local result = {}
+    local spec = tostring(item and item.variantSpec or "")
+
+    if spec ~= "" then
+        for group in spec:gmatch("[^;]+") do
+            local caliber, caps = group:match("^%s*(.-)%s*=%s*(.-)%s*$")
+            if caliber and caliber ~= "" then
+                local capacities = {}
+                for cap in tostring(caps or ""):gmatch("[^/]+") do
+                    local n = tonumber(tostring(cap):match("(%d+)"))
+                    if n then table.insert(capacities, n) end
+                end
+                table.insert(result, {
+                    caliber = caliber,
+                    capacities = capacities
+                })
+            end
+        end
+    end
+
+    if #result == 0 and item then
+        local caliber = tostring(item.caliber or "")
+        local cap = tonumber(tostring(item.capacity or ""):match("(%d+)"))
+        if caliber ~= "" and string.lower(caliber) ~= "various" then
+            table.insert(result, {
+                caliber = caliber,
+                capacities = cap and {cap} or {}
+            })
+        end
+    end
+
+    return result
+end
+
+local function catalogCaliberOptions(key)
+    local item = EQUIPMENT_CATALOG[tostring(key or "")]
+    local result = {}
+    for _, variant in ipairs(parseCatalogVariants(item)) do
+        table.insert(result, tostring(variant.caliber or ""))
+    end
+    return result
+end
+
+local function catalogCapacityOptions(key, caliber)
+    local item = EQUIPMENT_CATALOG[tostring(key or "")]
+    local wanted = tostring(caliber or "")
+    for _, variant in ipairs(parseCatalogVariants(item)) do
+        if wanted == "" or tostring(variant.caliber or "") == wanted then
+            local result = {}
+            for _, cap in ipairs(variant.capacities or {}) do
+                table.insert(result, tostring(cap))
+            end
+            return result
+        end
+    end
+    local cap = catalogItemMagazineCapacity(key)
+    return cap and {tostring(cap)} or {}
+end
+
+local function catalogItemMatchesCaliberFilter(key, filter)
+    filter = tostring(filter or "ALL")
+    if filter == "" or filter == "ALL" then return true end
+
+    local item = EQUIPMENT_CATALOG[tostring(key or "")]
+    if not item or tostring(item.sourceCategory or "") ~= "Firearms" then
+        return false
+    end
+
+    for _, caliber in ipairs(catalogCaliberOptions(key)) do
+        if caliber == filter then return true end
+    end
+
+    return tostring(item.caliber or "") == filter
+end
+
+local function catalogAvailableCalibers(category, subcategory)
+    if tostring(category or "") ~= "Firearms" then return {"ALL"} end
+
+    local found = {}
+    for _, key in ipairs(sortedCatalogNamesForCategory("Firearms")) do
+        if (not subcategory or subcategory == "" or
+            itemMatchesSubcategory == nil or
+            itemMatchesSubcategory(key, subcategory))
+        then
+            for _, caliber in ipairs(catalogCaliberOptions(key)) do
+                if caliber ~= "" and string.lower(caliber) ~= "various" then
+                    found[caliber] = true
+                end
+            end
+        end
+    end
+
+    local values = {}
+    for caliber in pairs(found) do table.insert(values, caliber) end
+    table.sort(values)
+
+    local result = {"ALL"}
+    for _, caliber in ipairs(values) do table.insert(result, caliber) end
+    return result
+end
+
+local function plainDropdownOptions(values, selected)
+    local xml = ""
+    selected = tostring(selected or "")
+    for _, value in ipairs(values or {}) do
+        value = tostring(value)
+        xml = xml .. string.format(
+            '<Option value="%s"%s>%s</Option>',
+            esc(value),
+            value == selected and ' selected="true"' or "",
+            esc(value)
+        )
+    end
+    return xml
+end
+
+local function selectedCatalogCaliber(key)
+    key = tostring(key or "")
+    local options = catalogCaliberOptions(key)
+    local selected = tostring(state.addSelectedCaliber or "")
+
+    for _, value in ipairs(options) do
+        if value == selected then return selected end
+    end
+
+    local item = EQUIPMENT_CATALOG[key]
+    local fallback = tostring(item and item.caliber or "")
+    if #options > 0 then fallback = options[1] end
+    state.addSelectedCaliber = fallback
+    return fallback
+end
+
+local function selectedCatalogCapacity(key)
+    key = tostring(key or "")
+    local caliber = selectedCatalogCaliber(key)
+    local options = catalogCapacityOptions(key, caliber)
+    local selected = tostring(state.addSelectedCapacity or "")
+
+    for _, value in ipairs(options) do
+        if value == selected then return tonumber(selected) end
+    end
+
+    if #options > 0 then
+        state.addSelectedCapacity = tostring(options[1])
+        return tonumber(options[1])
+    end
+
+    state.addSelectedCapacity = ""
+    return catalogItemMagazineCapacity(key)
+end
+
+local function resetSelectedCatalogVariant(key)
+    state.addSelectedCaliber = ""
+    state.addSelectedCapacity = ""
+    if tostring(key or "") ~= "" then
+        selectedCatalogCapacity(key)
+    end
+end
+
 
 
 local function normalizeAmmoKey(caliber)
@@ -4324,6 +4506,7 @@ local EQUIPMENT_SUBCATEGORY_ORDER = {
         "All",
         "Pistols",
         "Carbines",
+        "Pistol-Caliber Carbines",
         "Assault Rifles",
         "Battle Rifles",
         "Marksman Rifles",
@@ -4362,8 +4545,9 @@ local function firstCatalogKeyForCategoryAndSubcategory(category, subcategory)
     local hasSubcategories = EQUIPMENT_SUBCATEGORY_ORDER[category] ~= nil
 
     for _, key in ipairs(names) do
-        if not hasSubcategories or
-           itemMatchesSubcategory(key, subcategory)
+        if (not hasSubcategories or itemMatchesSubcategory(key, subcategory)) and
+           (tostring(category or "") ~= "Firearms" or
+            catalogItemMatchesCaliberFilter(key, state.addCaliberFilter))
         then
             return key
         end
@@ -4506,7 +4690,11 @@ local function buildBrowseLevelRows()
             end
         else
             for _, key in ipairs(sortedCatalogNamesForCategory(category)) do
-                addRow(key, catalogDisplayName(key), "item")
+                if category ~= "Firearms" or
+                   catalogItemMatchesCaliberFilter(key, state.addCaliberFilter)
+                then
+                    addRow(key, catalogDisplayName(key), "item")
+                end
             end
         end
 
@@ -4515,7 +4703,10 @@ local function buildBrowseLevelRows()
         local sub = tostring(state.addItemSubcategory or "")
 
         for _, key in ipairs(sortedCatalogNamesForCategory(category)) do
-            if itemMatchesSubcategory(key, sub) then
+            if itemMatchesSubcategory(key, sub) and
+               (category ~= "Firearms" or
+                catalogItemMatchesCaliberFilter(key, state.addCaliberFilter))
+            then
                 addRow(key, catalogDisplayName(key), "item")
             end
         end
@@ -4570,7 +4761,7 @@ local function buildAddItemPanel()
 
     local details = catalogItemDetailsText(selected)
     local expense = catalogItemExpense(selected)
-    local cap = catalogItemMagazineCapacity(selected)
+    local cap = selected ~= "" and selectedCatalogCapacity(selected) or nil
     local showAmmoOptions = selected ~= "" and selectedCatalogHasReserveAmmo()
     local showQuantity = selected ~= "" and selectedCatalogUsesQuantity()
     local mags = math.max(0, math.floor(tonumber(state.addReserveMags) or 0))
@@ -4583,452 +4774,201 @@ local function buildAddItemPanel()
         )
     end
 
+    local filterXml = ""
+    if tostring(state.addItemCategory or "") == "Firearms" and
+       tostring(state.addItemBrowseLevel or "") ~= "root"
+    then
+        local filterValues = catalogAvailableCalibers(
+            "Firearms",
+            tostring(state.addItemBrowseLevel or "") == "subcategory" and
+                tostring(state.addItemSubcategory or "") or nil
+        )
+
+        local selectedFilter = tostring(state.addCaliberFilter or "ALL")
+        local valid = false
+        for _, value in ipairs(filterValues) do
+            if value == selectedFilter then valid = true break end
+        end
+        if not valid then
+            selectedFilter = "ALL"
+            state.addCaliberFilter = "ALL"
+        end
+
+        filterXml = string.format([[
+          <Text text="CALIBER" rectAlignment="UpperLeft" width="80" height="28"
+              offsetXY="430 -124" fontSize="11" fontStyle="Bold" color="#A9B8AD"/>
+          <Dropdown id="equipment_caliber_filter" onValueChanged="selectEquipmentCaliberFilter"
+              rectAlignment="UpperLeft" width="195" height="34" offsetXY="505 -120"
+              fontSize="12" color="#1D2B24" textColor="#F1F7F2"
+              itemTextColor="#F1F7F2"
+              itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+              dropdownBackgroundColor="#0F1210"
+              checkColor="#9BC3A4" arrowColor="#FFFFFF"
+              dropdownHeight="360" itemHeight="32">%s</Dropdown>
+        ]], plainDropdownOptions(filterValues, selectedFilter))
+    end
+
+    local variantPanel = ""
+    local item = EQUIPMENT_CATALOG[selected]
+    local hasVariants = item and tostring(item.variantSpec or "") ~= ""
+
+    if hasVariants then
+        local calibers = catalogCaliberOptions(selected)
+        local chosenCaliber = selectedCatalogCaliber(selected)
+        local capacities = catalogCapacityOptions(selected, chosenCaliber)
+        local chosenCapacity = tostring(selectedCatalogCapacity(selected) or "")
+
+        variantPanel = string.format([[
+          <Panel id="equipment_variant_options" rectAlignment="UpperLeft"
+              width="250" height="82" offsetXY="18 -270" color="#101712CC">
+            <Text text="CALIBER" rectAlignment="UpperLeft" width="110" height="20"
+                offsetXY="8 -6" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
+            <Dropdown id="equipment_variant_caliber" onValueChanged="selectCatalogVariantCaliber"
+                rectAlignment="UpperLeft" width="112" height="32" offsetXY="8 -28"
+                fontSize="11" color="#1D2B24" textColor="#F1F7F2"
+                itemTextColor="#F1F7F2" itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+                dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4" arrowColor="#FFFFFF"
+                dropdownHeight="300" itemHeight="30">%s</Dropdown>
+            <Text text="MAG" rectAlignment="UpperLeft" width="105" height="20"
+                offsetXY="132 -6" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
+            <Dropdown id="equipment_variant_capacity" onValueChanged="selectCatalogVariantCapacity"
+                rectAlignment="UpperLeft" width="105" height="32" offsetXY="132 -28"
+                fontSize="11" color="#1D2B24" textColor="#F1F7F2"
+                itemTextColor="#F1F7F2" itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+                dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4" arrowColor="#FFFFFF"
+                dropdownHeight="260" itemHeight="30">%s</Dropdown>
+          </Panel>
+        ]],
+            plainDropdownOptions(calibers, chosenCaliber),
+            plainDropdownOptions(capacities, chosenCapacity)
+        )
+    end
+
+    local optionsY = hasVariants and -360 or -282
+
+    local ammoPanel = ""
+    if showAmmoOptions then
+        ammoPanel = string.format([[
+          <Panel id="equipment_add_ammo_options"
+              rectAlignment="UpperLeft" width="250" height="116"
+              offsetXY="18 %d" color="#101712CC">
+            <Text text="RESERVE AMMO" rectAlignment="UpperLeft" width="220" height="20"
+                offsetXY="10 -6" fontSize="11" fontStyle="Bold" color="#D2E5D6"/>
+            <Text text="ROUNDS" rectAlignment="UpperLeft" width="70" height="18"
+                offsetXY="10 -30" fontSize="10" color="#A9B8AD"/>
+            <InputField id="addReserveRounds" text="%d" onEndEdit="editField"
+                characterValidation="Integer" rectAlignment="UpperLeft"
+                width="76" height="30" offsetXY="10 -48" fontSize="14"
+                textColor="#FFFFFF" color="#17201B"/>
+            <Text text="MAGS" rectAlignment="UpperLeft" width="70" height="18"
+                offsetXY="105 -30" fontSize="10" color="#A9B8AD"/>
+            <Button id="add_reserve_mags_minus" onClick="adjustAddReserveMags" text="-"
+                rectAlignment="UpperLeft" width="30" height="30" offsetXY="105 -48"
+                fontSize="16" color="#5B3030" textColor="#FFFFFF"/>
+            <Text id="add_reserve_mags_count" text="%d" rectAlignment="UpperLeft"
+                width="44" height="30" offsetXY="138 -48" fontSize="14"
+                fontStyle="Bold" color="#FFFFFF" alignment="MiddleCenter"/>
+            <Button id="add_reserve_mags_plus" onClick="adjustAddReserveMags" text="+"
+                rectAlignment="UpperLeft" width="30" height="30" offsetXY="185 -48"
+                fontSize="16" color="#355845" textColor="#FFFFFF"/>
+            <Text id="equipment_add_mag_hint" text="%s" rectAlignment="UpperLeft"
+                width="225" height="28" offsetXY="10 -82" fontSize="9"
+                color="#A9B8AD" alignment="UpperLeft" horizontalOverflow="Wrap"/>
+          </Panel>
+        ]], optionsY,
+            math.max(0, math.floor(tonumber(state.addReserveRounds) or 0)),
+            mags, esc(magHint))
+    end
+
+    local qtyPanel = ""
+    if showQuantity then
+        qtyPanel = string.format([[
+          <Panel id="equipment_add_quantity_options" rectAlignment="UpperLeft"
+              width="250" height="90" offsetXY="18 %d" color="#101712CC">
+            <Text text="QUANTITY" rectAlignment="UpperLeft" width="220" height="24"
+                offsetXY="10 -8" fontSize="13" fontStyle="Bold" color="#D2E5D6"/>
+            <Button id="add_item_qty_minus" onClick="adjustAddItemQuantity" text="-"
+                rectAlignment="UpperLeft" width="38" height="36" offsetXY="40 -42"
+                fontSize="18" color="#5B3030" textColor="#FFFFFF"/>
+            <Text id="add_item_qty_count" text="%d" rectAlignment="UpperLeft"
+                width="70" height="36" offsetXY="88 -42" fontSize="17"
+                fontStyle="Bold" color="#FFFFFF" alignment="MiddleCenter"/>
+            <Button id="add_item_qty_plus" onClick="adjustAddItemQuantity" text="+"
+                rectAlignment="UpperLeft" width="38" height="36" offsetXY="166 -42"
+                fontSize="18" color="#355845" textColor="#FFFFFF"/>
+          </Panel>
+        ]], optionsY, math.max(1, math.floor(tonumber(state.addItemQuantity) or 1)))
+    end
+
     return string.format([[
-      <Panel rectAlignment="UpperLeft"
-          width="1050" height="720"
-          offsetXY="0 0"
-          color="#111A15CC">
-
-        <Text text="ADD EQUIPMENT"
-            rectAlignment="UpperLeft"
-            width="420" height="38"
-            offsetXY="20 -16"
-            fontSize="21"
-            fontStyle="Bold"
-            color="#D2E5D6"
-            alignment="MiddleLeft"/>
-
-        <Text text="SOURCE: %s"
-            rectAlignment="UpperLeft"
-            width="650" height="30"
-            offsetXY="20 -51"
-            fontSize="12"
-            color="#A9B8AD"/>
-
-        <Button id="equipment_refresh_github"
-            onClick="refreshEquipmentCatalogFromGithub"
-            text="REFRESH GITHUB"
-            rectAlignment="UpperRight"
-            width="185" height="32"
-            offsetXY="-20 -48"
-            fontSize="11"
-            color="#2D625E"
-            textColor="#FFFFFF"/>
+      <Panel rectAlignment="UpperLeft" width="1050" height="720" offsetXY="0 0" color="#111A15CC">
+        <Text text="ADD EQUIPMENT" rectAlignment="UpperLeft" width="420" height="38"
+            offsetXY="20 -16" fontSize="21" fontStyle="Bold" color="#D2E5D6" alignment="MiddleLeft"/>
+        <Text text="SOURCE: %s" rectAlignment="UpperLeft" width="650" height="30"
+            offsetXY="20 -51" fontSize="12" color="#A9B8AD"/>
+        <Button id="equipment_refresh_github" onClick="refreshEquipmentCatalogFromGithub"
+            text="REFRESH GITHUB" rectAlignment="UpperRight" width="185" height="32"
+            offsetXY="-20 -48" fontSize="11" color="#2D625E" textColor="#FFFFFF"/>
 
         %s
 
-        <Text text="%s"
-            rectAlignment="UpperLeft"
-            width="690" height="30"
-            offsetXY="20 -126"
-            fontSize="16"
-            fontStyle="Bold"
-            color="#D2E5D6"
-            alignment="MiddleLeft"/>
+        <Text text="%s" rectAlignment="UpperLeft" width="390" height="30"
+            offsetXY="20 -126" fontSize="16" fontStyle="Bold"
+            color="#D2E5D6" alignment="MiddleLeft"/>
+        %s
 
-        <VerticalScrollView id="equipment_browse_scroll"
-            width="710" height="490"
-            rectAlignment="UpperLeft"
-            offsetXY="20 -162"
-            scrollSensitivity="32"
-            color="#0D151100"
-            verticalScrollbarVisibility="AutoHide"
+        <VerticalScrollView id="equipment_browse_scroll" width="710" height="490"
+            rectAlignment="UpperLeft" offsetXY="20 -162" scrollSensitivity="32"
+            color="#0D151100" verticalScrollbarVisibility="AutoHide"
             scrollbarBackgroundColor="#101712"
             scrollbarColors="#55705D|#66836D|#78937E|#33443A">
-
-          <Panel width="690" height="%d" rectAlignment="UpperLeft">
-            %s
-          </Panel>
+          <Panel width="690" height="%d" rectAlignment="UpperLeft">%s</Panel>
         </VerticalScrollView>
 
-        <Panel id="equipment_add_selected_panel"
-            active="%s"
-            rectAlignment="UpperRight"
-            width="290" height="490"
-            offsetXY="-20 -162"
-            color="#17201BCC">
+        <Panel id="equipment_add_selected_panel" active="%s"
+            rectAlignment="UpperRight" width="290" height="520"
+            offsetXY="-20 -162" color="#17201BCC">
+          <Text text="SELECTED" rectAlignment="UpperLeft" width="250" height="24"
+              offsetXY="18 -12" fontSize="12" fontStyle="Bold" color="#A9B8AD"/>
+          <Text id="equipment_add_selected_name" text="%s"
+              rectAlignment="UpperLeft" width="250" height="58" offsetXY="18 -38"
+              fontSize="18" fontStyle="Bold" color="#FFFFFF"
+              alignment="UpperLeft" horizontalOverflow="Wrap"/>
 
-          <Text text="SELECTED"
-              rectAlignment="UpperLeft"
-              width="250" height="28"
-              offsetXY="18 -18"
-              fontSize="13"
-              fontStyle="Bold"
-              color="#A9B8AD"/>
+          <Text text="EXPENSE LEVEL" rectAlignment="UpperLeft" width="250" height="20"
+              offsetXY="18 -101" fontSize="11" fontStyle="Bold" color="#A9B8AD"/>
+          <Text id="equipment_add_selected_expense" text="%s"
+              rectAlignment="UpperLeft" width="250" height="26" offsetXY="18 -122"
+              fontSize="14" fontStyle="Bold" color="#D9C07A"/>
 
-          <Text id="equipment_add_selected_name"
-              text="%s"
-              rectAlignment="UpperLeft"
-              width="250" height="64"
-              offsetXY="18 -48"
-              fontSize="18"
-              fontStyle="Bold"
-              color="#FFFFFF"
-              alignment="UpperLeft"
-              horizontalOverflow="Wrap"/>
+          <Text id="equipment_add_selected_details" text="%s"
+              rectAlignment="UpperLeft" width="250" height="112" offsetXY="18 -154"
+              fontSize="12" color="#D5E1D8" alignment="UpperLeft" horizontalOverflow="Wrap"/>
 
-          <Text id="equipment_add_selected_expense"
-              text="EXPENSE LEVEL\n%s"
-              rectAlignment="UpperLeft"
-              width="250" height="54"
-              offsetXY="18 -116"
-              fontSize="15"
-              fontStyle="Bold"
-              color="#D9C07A"
-              alignment="UpperLeft"/>
+          %s
+          %s
+          %s
 
-          <Text id="equipment_add_selected_details"
-              text="%s"
-              rectAlignment="UpperLeft"
-              width="250" height="128"
-              offsetXY="18 -174"
-              fontSize="13"
-              color="#D5E1D8"
-              alignment="UpperLeft"
-              horizontalOverflow="Wrap"/>
-
-          <Panel id="equipment_add_ammo_options"
-              active="%s"
-              rectAlignment="UpperLeft"
-              width="250" height="128"
-              offsetXY="18 -302"
-              color="#101712CC">
-
-            <Text text="RESERVE AMMO"
-                rectAlignment="UpperLeft"
-                width="220" height="24"
-                offsetXY="10 -8"
-                fontSize="13"
-                fontStyle="Bold"
-                color="#D2E5D6"/>
-
-            <Text text="ROUNDS"
-                rectAlignment="UpperLeft"
-                width="70" height="22"
-                offsetXY="10 -38"
-                fontSize="11"
-                color="#A9B8AD"/>
-
-            <InputField id="addReserveRounds"
-                text="%d"
-                onEndEdit="editField"
-                characterValidation="Integer"
-                rectAlignment="UpperLeft"
-                width="76" height="34"
-                offsetXY="10 -60"
-                fontSize="15"
-                textColor="#FFFFFF"
-                color="#17201B"/>
-
-            <Text text="MAGS"
-                rectAlignment="UpperLeft"
-                width="70" height="22"
-                offsetXY="105 -38"
-                fontSize="11"
-                color="#A9B8AD"/>
-
-            <Button id="add_reserve_mags_minus"
-                onClick="adjustAddReserveMags"
-                text="-"
-                rectAlignment="UpperLeft"
-                width="32" height="34"
-                offsetXY="105 -60"
-                fontSize="18"
-                color="#5B3030"
-                textColor="#FFFFFF"/>
-
-            <Text id="add_reserve_mags_count"
-                text="%d"
-                rectAlignment="UpperLeft"
-                width="48" height="34"
-                offsetXY="139 -60"
-                fontSize="16"
-                fontStyle="Bold"
-                color="#FFFFFF"
-                alignment="MiddleCenter"/>
-
-            <Button id="add_reserve_mags_plus"
-                onClick="adjustAddReserveMags"
-                text="+"
-                rectAlignment="UpperLeft"
-                width="32" height="34"
-                offsetXY="189 -60"
-                fontSize="18"
-                color="#355845"
-                textColor="#FFFFFF"/>
-
-            <Text id="equipment_add_mag_hint"
-                text="%s"
-                rectAlignment="UpperLeft"
-                width="225" height="32"
-                offsetXY="10 -96"
-                fontSize="10"
-                color="#A9B8AD"
-                alignment="UpperLeft"
-                horizontalOverflow="Wrap"/>
-          </Panel>
-
-
-          <Panel id="equipment_add_quantity_options"
-              active="%s"
-              rectAlignment="UpperLeft"
-              width="250" height="92"
-              offsetXY="18 -302"
-              color="#101712CC">
-
-            <Text text="QUANTITY"
-                rectAlignment="UpperLeft"
-                width="220" height="24"
-                offsetXY="10 -8"
-                fontSize="13"
-                fontStyle="Bold"
-                color="#D2E5D6"/>
-
-            <Button id="add_item_qty_minus"
-                onClick="adjustAddItemQuantity"
-                text="-"
-                rectAlignment="UpperLeft"
-                width="38" height="36"
-                offsetXY="40 -42"
-                fontSize="18"
-                color="#5B3030"
-                textColor="#FFFFFF"/>
-
-            <Text id="add_item_qty_count"
-                text="%d"
-                rectAlignment="UpperLeft"
-                width="70" height="36"
-                offsetXY="88 -42"
-                fontSize="17"
-                fontStyle="Bold"
-                color="#FFFFFF"
-                alignment="MiddleCenter"/>
-
-            <Button id="add_item_qty_plus"
-                onClick="adjustAddItemQuantity"
-                text="+"
-                rectAlignment="UpperLeft"
-                width="38" height="36"
-                offsetXY="166 -42"
-                fontSize="18"
-                color="#355845"
-                textColor="#FFFFFF"/>
-          </Panel>
-
-          <Button id="equipment_add_selected"
-              onClick="addSelectedCatalogItem"
-              text="ADD TO AGENT"
-              interactable="%s"
-              rectAlignment="UpperLeft"
-              width="220" height="42"
-              offsetXY="35 -440"
-              fontSize="15"
-              fontStyle="Bold"
-              color="%s"
-              textColor="#FFFFFF"/>
+          <Button id="equipment_add_selected" onClick="addSelectedCatalogItem"
+              text="ADD TO AGENT" interactable="%s"
+              rectAlignment="LowerLeft" width="250" height="42" offsetXY="18 14"
+              fontSize="15" fontStyle="Bold" color="%s" textColor="#FFFFFF"/>
         </Panel>
       </Panel>
     ]],
-        esc(tostring(equipmentCatalogSource) ..
-            " (" .. tostring(equipmentCatalogCount) .. " items)"),
+        esc(tostring(equipmentCatalogSource) .. " (" .. tostring(equipmentCatalogCount) .. " items)"),
         buildBreadcrumbXml(),
-        esc(browseTitle()),
-        browseHeight,
-        browseRows,
+        esc(browseTitle()), filterXml,
+        browseHeight, browseRows,
         selected ~= "" and "true" or "false",
         esc(selected ~= "" and catalogDisplayName(selected) or ""),
-        esc(expense),
-        esc(details),
-        showAmmoOptions and "true" or "false",
-        math.max(0, math.floor(tonumber(state.addReserveRounds) or 0)),
-        mags,
-        esc(magHint),
-        showQuantity and "true" or "false",
-        math.max(1, math.floor(tonumber(state.addItemQuantity) or 1)),
+        esc(expense), esc(details),
+        variantPanel, ammoPanel, qtyPanel,
         selected ~= "" and "true" or "false",
         selected ~= "" and "#355845" or "#252B27"
     )
 end
 
-
-local COMMON_CURRENCIES = {
-    {code="USD", label="US DOLLARS"},
-    {code="EUR", label="EUROS"},
-    {code="GBP", label="BRITISH POUNDS"},
-    {code="JPY", label="JAPANESE YEN"},
-    {code="CNY", label="CHINESE YUAN"},
-    {code="CAD", label="CANADIAN DOLLARS"},
-    {code="AUD", label="AUSTRALIAN DOLLARS"},
-    {code="CHF", label="SWISS FRANCS"},
-    {code="HKD", label="HONG KONG DOLLARS"},
-    {code="SGD", label="SINGAPORE DOLLARS"},
-    {code="NZD", label="NEW ZEALAND DOLLARS"},
-    {code="SEK", label="SWEDISH KRONA"},
-    {code="NOK", label="NORWEGIAN KRONE"},
-    {code="DKK", label="DANISH KRONE"},
-    {code="MXN", label="MEXICAN PESOS"},
-    {code="BRL", label="BRAZILIAN REAL"},
-    {code="INR", label="INDIAN RUPEES"},
-    {code="KRW", label="SOUTH KOREAN WON"},
-    {code="ZAR", label="SOUTH AFRICAN RAND"},
-    {code="AED", label="UAE DIRHAMS"},
-    {code="GOLD", label="GOLD"},
-    {code="SILVER", label="SILVER"},
-    {code="COPPER", label="COPPER"}
-}
-
-local function currencyDisplayAmount(value)
-    local n = tonumber(value) or 0
-    if math.abs(n - math.floor(n)) < 0.000001 then
-        return tostring(math.floor(n))
-    end
-    return string.format("%.2f", n):gsub("0+$",""):gsub("%.$","")
-end
-
-
-local CURRENCY_SYMBOLS = {
-    USD="$",
-    EUR="€",
-    GBP="£",
-    JPY="¥",
-    CNY="¥",
-    CAD="C$",
-    AUD="A$",
-    CHF="CHF ",
-    HKD="HK$",
-    SGD="S$",
-    NZD="NZ$",
-    SEK="kr ",
-    NOK="kr ",
-    DKK="kr ",
-    MXN="MX$",
-    BRL="R$",
-    INR="₹",
-    KRW="₩",
-    ZAR="R",
-    AED="AED ",
-    GOLD="Au ",
-    SILVER="Ag ",
-    COPPER="Cu "
-}
-
-local function currencySymbol(code)
-    return CURRENCY_SYMBOLS[tostring(code or "")] or (tostring(code or "") .. " ")
-end
-
-local function currencyDisplayWithSymbol(code, value)
-    return currencySymbol(code) .. currencyDisplayAmount(value)
-end
-
-local function currencyDefinition(code)
-    code = tostring(code or "")
-    for _, entry in ipairs(COMMON_CURRENCIES) do
-        if entry.code == code then return entry end
-    end
-    return nil
-end
-
-local function buildCurrencyBalanceRows()
-    local balances = state.equipment.currencyBalances or {}
-    local xml = ""
-    local y = 0
-    local shown = 0
-
-    for _, entry in ipairs(COMMON_CURRENCIES) do
-        local hasBalance = balances[entry.code] ~= nil
-        local amount = tonumber(balances[entry.code]) or 0
-
-        if hasBalance then
-            local safe = entry.code
-            xml = xml .. string.format([[
-              <Panel rectAlignment="UpperLeft" width="1000" height="46"
-                  offsetXY="0 %d" color="#17201BCC">
-
-                <Text text="%s / %s"
-                    rectAlignment="UpperLeft" width="300" height="34"
-                    offsetXY="12 -6" fontSize="12" fontStyle="Bold"
-                    color="#C8D8CC" alignment="MiddleLeft"/>
-
-                <Text id="currency_balance_%s" text="%s"
-                    rectAlignment="UpperLeft" width="120" height="34"
-                    offsetXY="310 -6" fontSize="15" fontStyle="Bold"
-                    color="#FFFFFF" alignment="MiddleCenter"/>
-
-                <Button id="currency_adjust_%s_minus100" onClick="adjustCurrencyBalance"
-                    text="-100" rectAlignment="UpperLeft" width="72" height="30"
-                    offsetXY="438 -8" fontSize="10" color="#5B3030" textColor="#FFFFFF"/>
-                <Button id="currency_adjust_%s_minus10" onClick="adjustCurrencyBalance"
-                    text="-10" rectAlignment="UpperLeft" width="66" height="30"
-                    offsetXY="516 -8" fontSize="10" color="#5B3030" textColor="#FFFFFF"/>
-                <Button id="currency_adjust_%s_minus1" onClick="adjustCurrencyBalance"
-                    text="-1" rectAlignment="UpperLeft" width="60" height="30"
-                    offsetXY="588 -8" fontSize="10" color="#5B3030" textColor="#FFFFFF"/>
-
-                <Button id="currency_adjust_%s_plus1" onClick="adjustCurrencyBalance"
-                    text="+1" rectAlignment="UpperLeft" width="60" height="30"
-                    offsetXY="662 -8" fontSize="10" color="#355845" textColor="#FFFFFF"/>
-                <Button id="currency_adjust_%s_plus10" onClick="adjustCurrencyBalance"
-                    text="+10" rectAlignment="UpperLeft" width="66" height="30"
-                    offsetXY="728 -8" fontSize="10" color="#355845" textColor="#FFFFFF"/>
-                <Button id="currency_adjust_%s_plus100" onClick="adjustCurrencyBalance"
-                    text="+100" rectAlignment="UpperLeft" width="72" height="30"
-                    offsetXY="800 -8" fontSize="10" color="#355845" textColor="#FFFFFF"/>
-              </Panel>]],
-                -y,
-                esc(entry.code), esc(entry.label),
-                esc(safe), esc(currencyDisplayWithSymbol(entry.code, amount)),
-                esc(safe), esc(safe), esc(safe),
-                esc(safe), esc(safe), esc(safe)
-            )
-            y = y + 52
-            shown = shown + 1
-        end
-    end
-
-    if shown == 0 then
-        return [[
-          <Text text="No currency balances yet."
-              rectAlignment="UpperLeft" width="970" height="34"
-              offsetXY="8 0" fontSize="13" color="#748179"/>
-        ]], 38
-    end
-
-    return xml, y
-end
-
-local function buildCurrencyChoiceButtons()
-    local xml = ""
-    local buttonW = 310
-    local buttonH = 42
-    local gapX = 14
-    local gapY = 10
-    local cols = 3
-
-    for i, entry in ipairs(COMMON_CURRENCIES) do
-        local index = i - 1
-        local col = index % cols
-        local row = math.floor(index / cols)
-        local x = 18 + col * (buttonW + gapX)
-        local y = -88 - row * (buttonH + gapY)
-
-        xml = xml .. string.format([[
-          <Button id="currency_pick_%s"
-              onClick="chooseCurrencyForFunds"
-              text="%s / %s"
-              rectAlignment="UpperLeft"
-              width="%d" height="%d"
-              offsetXY="%d %d"
-              fontSize="11" fontStyle="Bold"
-              color="#2B4033" textColor="#FFFFFF"/>]],
-            esc(entry.code),
-            esc(entry.code),
-            esc(entry.label),
-            buttonW, buttonH, x, y
-        )
-    end
-
-    return xml
-end
 
 
 local function buildFundsPanel()
@@ -6073,6 +6013,10 @@ end
 local function buildPsychology()
     ensureDisorderState()
     ensureStructuredImportState()
+
+    if state.addCaliberFilter == nil then state.addCaliberFilter = "ALL" end
+    if state.addSelectedCaliber == nil then state.addSelectedCaliber = "" end
+    if state.addSelectedCapacity == nil then state.addSelectedCapacity = "" end
 
     local tab = state.psychologySubtab or "sanity"
     if tab == "psychology" then tab = "sanity" end
@@ -9834,6 +9778,8 @@ function equipmentBreadcrumbClick(player, value, id)
         state.addItemCategory = ""
         state.addItemSubcategory = ""
         state.addItemName = ""
+        state.addCaliberFilter = "ALL"
+        resetSelectedCatalogVariant("")
 
     elseif target == "category" then
         if tostring(state.addItemCategory or "") == "" then return end
@@ -9873,7 +9819,9 @@ function equipmentBrowseRowClick(player, value, id)
         state.addItemCategory = selected
         state.addItemSubcategory = ""
         state.addItemBrowseLevel = "category"
+        state.addCaliberFilter = "ALL"
         state.addItemName = firstVisibleBrowseItem()
+        resetSelectedCatalogVariant(state.addItemName)
 
     elseif kind == "subcategory" then
         local order =
@@ -9896,6 +9844,7 @@ function equipmentBrowseRowClick(player, value, id)
         state.addItemSubcategory = selected
         state.addItemBrowseLevel = "subcategory"
         state.addItemName = firstVisibleBrowseItem()
+        resetSelectedCatalogVariant(state.addItemName)
 
     elseif kind == "item" then
         local selected = nil
@@ -9913,7 +9862,15 @@ function equipmentBrowseRowClick(player, value, id)
             string.lower(tostring(state.addItemName or ""))
 
         state.addItemName = selected
-        updateAddItemSelectionUi(previous, selected)
+        resetSelectedCatalogVariant(selected)
+
+        local item = EQUIPMENT_CATALOG[selected]
+        if item and tostring(item.variantSpec or "") ~= "" then
+            rebuildCachedPage("equipment")
+            activateCachedPage("equipment")
+        else
+            updateAddItemSelectionUi(previous, selected)
+        end
         return
     else
         return
@@ -9923,6 +9880,28 @@ function equipmentBrowseRowClick(player, value, id)
     activateCachedPage("equipment")
 end
 
+
+function selectEquipmentCaliberFilter(player, value, id)
+    state.addCaliberFilter = tostring(value or "ALL")
+    state.addItemName = firstVisibleBrowseItem()
+    resetSelectedCatalogVariant(state.addItemName)
+    rebuildCachedPage("equipment")
+    activateCachedPage("equipment")
+end
+
+function selectCatalogVariantCaliber(player, value, id)
+    state.addSelectedCaliber = tostring(value or "")
+    state.addSelectedCapacity = ""
+    selectedCatalogCapacity(string.lower(tostring(state.addItemName or "")))
+    rebuildCachedPage("equipment")
+    activateCachedPage("equipment")
+end
+
+function selectCatalogVariantCapacity(player, value, id)
+    state.addSelectedCapacity = tostring(value or "")
+    rebuildCachedPage("equipment")
+    activateCachedPage("equipment")
+end
 
 function adjustAddItemQuantity(player, value, id)
     local qty = math.max(1, math.floor(tonumber(state.addItemQuantity) or 1))
@@ -9974,7 +9953,7 @@ function adjustAddReserveMags(player, value, id)
                 tostring(amount)
             )
 
-            local cap = catalogItemMagazineCapacity(
+            local cap = selectedCatalogCapacity(
                 string.lower(tostring(state.addItemName or ""))
             )
 
@@ -10004,7 +9983,11 @@ function addSelectedCatalogItem(player, value, id)
     local requestedQty =
         math.max(1, math.floor(tonumber(state.addItemQuantity) or 1))
 
-    local ok, msg = addCatalogItemToInventory(selectedKey)
+    local chosenCaliber = selectedCatalogCaliber(selectedKey)
+    local chosenCapacity = selectedCatalogCapacity(selectedKey)
+
+    local ok, msg, addedWeapon =
+        addCatalogItemToInventory(selectedKey, chosenCaliber, chosenCapacity)
     if not ok then
         broadcastToAll(
             "[DG] " .. tostring(msg or "Could not add item."),
@@ -10016,15 +9999,6 @@ function addSelectedCatalogItem(player, value, id)
     local reserveAdded = 0
 
     if catalog.kind == "weapon" then
-        local addedWeapon = nil
-
-        for _, w in ipairs(state.importedWeapons or {}) do
-            if string.lower(tostring(w.name or "")) == selectedKey then
-                addedWeapon = w
-                break
-            end
-        end
-
         if selectedCatalogUsesQuantity() and addedWeapon then
             -- addCatalogItemToInventory already added/incremented one.
             addedWeapon.quantity =
@@ -10035,7 +10009,7 @@ function addSelectedCatalogItem(player, value, id)
                 " quantity set/increased by " .. tostring(requestedQty) .. "."
 
         elseif selectedCatalogHasReserveAmmo() and addedWeapon then
-            local cap = catalogItemMagazineCapacity(selectedKey)
+            local cap = selectedCatalogCapacity(selectedKey)
             local rounds =
                 math.max(0, math.floor(tonumber(state.addReserveRounds) or 0))
             local mags =
@@ -10060,6 +10034,7 @@ function addSelectedCatalogItem(player, value, id)
     state.addReserveRounds = 0
     state.addReserveMags = 0
     state.addItemQuantity = 1
+    resetSelectedCatalogVariant(selectedKey)
 
     local helper = getCachedHelper("equipment")
     if helper then
@@ -10395,6 +10370,7 @@ function handlerGetEquipmentCatalog(params)
             subcategory = catalogItemSubcategory(key),
             capacity = tostring(c.capacity or ""),
             caliber = tostring(c.caliber or ""),
+            variantSpec = tostring(c.variantSpec or ""),
             skill = tostring(c.skill or ""),
             range = tostring(c.range or ""),
             damage = tostring(c.damage or ""),
@@ -10444,8 +10420,11 @@ function handlerAddEquipmentItem(params)
     local requestedQty = math.max(1, math.floor(tonumber(params.quantity) or 1))
     local reserveRounds = math.max(0, math.floor(tonumber(params.reserveRounds) or 0))
     local reserveMags = math.max(0, math.floor(tonumber(params.reserveMags) or 0))
+    local selectedCaliber = tostring(params.caliber or "")
+    local selectedCapacity = tonumber(params.capacity)
 
-    local ok, msg = addCatalogItemToInventory(key)
+    local ok, msg, addedWeapon =
+        addCatalogItemToInventory(key, selectedCaliber, selectedCapacity)
     if not ok then
         return { ok = false, message = tostring(msg or "Could not add item.") }
     end
@@ -10453,14 +10432,6 @@ function handlerAddEquipmentItem(params)
     local reserveAdded = 0
 
     if catalog.kind == "weapon" then
-        local addedWeapon = nil
-        for _, w in ipairs(state.importedWeapons or {}) do
-            if string.lower(tostring(w.name or "")) == key then
-                addedWeapon = w
-                break
-            end
-        end
-
         if catalogKeyUsesQuantity(key) and addedWeapon then
             -- addCatalogItemToInventory already added/incremented one.
             addedWeapon.quantity =
@@ -10471,7 +10442,9 @@ function handlerAddEquipmentItem(params)
                 " quantity set/increased by " .. tostring(requestedQty) .. "."
 
         elseif catalogKeyHasReserveAmmo(key) and addedWeapon then
-            local cap = catalogItemMagazineCapacity(key) or 0
+            local cap =
+                tonumber(tostring(addedWeapon.capacity or ""):match("(%d+)")) or
+                catalogItemMagazineCapacity(key) or 0
             reserveAdded = reserveRounds + (cap * reserveMags)
 
             if reserveAdded > 0 then
