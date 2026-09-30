@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Green
--- Version: r69
+-- Version: r70
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -2730,6 +2730,9 @@ local EQUIPMENT_CATALOG = {}
 local EQUIPMENT_CATALOG_GITHUB_URL =
     "https://raw.githubusercontent.com/N3rdmade/DELTA-GREEN-STATS/main/equipment-data.js"
 
+local FIREARM_EXPANSION_GITHUB_URL =
+    "https://raw.githubusercontent.com/N3rdmade/DELTA-GREEN-STATS/main/firearms-expansion.js"
+
 local equipmentCatalogSource = "GitHub only — not loaded yet"
 local equipmentCatalogCount = 0
 local equipmentCatalogRefreshRunning = false
@@ -2854,6 +2857,119 @@ local function parseGithubEquipmentCatalog(text)
     }, nil
 end
 
+local function firearmProfileDefaults(profile)
+    profile = tostring(profile or "")
+
+    local map = {
+        ["light-pistol"] = {
+            skill="firearms", accessoryMod=0, range="10M",
+            damage="1D8", ap="0", lethality="", expense="Standard"
+        },
+        ["medium-pistol"] = {
+            skill="firearms", accessoryMod=0, range="15M",
+            damage="1D10", ap="0", lethality="", expense="Standard"
+        },
+        ["carbine"] = {
+            skill="firearms", accessoryMod=0, range="100M",
+            damage="1D12", ap="3", lethality="10%", expense="Unusual"
+        },
+        ["assault-rifle"] = {
+            skill="firearms", accessoryMod=0, range="100M",
+            damage="1D12", ap="3", lethality="10%", expense="Unusual"
+        },
+        ["battle-rifle"] = {
+            skill="firearms", accessoryMod=0, range="150M",
+            damage="1D12+2", ap="5", lethality="10%", expense="Unusual"
+        },
+        ["marksman-rifle"] = {
+            skill="firearms", accessoryMod=0, range="150M",
+            damage="1D12+2", ap="5", lethality="10%", expense="Unusual"
+        },
+        ["heavy-sniper"] = {
+            skill="firearms", accessoryMod=0, range="250M",
+            damage="", ap="5", lethality="20%", expense="Major"
+        },
+        ["smg"] = {
+            skill="firearms", accessoryMod=0, range="50M",
+            damage="1D10", ap="0", lethality="10%", expense="Unusual"
+        },
+        ["shotgun"] = {
+            skill="firearms", accessoryMod=20, range="75M",
+            damage="2D8", ap="0", lethality="", expense="Standard"
+        },
+        ["pcc"] = {
+            skill="firearms", accessoryMod=0, range="50M",
+            damage="1D12", ap="0", lethality="10%", expense="Standard"
+        }
+    }
+
+    return map[profile] or map["carbine"]
+end
+
+local function parseFirearmExpansionCatalog(text)
+    local parsed = {}
+    local displayNames = {}
+
+    for line in tostring(text or ""):gmatch("[^\r\n]+") do
+        local name = line:match("name:'([^']+)'")
+        local subcategory = line:match("subcategory:'([^']+)'")
+        local caliber = line:match("caliber:'([^']+)'")
+        local capacity = line:match("capacity:'([^']+)'")
+        local profile = line:match("profile:'([^']+)'")
+
+        if name and subcategory and caliber and capacity and profile then
+            local defaults = firearmProfileDefaults(profile)
+            local key = string.lower(name)
+
+            parsed[key] = {
+                sourceCategory = "Firearms",
+                category = "firearms",
+                kind = "weapon",
+                type = "Firearms",
+                name = name,
+                subcategory = subcategory,
+                caliber = caliber,
+                capacity = capacity,
+                variantSpec = line:match("variants:'([^']+)'") or "",
+                skill = defaults.skill,
+                accessoryMod = defaults.accessoryMod,
+                range = defaults.range,
+                damage = defaults.damage,
+                ap = defaults.ap,
+                lethality = defaults.lethality,
+                killRadius = "N/A",
+                expense = defaults.expense,
+                consumable = false
+            }
+
+            displayNames[key] = name
+        end
+    end
+
+    return {
+        catalog = parsed,
+        displayNames = displayNames
+    }
+end
+
+local function mergeEquipmentCatalogData(base, extra)
+    base = base or {catalog={}, displayNames={}, count=0}
+    extra = extra or {catalog={}, displayNames={}}
+
+    for key, item in pairs(extra.catalog or {}) do
+        base.catalog[key] = item
+        base.displayNames[key] =
+            (extra.displayNames and extra.displayNames[key]) or
+            tostring(item.name or key)
+    end
+
+    local count = 0
+    for _ in pairs(base.catalog or {}) do count = count + 1 end
+    base.count = count
+
+    return base
+end
+
 function refreshEquipmentCatalogFromGithub(player, value, id)
     if equipmentCatalogRefreshRunning then return end
 
@@ -2869,9 +2985,8 @@ function refreshEquipmentCatalogFromGithub(player, value, id)
     end
 
     WebRequest.get(EQUIPMENT_CATALOG_GITHUB_URL, function(request)
-        equipmentCatalogRefreshRunning = false
-
         if request.is_error or not request.text or request.text == "" then
+            equipmentCatalogRefreshRunning = false
             EQUIPMENT_CATALOG = {}
             EQUIPMENT_CATALOG_DISPLAY_NAMES = {}
             equipmentCatalogCount = 0
@@ -2881,75 +2996,75 @@ function refreshEquipmentCatalogFromGithub(player, value, id)
                 "[DG] Equipment catalog could not be loaded from GitHub.",
                 {1.0,0.55,0.30}
             )
-        else
-            local parsed, err = parseGithubEquipmentCatalog(request.text)
-
-            if not parsed then
-                EQUIPMENT_CATALOG = {}
-                EQUIPMENT_CATALOG_DISPLAY_NAMES = {}
-                equipmentCatalogCount = 0
-                equipmentCatalogSource =
-                    "GitHub parse failed — " .. tostring(err or "unknown error")
-
-                broadcastToAll(
-                    "[DG] " .. tostring(err or "Could not parse GitHub equipment catalog."),
-                    {1.0,0.55,0.30}
-                )
-            else
-                EQUIPMENT_CATALOG = parsed.catalog
-                EQUIPMENT_CATALOG_DISPLAY_NAMES = parsed.displayNames
-                equipmentCatalogCount = parsed.count
-                equipmentCatalogSource =
-                    "GitHub N3rdmade/DELTA-GREEN-STATS — " ..
-                    tostring(parsed.count) .. " items"
-
-                local names =
-                    sortedCatalogNamesForCategory(state.addItemCategory)
-
-                local selected =
-                    string.lower(tostring(state.addItemName or ""))
-
-                local valid = false
-                for _, key in ipairs(names) do
-                    if key == selected then
-                        valid = true
-                        break
-                    end
-                end
-
-                if not valid then
-                    state.addItemName = names[1] or ""
-                end
-
-                broadcastToAll(
-                    "[DG] Equipment catalog refreshed from N3rdmade fork: " ..
-                    tostring(parsed.count) .. " items.",
-                    {0.55,0.85,0.65}
-                )
-            end
+            return
         end
 
-        cachedPageDirty["equipment"] = true
+        local parsed, err = parseGithubEquipmentCatalog(request.text)
 
-        if state.currentTab == "equipment" and
-           getCachedHelper("equipment")
-        then
-            rebuildCachedPage("equipment")
-            activateCachedPage("equipment")
-        end
+        if not parsed then
+            equipmentCatalogRefreshRunning = false
+            EQUIPMENT_CATALOG = {}
+            EQUIPMENT_CATALOG_DISPLAY_NAMES = {}
+            equipmentCatalogCount = 0
+            equipmentCatalogSource =
+                "GitHub parse failed — " .. tostring(err or "unknown error")
 
-        -- Wake the Handler after the deferred catalog fetch finishes. Its
-        -- debounced redraw will ask for the catalog again and receive the list.
-        if queueDashboardSnapshot then
-            queueDashboardSnapshot(
-                SHEET_COLOR,
-                "status",
-                "Equipment catalog ready"
+            broadcastToAll(
+                "[DG] " .. tostring(err or "Could not parse GitHub equipment catalog."),
+                {1.0,0.55,0.30}
             )
+            return
         end
+
+        WebRequest.get(FIREARM_EXPANSION_GITHUB_URL, function(extraRequest)
+            if not extraRequest.is_error and
+               extraRequest.text and
+               extraRequest.text ~= ""
+            then
+                local extra = parseFirearmExpansionCatalog(extraRequest.text)
+                parsed = mergeEquipmentCatalogData(parsed, extra)
+            end
+
+            equipmentCatalogRefreshRunning = false
+            EQUIPMENT_CATALOG = parsed.catalog
+            EQUIPMENT_CATALOG_DISPLAY_NAMES = parsed.displayNames
+            equipmentCatalogCount = parsed.count
+            equipmentCatalogSource =
+                "GitHub N3rdmade/DELTA-GREEN-STATS — " ..
+                tostring(parsed.count) .. " items"
+
+            local names =
+                sortedCatalogNamesForCategory(state.addItemCategory)
+
+            local selected =
+                string.lower(tostring(state.addItemName or ""))
+
+            local valid = false
+            for _, key in ipairs(names) do
+                if key == selected then
+                    valid = true
+                    break
+                end
+            end
+
+            if not valid then
+                state.addItemName = ""
+                state.addSelectedCaliber = ""
+                state.addSelectedCapacity = ""
+            end
+
+            cachedPageDirty["equipment"] = true
+
+            if state.currentTab == "equipment" and
+               state.equipmentSubtab == "add" and
+               getCachedHelper("equipment")
+            then
+                rebuildCachedPage("equipment")
+                activateCachedPage("equipment")
+            end
+        end)
     end)
 end
-
 
 local function catalogEntryForItem(name)
     local key = string.lower(tostring(name or ""))
