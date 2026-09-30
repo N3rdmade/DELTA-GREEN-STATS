@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.1
+-- Version: v3.2
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -530,7 +530,7 @@ local function startHandlerRoll(choice)
 
                 Wait.time(function()
                     pullNext(index + 1)
-                end, 0.30)
+                end, 0.40)
             end
         })
     end
@@ -603,7 +603,7 @@ local function startHandlerMultiRoll(names, modifier)
 
             Wait.time(function()
                 pullNext(index + 1)
-            end, 0.30)
+            end, 0.40)
         end
 
         if original then
