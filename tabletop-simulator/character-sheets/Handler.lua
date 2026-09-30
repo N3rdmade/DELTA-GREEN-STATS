@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.8
+-- Version: v3.9
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -2487,6 +2487,75 @@ local function buildHandlerAssignItemScreen(snapshot, selectedItem)
     )
 end
 
+local function handlerDisplaySkill(skill)
+    local map = {
+        firearms="Firearms", heavy_weapons="Heavy Weapons",
+        melee_weapons="Melee Weapons", unarmed_combat="Unarmed Combat",
+        demolitions="Demolitions", artillery="Artillery",
+        athletics="Athletics", dex="DEX×5", throw="Athletics"
+    }
+    return map[string.lower(tostring(skill or ""))] or tostring(skill or "")
+end
+
+local function handlerSelectedDetailsXml(item)
+    if not item then return "" end
+
+    local rows = {}
+    local function add(label, value, allowBlank)
+        value = tostring(value or "")
+        if value ~= "" or allowBlank then
+            if value == "" then value = "N/A" end
+            table.insert(rows, {label=label, value=value})
+        end
+    end
+
+    local kind = tostring(item.kind or "gear")
+    if kind == "weapon" then
+        add("TYPE", "Weapon")
+        local cls = tostring(item.subcategory or "")
+        if cls == "" then cls = tostring(item.sourceCategory or "Weapon") end
+        add("WEAPON CLASS", cls)
+        if tostring(item.caliber or "") ~= "" and string.lower(tostring(item.caliber)) ~= "various" then
+            add("CALIBER", item.caliber)
+        end
+        add("SKILL", handlerDisplaySkill(item.skill), true)
+        add("RANGE", item.range, true)
+        if tostring(item.damage or "") ~= "" then add("DAMAGE", item.damage) end
+        if tostring(item.lethality or "") ~= "" then add("LETHALITY", item.lethality) end
+        local ap = tonumber(tostring(item.ap or ""):match("(%d+)")) or 0
+        if ap > 0 then add("ARMOR PIERCING", tostring(ap)) end
+        if tostring(item.killRadius or "") ~= "" and tostring(item.killRadius) ~= "N/A" then
+            add("BLAST RADIUS", item.killRadius)
+        end
+        if tostring(item.capacity or "") ~= "" then add("MAG / CAPACITY", item.capacity) end
+    elseif kind == "armor" then
+        add("TYPE", "Body Armor")
+        add("ARMOR RATING", item.armor, true)
+        if tostring(item.description or "") ~= "" then add("NOTES", item.description) end
+    else
+        add("TYPE", "Gear")
+        local cat = tostring(item.subcategory or "")
+        if cat == "" then cat = "Other Gear" end
+        add("GEAR CATEGORY", cat)
+        if tostring(item.description or "") ~= "" then add("DETAILS", item.description) end
+    end
+
+    local xml = ""
+    local y = 0
+    for _, row in ipairs(rows) do
+        local h = (row.label == "DETAILS" or row.label == "NOTES") and 34 or 17
+        xml = xml .. string.format([[
+          <Text text="%s: %s" rectAlignment="UpperLeft"
+              width="250" height="%d" offsetXY="18 %d"
+              fontSize="10" color="#D5E1D8" alignment="UpperLeft"
+              horizontalOverflow="Wrap"/>
+        ]], esc(row.label), esc(row.value), h, -y)
+        y = y + h
+    end
+    return xml
+end
+
+
 local function buildAddItemToAgent()
     local snapshot, err = getHandlerCatalogSnapshot(state.addCategory)
     local status = tostring(state.addStatus or "")
@@ -2506,6 +2575,7 @@ local function buildAddItemToAgent()
     end
 
     local selectedItem = handlerCatalogItemByKey(snapshot, state.addItemKey)
+    local selectedDetailsXml = handlerSelectedDetailsXml(selectedItem)
     if state.addAssignPending == true then
         return buildHandlerAssignItemScreen(snapshot, selectedItem)
     end
@@ -2665,8 +2735,9 @@ local function buildAddItemToAgent()
           <Text text="%s" rectAlignment="UpperLeft" width="250" height="26" offsetXY="18 -122"
               fontSize="14" fontStyle="Bold" color="#D9C07A"/>
 
-          <Text text="%s" rectAlignment="UpperLeft" width="250" height="112" offsetXY="18 -154"
-              fontSize="11" color="#A9B8AD" alignment="UpperLeft" horizontalOverflow="Wrap"/>
+          <Panel rectAlignment="UpperLeft" width="250" height="140" offsetXY="0 -154">
+            %s
+          </Panel>
 
           %s
           %s
@@ -2688,7 +2759,7 @@ local function buildAddItemToAgent()
         showSelected and "true" or "false",
         esc(showSelected and tostring(selectedItem.name or selectedItem.key or "") or ""),
         esc(showSelected and tostring(selectedItem.expense or "—") or "—"),
-        esc(showSelected and tostring(selectedItem.details or "") or ""),
+        selectedDetailsXml,
         variantPanel, ammoPanel, qtyPanel,
         esc(status)
     )
