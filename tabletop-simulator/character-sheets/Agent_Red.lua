@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Red
--- Version: r75
+-- Version: r76
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -4384,7 +4384,8 @@ local function catalogItemDetailsXml(key)
         add("RANGE", item.range, true)
         if tostring(item.damage or "") ~= "" then add("DAMAGE", item.damage) end
         if tostring(item.lethality or "") ~= "" then add("LETHALITY", item.lethality) end
-        add("ARMOR PIERCING", item.ap ~= "" and item.ap or "0")
+        local apValue = tonumber(tostring(item.ap or ""):match("(%d+)")) or 0
+        if apValue > 0 then add("ARMOR PIERCING", tostring(apValue)) end
         if tostring(item.killRadius or "") ~= "" and tostring(item.killRadius) ~= "N/A" then
             add("BLAST RADIUS", item.killRadius)
         end
@@ -5232,7 +5233,7 @@ local function buildAddItemPanel()
 
         variantPanel = string.format([[
           <Panel id="equipment_variant_options" rectAlignment="UpperLeft"
-              width="250" height="82" offsetXY="18 -270" color="#101712CC">
+              width="250" height="82" offsetXY="18 -286" color="#101712CC">
             <Text text="CALIBER" rectAlignment="UpperLeft" width="110" height="20"
                 offsetXY="8 -6" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
             <Dropdown id="equipment_variant_caliber" onValueChanged="selectCatalogVariantCaliber"
@@ -5251,7 +5252,7 @@ local function buildAddItemPanel()
         )
     end
 
-    local optionsY = hasVariants and -360 or -282
+    local optionsY = hasVariants and -374 or -300
 
     local ammoPanel = ""
     if showAmmoOptions then
@@ -5358,7 +5359,7 @@ local function buildAddItemPanel()
               fontSize="14" fontStyle="Bold" color="#D9C07A"/>
 
           <Panel id="equipment_add_selected_details"
-              rectAlignment="UpperLeft" width="250" height="150" offsetXY="0 -154">
+              rectAlignment="UpperLeft" width="250" height="140" offsetXY="0 -154">
             %s
           </Panel>
 
@@ -10933,6 +10934,7 @@ function handlerGetEquipmentCatalog(params)
             armor = tostring(c.armor or ""),
             expense = catalogItemExpense(key),
             details = catalogItemDetailsText(key),
+            description = cleanCatalogDescription(c.description),
             usesQuantity = catalogKeyUsesQuantity(key),
             hasReserveAmmo = catalogKeyHasReserveAmmo(key)
         })
