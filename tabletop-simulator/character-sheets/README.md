@@ -17,7 +17,7 @@ Free to use, modify, and share provided the Hellhorde credit header remains inta
 
 The Agent scripts are the same feature set with sheet-specific color, nameplate, and dice-tower GUID configuration.
 
-### r73 equipment / session updates
+### r74 equipment / session updates
 - Failed-skill advancement is labeled as an **End Session** action; all marked failed skills improve by 1D4 and clear their marks.
 - Weapon attack chat output no longer repeats ammo, fire mode, or modifier bookkeeping.
 - Equipment rows include **REMOVE** and **REPLACE** controls. Removing a firearm leaves shared reserve ammunition in the Agent's caliber pool.
@@ -26,7 +26,7 @@ The Agent scripts are the same feature set with sheet-specific color, nameplate,
 
 ## Current versions
 
-- Agent sheets: **r73**
+- Agent sheets: **r74**
 - Handler dashboard: **v3.8**
 
 ## Notes
@@ -34,3 +34,8 @@ The Agent scripts are the same feature set with sheet-specific color, nameplate,
 These are Tabletop Simulator object scripts. Attach the matching Agent script to each character sheet object and `Handler.lua` to the Handler dashboard object.
 
 The scripts use shared dice storage and sheet-specific dice towers/GUIDs already configured in each file.
+
+### r74 fixes
+- Firearm replacement classes now classify pistols primarily by cartridge/profile instead of damage die. FN Five-seveN and 9mm compact pistols such as the SIG P365 are Medium Pistols.
+- Fixed duplicated reserve labels such as `9x19mm RESERVE RESERVE`.
+- Replace mode is locked to the original item's replacement class; backing out cancels Replace instead of exposing unrelated categories.
