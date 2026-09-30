@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Green
--- Version: r63
+-- Version: r64
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -12926,8 +12926,8 @@ local function getDiceDropPoints(config)
     -- All player towers share the same geometry.
     -- Calculate drop points directly from the tower object so the towers
     -- themselves need NO Lua helper script.
-    local tensWorld = tower.positionToWorld({ 0.01875, 3.25, 0.00 })
-    local onesWorld = tower.positionToWorld({-0.01875, 3.25, 0.00 })
+    local tensWorld = tower.positionToWorld({ 0.00, 3.25, 0.00 })
+    local onesWorld = tower.positionToWorld({ 0.00, 3.25, 0.00 })
 
     return plainPosition(tensWorld), plainPosition(onesWorld), nil
 end
@@ -13463,16 +13463,22 @@ startPhysicalPercentileRoll = function(playerColor, label, target, extra, skillN
         smooth = false,
         callback_function = function(obj)
             onDieReady("tens", obj)
-        end
-    })
 
-    storage.takeObject({
-        guid = onesGuid,
-        position = onesPos,
-        rotation = randomDiceRotation(),
-        smooth = false,
-        callback_function = function(obj)
-            onDieReady("ones", obj)
+            -- Feed the second percentile die through the exact same center
+            -- point after a short delay so neither die can clip the tower side.
+            Wait.time(function()
+                if not physicalRoll then return end
+
+                storage.takeObject({
+                    guid = onesGuid,
+                    position = onesPos,
+                    rotation = randomDiceRotation(),
+                    smooth = false,
+                    callback_function = function(onesObj)
+                        onDieReady("ones", onesObj)
+                    end
+                })
+            end, 0.30)
         end
     })
 
