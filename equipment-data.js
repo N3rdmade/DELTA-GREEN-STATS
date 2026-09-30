@@ -1421,4 +1421,495 @@ window.DG_EQUIPMENT_CATALOG = [
         system: { name: '', description: '<p><em>Improvised fragmentation IED represented with the standard Delta Green IED profile; the name describes the fictional game item, not construction instructions.</em></p>', skill: 'demolitions', skillModifier: 20, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 15, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Incidental', equipped: true }
     },
 
+
+    // ── HELLHORDE EXPANDED CATALOG — FULL CATEGORY PASS 2026-09-30 ─────────────
+    // Five additional entries in each remaining equipment section.
+    // Named real-world examples are mapped onto existing Delta Green-style game profiles.
+
+    // FIREARMS — CARBINES
+    {
+        category: 'Firearms', name: 'SIG MCX carbine', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Modern modular carbine mapped to the standard light rifle/carbine profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'HK416 carbine', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Gas-piston service carbine mapped to the standard light rifle/carbine profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'IWI Tavor X95', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact bullpup carbine mapped to the standard light rifle/carbine profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Steyr AUG A3', type: 'weapon', subcategory: 'Carbines', caliber: '5.56x45mm NATO',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Bullpup service rifle mapped to the standard light rifle/carbine profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'AK-105 carbine', type: 'weapon', subcategory: 'Carbines', caliber: '5.45x39mm',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact Kalashnikov-pattern carbine mapped to the standard light rifle/carbine profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '1D12', armorPiercing: 3, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },
+
+    // FIREARMS — MARKSMAN RIFLES
+    {
+        category: 'Firearms', name: 'M14 DMR', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Designated-marksman rifle mapped to the heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'HK417', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>7.62mm battle/marksman rifle mapped to the heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'FN SCAR-H', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>7.62mm modular battle rifle mapped to the heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'SR-25', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x51mm NATO',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Semi-automatic precision rifle mapped to the heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '20', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Dragunov SVD', type: 'weapon', subcategory: 'Marksman Rifles', caliber: '7.62x54R',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Semi-automatic designated-marksman rifle mapped to the heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '1D12+2', armorPiercing: 5, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Unusual', equipped: true }
+    },
+
+    // FIREARMS — HEAVY SNIPERS
+    {
+        category: 'Firearms', name: 'Accuracy International AX50', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Heavy anti-materiel rifle mapped to the very-heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '5', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'McMillan TAC-50', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Bolt-action anti-materiel rifle mapped to the very-heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '5', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Serbu BFG-50', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Single-shot heavy rifle mapped to the very-heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '1', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Barrett M107A1', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Semi-automatic anti-materiel rifle mapped to the very-heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '10', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Desert Tech HTI', type: 'weapon', subcategory: 'Heavy Snipers', caliber: '.50 BMG',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Bullpup anti-materiel rifle mapped to the very-heavy-rifle profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '5', expense: 'Major', equipped: true }
+    },
+
+    // FIREARMS — SHOTGUNS
+    {
+        category: 'Firearms', name: 'Benelli M4', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Semi-automatic tactical shotgun using the standard shot profile.</em></p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Mossberg 590A1', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Heavy-duty pump shotgun using the standard shot profile.</em></p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '8', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Winchester SXP Defender', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Pump-action defensive shotgun using the standard shot profile.</em></p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Kel-Tec KSG', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Bullpup pump shotgun using the standard shot profile.</em></p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '14', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Stoeger M3000 Defense', type: 'weapon', subcategory: 'Shotguns', caliber: '12 gauge',
+        img: 'systems/deltagreen/assets/icons/shotgun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Semi-automatic defensive shotgun using the standard shot profile.</em></p>', skill: 'firearms', skillModifier: 20, customSkillTarget: 50, range: '75M', damage: '2D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '7', expense: 'Standard', equipped: true }
+    },
+
+    // MELEE — KNIVES
+    {
+        category: 'Melee Weapons', name: 'KA-BAR fighting knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Full-size fighting/utility knife.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },
+    {
+        category: 'Melee Weapons', name: 'Fairbairn-Sykes fighting knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Double-edged fighting knife.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },
+    {
+        category: 'Melee Weapons', name: 'Bowie knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Large fixed-blade knife.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },
+    {
+        category: 'Melee Weapons', name: 'Karambit', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact curved utility/fighting knife.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D4', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },
+    {
+        category: 'Melee Weapons', name: 'Rescue knife', type: 'weapon', subcategory: 'Knives',
+        img: 'systems/deltagreen/assets/icons/knife.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Folding rescue knife with utility blade.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D4', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },
+
+    // MELEE — SWORDS
+    {
+        category: 'Melee Weapons', name: 'Katana', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/sword.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Curved two-handed sword.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D10', armorPiercing: 1, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Melee Weapons', name: 'Machete', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/sword.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Heavy chopping blade common as a field tool.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },
+    {
+        category: 'Melee Weapons', name: 'Cutlass', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/sword.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Short, broad-bladed saber.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Melee Weapons', name: 'Military saber', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/sword.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Curved military-style saber.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D8', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Melee Weapons', name: 'Longsword', type: 'weapon', subcategory: 'Swords',
+        img: 'systems/deltagreen/assets/icons/sword.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Historical two-edged sword, typically used with two hands.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D10', armorPiercing: 1, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Unusual', equipped: true }
+    },
+
+    // HEAVY WEAPONS
+    {
+        category: 'Heavy Weapons', name: 'M249 SAW', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Light machine gun represented using a standard automatic heavy-weapon profile.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '', armorPiercing: 3, lethality: 15, isLethal: true, killRadius: 'N/A', ammo: '100', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Heavy Weapons', name: 'M240B', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>General-purpose machine gun.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '100', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Heavy Weapons', name: 'PKM machine gun', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>General-purpose machine gun.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '150M', damage: '', armorPiercing: 5, lethality: 20, isLethal: true, killRadius: 'N/A', ammo: '100', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Heavy Weapons', name: 'M2 Browning', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Heavy .50-caliber machine gun represented as a mounted heavy weapon.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '250M', damage: '', armorPiercing: 8, lethality: 30, isLethal: true, killRadius: 'N/A', ammo: '100', expense: 'Extreme', equipped: true }
+    },
+    {
+        category: 'Heavy Weapons', name: 'RPK-74', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/machine-gun.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Squad automatic weapon represented as an automatic heavy-weapon profile.</em></p>', skill: 'heavy_weapons', skillModifier: 0, customSkillTarget: 50, range: '100M', damage: '', armorPiercing: 3, lethality: 15, isLethal: true, killRadius: 'N/A', ammo: '45', expense: 'Major', equipped: true }
+    },
+
+    // ARTILLERY
+    {
+        category: 'Artillery', name: 'M224 60mm mortar', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/artillery.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Light infantry mortar represented abstractly for game use.</em></p>', skill: 'artillery', skillModifier: 0, customSkillTarget: 50, range: '3500M', damage: '', armorPiercing: 0, lethality: 30, isLethal: true, killRadius: '15M', ammo: '1', expense: 'Extreme', equipped: true }
+    },
+    {
+        category: 'Artillery', name: 'M252 81mm mortar', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/artillery.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Medium infantry mortar represented abstractly for game use.</em></p>', skill: 'artillery', skillModifier: 0, customSkillTarget: 50, range: '5600M', damage: '', armorPiercing: 0, lethality: 40, isLethal: true, killRadius: '20M', ammo: '1', expense: 'Extreme', equipped: true }
+    },
+    {
+        category: 'Artillery', name: 'M119 105mm howitzer', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/artillery.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Towed field howitzer represented abstractly for game use.</em></p>', skill: 'artillery', skillModifier: 0, customSkillTarget: 50, range: '14000M', damage: '', armorPiercing: 0, lethality: 50, isLethal: true, killRadius: '30M', ammo: '1', expense: 'Extreme', equipped: true }
+    },
+    {
+        category: 'Artillery', name: 'M777 155mm howitzer', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/artillery.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>155mm field artillery represented abstractly for game use.</em></p>', skill: 'artillery', skillModifier: 0, customSkillTarget: 50, range: '24000M', damage: '', armorPiercing: 0, lethality: 60, isLethal: true, killRadius: '40M', ammo: '1', expense: 'Extreme', equipped: true }
+    },
+    {
+        category: 'Artillery', name: 'Mk 19 automatic grenade launcher', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/artillery.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Mounted automatic grenade launcher represented as a crew-served weapon.</em></p>', skill: 'artillery', skillModifier: 0, customSkillTarget: 50, range: '1500M', damage: '', armorPiercing: 0, lethality: 25, isLethal: true, killRadius: '10M', ammo: '32', expense: 'Extreme', equipped: true }
+    },
+
+    // DEMOLITIONS — fictional/game inventory abstractions only
+    {
+        category: 'Demolitions', name: 'Commercial blasting charge', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/ied.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Commercial demolition charge represented abstractly; placement and effects are resolved by the Handler.</em></p>', skill: 'demolitions', skillModifier: 0, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 20, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Demolitions', name: 'Breaching charge', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/ied.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Purpose-built breaching explosive represented abstractly for game use.</em></p>', skill: 'demolitions', skillModifier: 0, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 15, isLethal: true, killRadius: '5M', ammo: '1', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Demolitions', name: 'Satchel charge', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/ied.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Portable demolition charge represented abstractly for game use.</em></p>', skill: 'demolitions', skillModifier: 0, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 30, isLethal: true, killRadius: '15M', ammo: '1', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Demolitions', name: 'Remote demolition charge', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/ied.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Remote-triggered game abstraction of a demolition charge; no construction details are included.</em></p>', skill: 'demolitions', skillModifier: 0, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 25, isLethal: true, killRadius: '10M', ammo: '1', expense: 'Major', equipped: true }
+    },
+    {
+        category: 'Demolitions', name: 'Vehicle demolition charge', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/ied.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Large demolition charge represented only as a game inventory item.</em></p>', skill: 'demolitions', skillModifier: 0, customSkillTarget: 50, range: '', damage: '', armorPiercing: 0, lethality: 35, isLethal: true, killRadius: '20M', ammo: '1', expense: 'Major', equipped: true }
+    },
+
+    // LESS-LETHAL
+    {
+        category: 'Less-Lethal', name: 'Pepper spray canister', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/less-lethal.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Handheld OC spray for close-range compliance.</em></p>', skill: 'dex', skillModifier: 20, customSkillTarget: 50, range: '3M', damage: '', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Incidental', equipped: true }
+    },
+    {
+        category: 'Less-Lethal', name: 'TASER 7', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/less-lethal.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Conducted-energy device represented with the existing stun profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '7M', damage: '1D4', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '2', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Less-Lethal', name: 'Beanbag shotgun rounds', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/less-lethal.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Less-lethal 12-gauge impact rounds using the nonlethal shotgun profile.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '10M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '5', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Less-Lethal', name: '40mm sponge round launcher', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/less-lethal.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Single-shot less-lethal impact launcher.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '30M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '1', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Less-Lethal', name: 'Expandable baton', type: 'weapon',
+        img: 'systems/deltagreen/assets/icons/baton.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Collapsible impact baton.</em></p>', skill: 'melee_weapons', skillModifier: 0, customSkillTarget: 50, range: '1M', damage: '1D6', armorPiercing: 0, lethality: 0, isLethal: false, killRadius: 'N/A', ammo: '', expense: 'Incidental', equipped: true }
+    },
+
+    // ARMOR
+    {
+        category: 'Armor', name: 'Soft armor vest NIJ II', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Low-profile soft body armor.</em></p>', protection: 3, equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Armor', name: 'Soft armor vest NIJ IIIA', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Heavier soft body armor.</em></p>', protection: 4, equipped: true, expense: 'Unusual' }
+    },
+    {
+        category: 'Armor', name: 'Plate carrier with Level III plates', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Plate carrier with rifle-rated hard plates.</em></p>', protection: 5, equipped: true, expense: 'Major' }
+    },
+    {
+        category: 'Armor', name: 'Plate carrier with Level IV plates', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Heavy rifle-rated hard armor.</em></p>', protection: 6, equipped: true, expense: 'Major' }
+    },
+    {
+        category: 'Armor', name: 'Ballistic helmet', type: 'armor',
+        img: 'systems/deltagreen/assets/icons/armor.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Modern ballistic helmet; Handler adjudicates location-specific protection if used.</em></p>', protection: 2, equipped: true, expense: 'Standard' }
+    },
+
+    // SURVEILLANCE
+    {
+        category: 'Surveillance', name: 'Digital audio recorder', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/surveillance.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Pocket-sized high-capacity field audio recorder.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Surveillance', name: 'Trail camera', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/surveillance.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Motion-triggered weather-resistant still/video camera.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Surveillance', name: 'Body-worn camera', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/surveillance.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact wearable evidence camera.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Surveillance', name: 'Parabolic microphone', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/surveillance.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Directional long-range listening microphone.</em></p>', equipped: true, expense: 'Unusual' }
+    },
+    {
+        category: 'Surveillance', name: 'RF detector', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/surveillance.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Handheld detector for nearby radio-frequency emissions.</em></p>', equipped: true, expense: 'Unusual' }
+    },
+
+    // COMMS & TECH
+    {
+        category: 'Comms & Tech', name: 'Ruggedized laptop', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/computer.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Field-ready laptop with reinforced chassis.</em></p>', equipped: true, expense: 'Unusual' }
+    },
+    {
+        category: 'Comms & Tech', name: 'Satellite phone', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/radio.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Portable satellite communications handset.</em></p>', equipped: true, expense: 'Unusual' }
+    },
+    {
+        category: 'Comms & Tech', name: 'Encrypted handheld radio', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/radio.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Programmable digital handheld radio with encryption support.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Comms & Tech', name: 'Portable LTE/5G hotspot', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/computer.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Battery-powered cellular data hotspot.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Comms & Tech', name: 'Portable data-storage array', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/computer.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Rugged portable storage for field evidence and forensic images.</em></p>', equipped: true, expense: 'Standard' }
+    },
+
+    // OPTICS & VISION
+    {
+        category: 'Optics & Vision', name: 'PVS-14 night-vision monocular', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/optics.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Helmet- or hand-mounted image-intensifier monocular.</em></p>', equipped: true, expense: 'Unusual' }
+    },
+    {
+        category: 'Optics & Vision', name: 'Thermal monocular', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/optics.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Handheld thermal-imaging monocular.</em></p>', equipped: true, expense: 'Unusual' }
+    },
+    {
+        category: 'Optics & Vision', name: '10x42 binoculars', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/optics.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>General-purpose field binoculars.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Optics & Vision', name: 'Laser rangefinder', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/optics.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Handheld optical rangefinder for measuring distance.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Optics & Vision', name: 'Digital borescope', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/optics.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Flexible inspection camera for viewing confined spaces.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+
+    // WEAPON ACCESSORIES
+    {
+        category: 'Weapon Accessories', name: 'Weapon-mounted flashlight', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/weapon-accessory.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact rail-mounted white light.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Weapon Accessories', name: 'Two-point rifle sling', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/weapon-accessory.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Adjustable tactical sling for long guns.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Weapon Accessories', name: 'Bipod', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/weapon-accessory.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Folding support for a rifle or machine gun.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Weapon Accessories', name: 'Holographic weapon sight', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/weapon-accessory.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Non-magnified electronic aiming sight.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Weapon Accessories', name: 'Low-power variable optic', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/weapon-accessory.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Variable-magnification rifle optic suitable for short-to-medium range.</em></p>', equipped: true, expense: 'Unusual' }
+    },
+
+    // ENTRY TOOLS
+    {
+        category: 'Entry Tools', name: 'Hydraulic door spreader', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/forcible-entry-tool.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Portable hydraulic forcible-entry tool.</em></p>', equipped: true, expense: 'Major' }
+    },
+    {
+        category: 'Entry Tools', name: 'Bolt cutters', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/forcible-entry-tool.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Heavy cutters for chains, padlocks, and wire.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Entry Tools', name: 'Pry bar', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/forcible-entry-tool.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact steel leverage tool.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Entry Tools', name: 'Glass-break rescue tool', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/forcible-entry-tool.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact spring-loaded glass breaker and seatbelt cutter.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Entry Tools', name: 'Portable ram', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/forcible-entry-tool.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Two-handed impact tool used for forcible entry.</em></p>', equipped: true, expense: 'Standard' }
+    },
+
+    // RESTRAINTS
+    {
+        category: 'Restraints', name: 'Chain handcuffs', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/handcuffs.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Standard steel chain-link handcuffs.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Restraints', name: 'Hinged handcuffs', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/handcuffs.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Rigid hinged cuffs offering greater control than chain cuffs.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Restraints', name: 'Transport waist chain', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/handcuffs.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Prisoner transport restraint system.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Restraints', name: 'Leg irons', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/handcuffs.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Steel ankle restraints for prisoner transport.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Restraints', name: 'Disposable restraint pack', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/flexible-cuffs.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Bundle of single-use flexible restraints.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+
+    // SURVIVAL & MEDICAL
+    {
+        category: 'Survival & Medical', name: 'Trauma kit', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/first-aid-kit.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Expanded field medical kit for serious trauma response.</em></p>', equipped: true, expense: 'Standard' }
+    },
+    {
+        category: 'Survival & Medical', name: 'Automated external defibrillator', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/first-aid-kit.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Portable AED with voice-guided operation.</em></p>', equipped: true, expense: 'Unusual' }
+    },
+    {
+        category: 'Survival & Medical', name: 'Waterproof bivy sack', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/camping-gear.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact waterproof emergency shelter.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Survival & Medical', name: 'Portable water filter', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/camping-gear.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Field filtration system for treating natural water sources.</em></p>', equipped: true, expense: 'Incidental' }
+    },
+    {
+        category: 'Survival & Medical', name: 'Personal locator beacon', type: 'gear',
+        img: 'systems/deltagreen/assets/icons/handheld-gps.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Emergency satellite distress beacon for remote operations.</em></p>', equipped: true, expense: 'Standard' }
+    },
+
 ]; // end DG_EQUIPMENT_CATALOG
