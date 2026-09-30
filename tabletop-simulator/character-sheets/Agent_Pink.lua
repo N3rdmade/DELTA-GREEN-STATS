@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Pink
--- Version: r78
+-- Version: r79
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -159,6 +159,7 @@ local state = {
     addItemSubcategory = "",
     addItemName = "",
     addCaliberFilter = "ALL",
+    addArmorRatingFilter = "ALL",
     addSelectedCaliber = "",
     addSelectedCapacity = "",
     addReserveRounds = 0,
@@ -4578,6 +4579,36 @@ local function catalogAvailableCalibers(category, subcategory)
     return result
 end
 
+local function catalogItemMatchesArmorRating(key, filter)
+    filter = tostring(filter or "ALL")
+    if filter == "" or filter == "ALL" then return true end
+
+    local item = EQUIPMENT_CATALOG[tostring(key or "")]
+    if not item or tostring(item.sourceCategory or "") ~= "Body Armor" then
+        return false
+    end
+
+    local rating = tonumber(tostring(item.armor or ""):match("(%d+)"))
+    return rating ~= nil and tostring(rating) == filter
+end
+
+local function catalogAvailableArmorRatings()
+    local found = {}
+    for _, key in ipairs(sortedCatalogNamesForCategory("Body Armor")) do
+        local item = EQUIPMENT_CATALOG[key]
+        local rating = item and tonumber(tostring(item.armor or ""):match("(%d+)")) or nil
+        if rating then found[rating] = true end
+    end
+
+    local values = {}
+    for rating in pairs(found) do table.insert(values, rating) end
+    table.sort(values)
+
+    local result = {"ALL"}
+    for _, rating in ipairs(values) do table.insert(result, tostring(rating)) end
+    return result
+end
+
 local function plainDropdownOptions(values, selected)
     local xml = ""
     selected = tostring(selected or "")
@@ -5098,9 +5129,14 @@ local function buildBrowseLevelRows()
             end
         else
             for _, key in ipairs(sortedCatalogNamesForCategory(category)) do
-                if category ~= "Firearms" or
-                   catalogItemMatchesCaliberFilter(key, state.addCaliberFilter)
-                then
+                local visible = true
+                if category == "Firearms" then
+                    visible = catalogItemMatchesCaliberFilter(key, state.addCaliberFilter)
+                elseif category == "Body Armor" then
+                    visible = catalogItemMatchesArmorRating(key, state.addArmorRatingFilter)
+                end
+
+                if visible then
                     addRow(key, catalogDisplayName(key), "item")
                 end
             end
@@ -5142,8 +5178,21 @@ local function firstVisibleBrowseItem()
     if level == "category" and
        not categoryHasSubcategories(state.addItemCategory)
     then
-        local keys = sortedCatalogNamesForCategory(state.addItemCategory)
-        return keys[1] or ""
+        local category = tostring(state.addItemCategory or "")
+        for _, key in ipairs(sortedCatalogNamesForCategory(category)) do
+            if category == "Body Armor" then
+                if catalogItemMatchesArmorRating(key, state.addArmorRatingFilter) then
+                    return key
+                end
+            elseif category == "Firearms" then
+                if catalogItemMatchesCaliberFilter(key, state.addCaliberFilter) then
+                    return key
+                end
+            else
+                return key
+            end
+        end
+        return ""
     end
 
     if level == "subcategory" then
@@ -5214,6 +5263,32 @@ local function buildAddItemPanel()
               dropdownBackgroundColor="#0F1210"
               checkColor="#9BC3A4" arrowColor="#FFFFFF"
               dropdownHeight="360" itemHeight="32">%s</Dropdown>
+        ]], plainDropdownOptions(filterValues, selectedFilter))
+    elseif tostring(state.addItemCategory or "") == "Body Armor" and
+           tostring(state.addItemBrowseLevel or "") ~= "root"
+    then
+        local filterValues = catalogAvailableArmorRatings()
+        local selectedFilter = tostring(state.addArmorRatingFilter or "ALL")
+        local valid = false
+        for _, value in ipairs(filterValues) do
+            if value == selectedFilter then valid = true break end
+        end
+        if not valid then
+            selectedFilter = "ALL"
+            state.addArmorRatingFilter = "ALL"
+        end
+
+        filterXml = string.format([[
+          <Text text="ARMOR RATING" rectAlignment="UpperLeft" width="110" height="28"
+              offsetXY="405 -124" fontSize="11" fontStyle="Bold" color="#A9B8AD"/>
+          <Dropdown id="equipment_armor_rating_filter" onValueChanged="selectEquipmentArmorRatingFilter"
+              rectAlignment="UpperLeft" width="170" height="34" offsetXY="525 -120"
+              fontSize="12" color="#1D2B24" textColor="#F1F7F2"
+              itemTextColor="#F1F7F2"
+              itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+              dropdownBackgroundColor="#0F1210"
+              checkColor="#9BC3A4" arrowColor="#FFFFFF"
+              dropdownHeight="260" itemHeight="32">%s</Dropdown>
         ]], plainDropdownOptions(filterValues, selectedFilter))
     end
 
@@ -10206,6 +10281,7 @@ function equipmentBreadcrumbClick(player, value, id)
         state.addItemSubcategory = ""
         state.addItemName = ""
         state.addCaliberFilter = "ALL"
+        state.addArmorRatingFilter = "ALL"
         resetSelectedCatalogVariant("")
 
     elseif target == "category" then
@@ -10247,6 +10323,7 @@ function equipmentBrowseRowClick(player, value, id)
         state.addItemSubcategory = ""
         state.addItemBrowseLevel = "category"
         state.addCaliberFilter = "ALL"
+        state.addArmorRatingFilter = "ALL"
         state.addItemName = firstVisibleBrowseItem()
         resetSelectedCatalogVariant(state.addItemName)
 
@@ -10305,6 +10382,14 @@ end
 
 function selectEquipmentCaliberFilter(player, value, id)
     state.addCaliberFilter = tostring(value or "ALL")
+    state.addItemName = firstVisibleBrowseItem()
+    resetSelectedCatalogVariant(state.addItemName)
+    rebuildCachedPage("equipment")
+    activateCachedPage("equipment")
+end
+
+function selectEquipmentArmorRatingFilter(player, value, id)
+    state.addArmorRatingFilter = tostring(value or "ALL")
     state.addItemName = firstVisibleBrowseItem()
     resetSelectedCatalogVariant(state.addItemName)
     rebuildCachedPage("equipment")
