@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.3
+-- Version: v3.4
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -54,6 +54,9 @@ local state = {
     addAssignPending = false,
     addCatalogSourceColor = "",
     addItemKey = "",
+    addCaliberFilter = "ALL",
+    addSelectedCaliber = "",
+    addSelectedCapacity = "",
     addQuantity = 1,
     addReserveRounds = 0,
     addReserveMags = 0,
@@ -2155,6 +2158,121 @@ local function handlerCatalogItemByKey(snapshot, key)
     return nil
 end
 
+local function handlerParseVariantSpec(item)
+    local result = {}
+    local spec = tostring(item and item.variantSpec or "")
+
+    if spec ~= "" then
+        for group in spec:gmatch("[^;]+") do
+            local caliber, caps = group:match("^%s*(.-)%s*=%s*(.-)%s*$")
+            if caliber and caliber ~= "" then
+                local capacities = {}
+                for cap in tostring(caps or ""):gmatch("[^/]+") do
+                    local n = tonumber(tostring(cap):match("(%d+)"))
+                    if n then table.insert(capacities, tostring(n)) end
+                end
+                table.insert(result, {caliber=caliber, capacities=capacities})
+            end
+        end
+    end
+
+    if #result == 0 and item then
+        local caliber = tostring(item.caliber or "")
+        local cap = tonumber(tostring(item.capacity or ""):match("(%d+)"))
+        if caliber ~= "" and string.lower(caliber) ~= "various" then
+            table.insert(result, {
+                caliber = caliber,
+                capacities = cap and {tostring(cap)} or {}
+            })
+        end
+    end
+
+    return result
+end
+
+local function handlerItemCaliberOptions(item)
+    local result = {}
+    for _, variant in ipairs(handlerParseVariantSpec(item)) do
+        table.insert(result, tostring(variant.caliber or ""))
+    end
+    return result
+end
+
+local function handlerItemCapacityOptions(item, caliber)
+    local wanted = tostring(caliber or "")
+    for _, variant in ipairs(handlerParseVariantSpec(item)) do
+        if wanted == "" or tostring(variant.caliber or "") == wanted then
+            return variant.capacities or {}
+        end
+    end
+    local cap = tonumber(tostring(item and item.capacity or ""):match("(%d+)"))
+    return cap and {tostring(cap)} or {}
+end
+
+local function handlerItemMatchesCaliber(item, filter)
+    filter = tostring(filter or "ALL")
+    if filter == "" or filter == "ALL" then return true end
+    for _, caliber in ipairs(handlerItemCaliberOptions(item)) do
+        if caliber == filter then return true end
+    end
+    return tostring(item and item.caliber or "") == filter
+end
+
+local function handlerAvailableCalibers(snapshot)
+    local found = {}
+    for _, item in ipairs(snapshot.items or {}) do
+        if tostring(state.addBrowseLevel or "") ~= "subcategory" or
+           tostring(item.subcategory or "") == tostring(state.addSubcategory or "")
+        then
+            for _, caliber in ipairs(handlerItemCaliberOptions(item)) do
+                if caliber ~= "" and string.lower(caliber) ~= "various" then
+                    found[caliber] = true
+                end
+            end
+        end
+    end
+    local values = {}
+    for caliber in pairs(found) do table.insert(values, caliber) end
+    table.sort(values)
+    local result = {"ALL"}
+    for _, caliber in ipairs(values) do table.insert(result, caliber) end
+    return result
+end
+
+local function handlerSelectedVariant(item)
+    if not item then return "", nil end
+
+    local calibers = handlerItemCaliberOptions(item)
+    local caliber = tostring(state.addSelectedCaliber or "")
+    local valid = false
+    for _, value in ipairs(calibers) do
+        if value == caliber then valid = true break end
+    end
+    if not valid then
+        caliber = tostring(calibers[1] or item.caliber or "")
+        state.addSelectedCaliber = caliber
+    end
+
+    local capacities = handlerItemCapacityOptions(item, caliber)
+    local capText = tostring(state.addSelectedCapacity or "")
+    valid = false
+    for _, value in ipairs(capacities) do
+        if tostring(value) == capText then valid = true break end
+    end
+    if not valid then
+        capText = tostring(capacities[1] or tostring(item.capacity or ""):match("(%d+)") or "")
+        state.addSelectedCapacity = capText
+    end
+
+    return caliber, tonumber(capText)
+end
+
+local function handlerResetSelectedVariant(item)
+    state.addSelectedCaliber = ""
+    state.addSelectedCapacity = ""
+    if item then handlerSelectedVariant(item) end
+end
+
 local function handlerItemsForSubcategory(snapshot, subcategory)
     local result = {}
     for _, item in ipairs(snapshot.items or {}) do
@@ -2232,12 +2350,20 @@ local function buildHandlerBrowseRows(snapshot)
             for _, sub in ipairs(subs) do addRow(sub, sub, "subcategory") end
         else
             for _, item in ipairs(snapshot.items or {}) do
-                addRow(item.key, item.name or item.key, "item")
+                if tostring(state.addCategory or "") ~= "Firearms" or
+                   handlerItemMatchesCaliber(item, state.addCaliberFilter)
+                then
+                    addRow(item.key, item.name or item.key, "item")
+                end
             end
         end
     elseif level == "subcategory" then
         for _, item in ipairs(handlerItemsForSubcategory(snapshot, state.addSubcategory)) do
-            addRow(item.key, item.name or item.key, "item")
+            if tostring(state.addCategory or "") ~= "Firearms" or
+               handlerItemMatchesCaliber(item, state.addCaliberFilter)
+            then
+                addRow(item.key, item.name or item.key, "item")
+            end
         end
     end
 
@@ -2308,13 +2434,12 @@ local function buildAddItemToAgent()
     local categories = snapshot.categories or {}
     if #categories > 0 then
         local valid = false
-        for _, c in ipairs(categories) do
-            if tostring(c) == tostring(state.addCategory or "") then valid = true break end
+        for _, category in ipairs(categories) do
+            if tostring(category) == tostring(state.addCategory or "") then valid = true break end
         end
         if not valid then state.addCategory = tostring(categories[1] or "Firearms") end
     end
 
-    -- Re-fetch after correcting category so item/subcategory data matches it.
     if tostring(snapshot.category or "") ~= tostring(state.addCategory or "") then
         snapshot = getHandlerCatalogSnapshot(state.addCategory)
     end
@@ -2329,51 +2454,120 @@ local function buildAddItemToAgent()
     local showAmmo = showSelected and selectedItem.hasReserveAmmo == true
     local showQty = showSelected and selectedItem.usesQuantity == true
     local mags = math.max(0, math.floor(tonumber(state.addReserveMags) or 0))
-    local cap = selectedItem and tonumber(tostring(selectedItem.capacity or ""):match("(%d+)")) or nil
+
+    local chosenCaliber, cap = handlerSelectedVariant(selectedItem)
     local magHint = cap and string.format(
         "1 spare mag = %d rounds. %d mags = %d reserve rounds.", cap, mags, cap * mags
     ) or ""
 
+    local filterXml = ""
+    if tostring(state.addCategory or "") == "Firearms" and
+       tostring(state.addBrowseLevel or "") ~= "root"
+    then
+        local values = handlerAvailableCalibers(snapshot)
+        local selectedFilter = tostring(state.addCaliberFilter or "ALL")
+        local valid = false
+        for _, value in ipairs(values) do
+            if tostring(value) == selectedFilter then valid = true break end
+        end
+        if not valid then
+            selectedFilter = "ALL"
+            state.addCaliberFilter = "ALL"
+        end
+
+        filterXml = string.format([[
+          <Text text="CALIBER" rectAlignment="UpperLeft" width="80" height="28"
+              offsetXY="430 -124" fontSize="11" fontStyle="Bold" color="#A9B8AD"/>
+          <Dropdown id="handler_caliber_filter" onValueChanged="handlerSelectCaliberFilter"
+              rectAlignment="UpperLeft" width="195" height="34" offsetXY="505 -120"
+              fontSize="12" color="#1D2B24" textColor="#F1F7F2"
+              itemTextColor="#F1F7F2"
+              itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+              dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4"
+              arrowColor="#FFFFFF" dropdownHeight="360" itemHeight="32">%s</Dropdown>
+        ]], dropdownOptions(values, selectedFilter))
+    end
+
+    local variantPanel = ""
+    local hasVariants = showSelected and tostring(selectedItem.variantSpec or "") ~= ""
+
+    if hasVariants then
+        local calibers = handlerItemCaliberOptions(selectedItem)
+        local capacities = handlerItemCapacityOptions(selectedItem, chosenCaliber)
+
+        variantPanel = string.format([[
+          <Panel rectAlignment="UpperLeft" width="250" height="82" offsetXY="18 -270" color="#101712CC">
+            <Text text="CALIBER" rectAlignment="UpperLeft" width="110" height="20"
+                offsetXY="8 -6" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
+            <Dropdown id="handler_variant_caliber" onValueChanged="handlerSelectVariantCaliber"
+                rectAlignment="UpperLeft" width="112" height="32" offsetXY="8 -28"
+                fontSize="11" color="#1D2B24" textColor="#F1F7F2"
+                itemTextColor="#F1F7F2" itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+                dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4" arrowColor="#FFFFFF"
+                dropdownHeight="300" itemHeight="30">%s</Dropdown>
+            <Text text="MAG" rectAlignment="UpperLeft" width="105" height="20"
+                offsetXY="132 -6" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
+            <Dropdown id="handler_variant_capacity" onValueChanged="handlerSelectVariantCapacity"
+                rectAlignment="UpperLeft" width="105" height="32" offsetXY="132 -28"
+                fontSize="11" color="#1D2B24" textColor="#F1F7F2"
+                itemTextColor="#F1F7F2" itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+                dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4" arrowColor="#FFFFFF"
+                dropdownHeight="260" itemHeight="30">%s</Dropdown>
+          </Panel>
+        ]],
+            dropdownOptions(calibers, chosenCaliber),
+            dropdownOptions(capacities, tostring(cap or ""))
+        )
+    end
+
+    local optionsY = hasVariants and -360 or -282
+
     local ammoPanel = ""
     if showAmmo then
         ammoPanel = string.format([[
-          <Panel rectAlignment="UpperLeft" width="250" height="150" offsetXY="18 -262" color="#111812AA">
-            <Text text="STARTING RESERVE" rectAlignment="UpperLeft" width="220" height="24"
-                offsetXY="14 -10" fontSize="12" fontStyle="Bold" color="#A9B8AD"/>
+          <Panel rectAlignment="UpperLeft" width="250" height="116" offsetXY="18 %d" color="#111812AA">
+            <Text text="STARTING RESERVE" rectAlignment="UpperLeft" width="220" height="20"
+                offsetXY="10 -6" fontSize="11" fontStyle="Bold" color="#A9B8AD"/>
             <InputField id="handler_add_reserve_rounds" onValueChanged="captureHandlerReserveRounds"
-                text="%d" rectAlignment="UpperLeft" width="220" height="36" offsetXY="14 -42"
-                fontSize="15" color="#17231C" textColor="#FFFFFF"/>
-            <Text text="SPARE MAGS" rectAlignment="UpperLeft" width="100" height="24"
-                offsetXY="14 -88" fontSize="11" color="#A9B8AD"/>
+                text="%d" rectAlignment="UpperLeft" width="90" height="30" offsetXY="10 -32"
+                fontSize="14" color="#17231C" textColor="#FFFFFF"/>
+            <Text text="SPARE MAGS" rectAlignment="UpperLeft" width="90" height="18"
+                offsetXY="112 -14" fontSize="10" color="#A9B8AD"/>
             <Button id="handler_add_mags_minus" onClick="adjustHandlerAddReserveMags" text="-"
-                rectAlignment="UpperLeft" width="38" height="34" offsetXY="108 -84"
-                fontSize="17" color="#563434" textColor="#FFFFFF"/>
-            <Text id="handler_add_mags_count" text="%d" rectAlignment="UpperLeft" width="48" height="34" offsetXY="150 -84"
-                fontSize="15" fontStyle="Bold" color="#FFFFFF" alignment="MiddleCenter"/>
+                rectAlignment="UpperLeft" width="28" height="30" offsetXY="112 -34"
+                fontSize="16" color="#563434" textColor="#FFFFFF"/>
+            <Text id="handler_add_mags_count" text="%d" rectAlignment="UpperLeft"
+                width="38" height="30" offsetXY="143 -34" fontSize="14"
+                fontStyle="Bold" color="#FFFFFF" alignment="MiddleCenter"/>
             <Button id="handler_add_mags_plus" onClick="adjustHandlerAddReserveMags" text="+"
-                rectAlignment="UpperLeft" width="38" height="34" offsetXY="202 -84"
-                fontSize="17" color="#355845" textColor="#FFFFFF"/>
-            <Text id="handler_add_mag_hint" text="%s" rectAlignment="UpperLeft" width="225" height="28" offsetXY="14 -124"
-                fontSize="9" color="#84968B" alignment="MiddleLeft"/>
-          </Panel>]],
-          math.max(0, math.floor(tonumber(state.addReserveRounds) or 0)), mags, esc(magHint))
+                rectAlignment="UpperLeft" width="28" height="30" offsetXY="184 -34"
+                fontSize="16" color="#355845" textColor="#FFFFFF"/>
+            <Text id="handler_add_mag_hint" text="%s" rectAlignment="UpperLeft"
+                width="225" height="34" offsetXY="10 -72" fontSize="9"
+                color="#84968B" alignment="UpperLeft" horizontalOverflow="Wrap"/>
+          </Panel>
+        ]], optionsY,
+            math.max(0, math.floor(tonumber(state.addReserveRounds) or 0)),
+            mags, esc(magHint))
     end
 
     local qtyPanel = ""
     if showQty then
         qtyPanel = string.format([[
-          <Panel rectAlignment="UpperLeft" width="250" height="90" offsetXY="18 -282" color="#111812AA">
+          <Panel rectAlignment="UpperLeft" width="250" height="90" offsetXY="18 %d" color="#111812AA">
             <Text text="QUANTITY" rectAlignment="UpperLeft" width="100" height="24"
                 offsetXY="14 -12" fontSize="12" fontStyle="Bold" color="#A9B8AD"/>
             <Button id="handler_add_qty_minus" onClick="adjustHandlerAddQuantity" text="-"
                 rectAlignment="UpperLeft" width="38" height="36" offsetXY="14 -42"
                 fontSize="18" color="#563434" textColor="#FFFFFF"/>
-            <Text id="handler_add_qty_count" text="%d" rectAlignment="UpperLeft" width="70" height="36" offsetXY="60 -42"
-                fontSize="17" fontStyle="Bold" color="#FFFFFF" alignment="MiddleCenter"/>
+            <Text id="handler_add_qty_count" text="%d" rectAlignment="UpperLeft"
+                width="70" height="36" offsetXY="60 -42" fontSize="17"
+                fontStyle="Bold" color="#FFFFFF" alignment="MiddleCenter"/>
             <Button id="handler_add_qty_plus" onClick="adjustHandlerAddQuantity" text="+"
                 rectAlignment="UpperLeft" width="38" height="36" offsetXY="138 -42"
                 fontSize="18" color="#355845" textColor="#FFFFFF"/>
-          </Panel>]], math.max(1, math.floor(tonumber(state.addQuantity) or 1)))
+          </Panel>
+        ]], optionsY, math.max(1, math.floor(tonumber(state.addQuantity) or 1)))
     end
 
     return string.format([[
@@ -2384,51 +2578,60 @@ local function buildAddItemToAgent()
             offsetXY="20 -51" fontSize="12" color="#A9B8AD"/>
 
         %s
-        <Text text="%s" rectAlignment="UpperLeft" width="690" height="30" offsetXY="20 -126"
+        <Text text="%s" rectAlignment="UpperLeft" width="390" height="30" offsetXY="20 -126"
             fontSize="16" fontStyle="Bold" color="#D2E5D6" alignment="MiddleLeft"/>
+        %s
 
         <VerticalScrollView id="handler_equipment_browse_scroll" width="710" height="490"
-            rectAlignment="UpperLeft" offsetXY="20 -162" scrollSensitivity="32" color="#0D151100"
-            verticalScrollbarVisibility="AutoHide" scrollbarBackgroundColor="#101712"
+            rectAlignment="UpperLeft" offsetXY="20 -162" scrollSensitivity="32"
+            color="#0D151100" verticalScrollbarVisibility="AutoHide"
+            scrollbarBackgroundColor="#101712"
             scrollbarColors="#55705D|#66836D|#78937E|#33443A">
           <Panel width="690" height="%d" rectAlignment="UpperLeft">%s</Panel>
         </VerticalScrollView>
 
         <Panel id="handler_add_selected_panel" active="%s" rectAlignment="UpperRight"
-            width="290" height="490" offsetXY="-20 -162" color="#17201BCC">
-          <Text text="SELECTED" rectAlignment="UpperLeft" width="250" height="28" offsetXY="18 -18"
-              fontSize="13" fontStyle="Bold" color="#A9B8AD"/>
-          <Text text="%s" rectAlignment="UpperLeft" width="250" height="62" offsetXY="18 -48"
+            width="290" height="520" offsetXY="-20 -162" color="#17201BCC">
+          <Text text="SELECTED" rectAlignment="UpperLeft" width="250" height="24" offsetXY="18 -12"
+              fontSize="12" fontStyle="Bold" color="#A9B8AD"/>
+          <Text text="%s" rectAlignment="UpperLeft" width="250" height="58" offsetXY="18 -38"
               fontSize="18" fontStyle="Bold" color="#FFFFFF" alignment="UpperLeft" horizontalOverflow="Wrap"/>
-          <Text text="EXPENSE LEVEL\n%s" rectAlignment="UpperLeft" width="250" height="54" offsetXY="18 -116"
-              fontSize="15" color="#C7D4CB" alignment="UpperLeft"/>
-          <Text text="%s" rectAlignment="UpperLeft" width="250" height="120" offsetXY="18 -174"
+
+          <Text text="EXPENSE LEVEL" rectAlignment="UpperLeft" width="250" height="20"
+              offsetXY="18 -101" fontSize="11" fontStyle="Bold" color="#A9B8AD"/>
+          <Text text="%s" rectAlignment="UpperLeft" width="250" height="26" offsetXY="18 -122"
+              fontSize="14" fontStyle="Bold" color="#D9C07A"/>
+
+          <Text text="%s" rectAlignment="UpperLeft" width="250" height="112" offsetXY="18 -154"
               fontSize="11" color="#A9B8AD" alignment="UpperLeft" horizontalOverflow="Wrap"/>
+
           %s
           %s
+          %s
+
           <Button id="handler_prepare_add_item" onClick="handlerPrepareAddItem"
-              text="ADD ITEM" rectAlignment="LowerLeft" width="250" height="42" offsetXY="18 18"
+              text="ADD ITEM" rectAlignment="LowerLeft" width="250" height="42" offsetXY="18 14"
               fontSize="15" fontStyle="Bold" color="#355845" textColor="#FFFFFF"/>
         </Panel>
 
-        <Text text="%s" rectAlignment="UpperLeft" width="1010" height="36" offsetXY="20 -670"
+        <Text text="%s" rectAlignment="UpperLeft" width="1010" height="36" offsetXY="20 -695"
             fontSize="12" color="#BFD0C3" alignment="MiddleLeft" horizontalOverflow="Wrap"/>
       </Panel>]],
-        esc(
-            snapshot.loading == true and
-            "Loading equipment catalog..." or
-            tostring(snapshot.source or "Agent catalog")
-        ),
+        esc(snapshot.loading == true and "Loading equipment catalog..." or tostring(snapshot.source or "Agent catalog")),
         snapshot.sourceColor and (" via " .. tostring(snapshot.sourceColor)) or "",
         buildHandlerBreadcrumbXml(),
-        esc(handlerBrowseTitle()), browseHeight, browseRows,
+        esc(handlerBrowseTitle()), filterXml,
+        browseHeight, browseRows,
         showSelected and "true" or "false",
         esc(showSelected and tostring(selectedItem.name or selectedItem.key or "") or ""),
         esc(showSelected and tostring(selectedItem.expense or "—") or "—"),
         esc(showSelected and tostring(selectedItem.details or "") or ""),
-        ammoPanel, qtyPanel, esc(status)
+        variantPanel, ammoPanel, qtyPanel,
+        esc(status)
     )
 end
+
+
 
 local function buildXml()
     local tab = state.currentTab or "overview"
@@ -2728,6 +2931,8 @@ function handlerEquipmentBreadcrumbClick(player, value, id)
         state.addCategory = "Firearms"
         state.addSubcategory = ""
         state.addItemKey = ""
+        state.addCaliberFilter = "ALL"
+        handlerResetSelectedVariant(nil)
     elseif target == "category" then
         state.addBrowseLevel = "category"
         state.addSubcategory = ""
@@ -2759,6 +2964,8 @@ function handlerEquipmentBrowseRowClick(player, value, id)
         state.addSubcategory = ""
         state.addBrowseLevel = "category"
         state.addItemKey = ""
+        state.addCaliberFilter = "ALL"
+        handlerResetSelectedVariant(nil)
 
     elseif kind == "subcategory" then
         snapshot = getHandlerCatalogSnapshot(state.addCategory)
@@ -2770,6 +2977,7 @@ function handlerEquipmentBrowseRowClick(player, value, id)
         state.addSubcategory = selected
         state.addBrowseLevel = "subcategory"
         state.addItemKey = ""
+        handlerResetSelectedVariant(nil)
 
     elseif kind == "item" then
         snapshot = getHandlerCatalogSnapshot(state.addCategory)
@@ -2782,6 +2990,7 @@ function handlerEquipmentBrowseRowClick(player, value, id)
         end
         if not selected then return end
         state.addItemKey = selected
+        handlerResetSelectedVariant(handlerCatalogItemByKey(snapshot, selected))
         state.addQuantity = 1
         state.addReserveRounds = 0
         state.addReserveMags = 0
@@ -2791,6 +3000,27 @@ function handlerEquipmentBrowseRowClick(player, value, id)
     end
 
     state.addAssignPending = false
+    rebuildUI()
+end
+
+function handlerSelectCaliberFilter(player, value, id)
+    state.addCaliberFilter = tostring(value or "ALL")
+    state.addItemKey = ""
+    handlerResetSelectedVariant(nil)
+    rebuildUI()
+end
+
+function handlerSelectVariantCaliber(player, value, id)
+    state.addSelectedCaliber = tostring(value or "")
+    state.addSelectedCapacity = ""
+    local snapshot = getHandlerCatalogSnapshot(state.addCategory)
+    local item = handlerCatalogItemByKey(snapshot, state.addItemKey)
+    handlerSelectedVariant(item)
+    rebuildUI()
+end
+
+function handlerSelectVariantCapacity(player, value, id)
+    state.addSelectedCapacity = tostring(value or "")
     rebuildUI()
 end
 
@@ -2821,7 +3051,7 @@ function adjustHandlerAddReserveMags(player, value, id)
 
     local snapshot = getHandlerCatalogSnapshot(state.addCategory)
     local selectedItem = handlerCatalogItemByKey(snapshot, state.addItemKey)
-    local cap = selectedItem and tonumber(tostring(selectedItem.capacity or ""):match("(%d+)")) or nil
+    local _, cap = handlerSelectedVariant(selectedItem)
     local hint = cap and string.format(
         "1 spare mag = %d rounds. %d mags = %d reserve rounds.",
         cap, mags, cap * mags
@@ -2874,7 +3104,9 @@ function handlerAssignPreparedItem(player, value, id)
             itemKey = key,
             quantity = math.max(1, math.floor(tonumber(state.addQuantity) or 1)),
             reserveRounds = math.max(0, math.floor(tonumber(state.addReserveRounds) or 0)),
-            reserveMags = math.max(0, math.floor(tonumber(state.addReserveMags) or 0))
+            reserveMags = math.max(0, math.floor(tonumber(state.addReserveMags) or 0)),
+            caliber = tostring(state.addSelectedCaliber or ""),
+            capacity = tonumber(state.addSelectedCapacity)
         })
     end)
 
@@ -2891,6 +3123,7 @@ function handlerAssignPreparedItem(player, value, id)
         state.addQuantity = 1
         state.addReserveRounds = 0
         state.addReserveMags = 0
+        handlerResetSelectedVariant(nil)
 
         pcall(function()
             broadcastToColor(
@@ -3359,6 +3592,9 @@ function onLoad(saved_data)
     state.addAssignPending = state.addAssignPending == true
     state.addCatalogSourceColor = state.addCatalogSourceColor or ""
     state.addItemKey = state.addItemKey or ""
+    state.addCaliberFilter = state.addCaliberFilter or "ALL"
+    state.addSelectedCaliber = state.addSelectedCaliber or ""
+    state.addSelectedCapacity = state.addSelectedCapacity or ""
     state.addQuantity = math.max(1, tonumber(state.addQuantity) or 1)
     state.addReserveRounds = math.max(0, tonumber(state.addReserveRounds) or 0)
     state.addReserveMags = math.max(0, tonumber(state.addReserveMags) or 0)
