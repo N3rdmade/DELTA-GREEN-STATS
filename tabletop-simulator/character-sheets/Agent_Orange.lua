@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Orange
--- Version: r73
+-- Version: r74
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -4519,10 +4519,10 @@ weaponAmmoLabel = function(weapon)
     end
 
     if caliber == "" or string.lower(caliber) == "various" then
-        return "RESERVE"
+        return "AMMO"
     end
 
-    return caliber .. " RESERVE"
+    return caliber
 end
 
 getSharedAmmoReserve = function(weapon)
@@ -4724,12 +4724,29 @@ local function catalogItemSubcategory(key)
     if source == "Firearms" then
         if sub == "Pistols" then
             local name = string.lower(tostring(item.name or ""))
-            local damage = string.upper(tostring(item.damage or ""))
-            if name == "light pistol" or damage == "1D8" then
+            local caliber = string.lower(tostring(item.caliber or ""))
+
+            -- Delta Green pistol classes follow the weapon/cartridge profile,
+            -- not simply physical size or the current damage string.
+            if name == "light pistol" or
+               caliber == ".22 lr" or caliber == ".22 short" or
+               caliber == ".25 acp" or caliber == ".32 acp" or
+               caliber == ".32 h&r magnum" or caliber == ".380 acp" or
+               caliber == ".38 special"
+            then
                 return "Light Pistols"
-            elseif name == "heavy pistol" or damage == "1D12" then
+
+            elseif name == "heavy pistol" or
+                   caliber == ".357 magnum" or caliber == ".44 magnum" or
+                   caliber == ".41 magnum" or caliber == "10mm auto" or
+                   caliber == ".50 ae" or caliber == ".454 casull" or
+                   caliber == ".500 s&w magnum"
+            then
                 return "Heavy Pistols"
             end
+
+            -- 9mm, .40 S&W, .45 ACP, 5.7x28mm, .357 SIG, etc. use the
+            -- medium-pistol replacement class unless explicitly heavy/light.
             return "Medium Pistols"
         elseif sub == "Carbines" or sub == "Pistol-Caliber Carbines" or sub == "Assault Rifles" then
             return "Light Rifles / Carbines"
@@ -10014,6 +10031,16 @@ end
 
 function equipmentBreadcrumbClick(player, value, id)
     local target = tostring(id or ""):gsub("^equipment_crumb_", "")
+
+    if state.equipmentReplace then
+        -- Replace mode is intentionally locked to the original item's class.
+        -- Backing out of that class cancels replacement instead of allowing
+        -- the player to browse into unrelated equipment categories.
+        if target == "root" or target == "category" then
+            cancelEquipmentReplace(player, value, id)
+        end
+        return
+    end
 
     if target == "root" then
         state.addItemBrowseLevel = "root"
