@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Red
--- Version: r70
+-- Version: r71
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -4387,6 +4387,46 @@ local function selectedCatalogCapacity(key)
     return catalogItemMagazineCapacity(key)
 end
 
+local function catalogVariantCapacityDropdownsXml(key, chosenCaliber, chosenCapacity)
+    local item = EQUIPMENT_CATALOG[tostring(key or "")]
+    local variants = parseCatalogVariants(item)
+    local xml = ""
+
+    for index, variant in ipairs(variants) do
+        local values = {}
+        for _, cap in ipairs(variant.capacities or {}) do
+            table.insert(values, tostring(cap))
+        end
+
+        local selected = ""
+        if tostring(variant.caliber or "") == tostring(chosenCaliber or "") then
+            selected = tostring(chosenCapacity or "")
+        elseif #values > 0 then
+            selected = tostring(values[1])
+        end
+
+        xml = xml .. string.format([[
+            <Dropdown id="equipment_variant_capacity_%d"
+                active="%s"
+                onValueChanged="selectCatalogVariantCapacity"
+                rectAlignment="UpperLeft" width="105" height="32" offsetXY="132 -28"
+                fontSize="11" color="#1D2B24" textColor="#F1F7F2"
+                itemTextColor="#F1F7F2"
+                itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
+                dropdownBackgroundColor="#0F1210"
+                checkColor="#9BC3A4" arrowColor="#FFFFFF"
+                dropdownHeight="260" itemHeight="30">%s</Dropdown>
+        ]],
+            index,
+            tostring(variant.caliber or "") == tostring(chosenCaliber or "") and "true" or "false",
+            plainDropdownOptions(values, selected)
+        )
+    end
+
+    return xml
+end
+
+
 local function resetSelectedCatalogVariant(key)
     state.addSelectedCaliber = ""
     state.addSelectedCapacity = ""
@@ -4964,16 +5004,11 @@ local function buildAddItemPanel()
                 dropdownHeight="300" itemHeight="30">%s</Dropdown>
             <Text text="MAG" rectAlignment="UpperLeft" width="105" height="20"
                 offsetXY="132 -6" fontSize="10" fontStyle="Bold" color="#A9B8AD"/>
-            <Dropdown id="equipment_variant_capacity" onValueChanged="selectCatalogVariantCapacity"
-                rectAlignment="UpperLeft" width="105" height="32" offsetXY="132 -28"
-                fontSize="11" color="#1D2B24" textColor="#F1F7F2"
-                itemTextColor="#F1F7F2" itemBackgroundColors="#141816|#1D2521|#2B3831|#0F1210"
-                dropdownBackgroundColor="#0F1210" checkColor="#9BC3A4" arrowColor="#FFFFFF"
-                dropdownHeight="260" itemHeight="30">%s</Dropdown>
+            %s
           </Panel>
         ]],
             plainDropdownOptions(calibers, chosenCaliber),
-            plainDropdownOptions(capacities, chosenCapacity)
+            catalogVariantCapacityDropdownsXml(selected, chosenCaliber, chosenCapacity)
         )
     end
 
@@ -10023,17 +10058,72 @@ function selectEquipmentCaliberFilter(player, value, id)
 end
 
 function selectCatalogVariantCaliber(player, value, id)
+    local selectedKey = string.lower(tostring(state.addItemName or ""))
+    local item = EQUIPMENT_CATALOG[selectedKey]
+    if not item then return end
+
     state.addSelectedCaliber = tostring(value or "")
     state.addSelectedCapacity = ""
-    selectedCatalogCapacity(string.lower(tostring(state.addItemName or "")))
-    rebuildCachedPage("equipment")
-    activateCachedPage("equipment")
+
+    local cap = selectedCatalogCapacity(selectedKey)
+    local helper = getCachedHelper("equipment")
+
+    if helper then
+        local variants = parseCatalogVariants(item)
+
+        pcall(function()
+            for index, variant in ipairs(variants) do
+                helper.UI.setAttribute(
+                    "equipment_variant_capacity_" .. tostring(index),
+                    "active",
+                    tostring(variant.caliber or "") == state.addSelectedCaliber and
+                        "true" or "false"
+                )
+            end
+
+            local mags = math.max(
+                0,
+                math.floor(tonumber(state.addReserveMags) or 0)
+            )
+
+            if cap then
+                helper.UI.setAttribute(
+                    "equipment_add_mag_hint",
+                    "text",
+                    string.format(
+                        "1 spare mag = %d rounds. %d mags = %d reserve rounds.",
+                        cap, mags, cap * mags
+                    )
+                )
+            end
+        end)
+    end
 end
 
 function selectCatalogVariantCapacity(player, value, id)
     state.addSelectedCapacity = tostring(value or "")
-    rebuildCachedPage("equipment")
-    activateCachedPage("equipment")
+
+    local helper = getCachedHelper("equipment")
+    if helper then
+        local cap = tonumber(state.addSelectedCapacity)
+        local mags = math.max(
+            0,
+            math.floor(tonumber(state.addReserveMags) or 0)
+        )
+
+        if cap then
+            pcall(function()
+                helper.UI.setAttribute(
+                    "equipment_add_mag_hint",
+                    "text",
+                    string.format(
+                        "1 spare mag = %d rounds. %d mags = %d reserve rounds.",
+                        cap, mags, cap * mags
+                    )
+                )
+            end)
+        end
+    end
 end
 
 function adjustAddItemQuantity(player, value, id)
