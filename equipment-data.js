@@ -500,6 +500,71 @@ window.DG_EQUIPMENT_CATALOG = [
     },
 
 
+
+    // ── PISTOL-CALIBER CARBINES ────────────────────────────────────────────────
+    // Variant metadata format: CALIBER=CAPACITY/CAPACITY;CALIBER=CAPACITY...
+    // The TTS sheets use the selected caliber as the shared-ammo-pool key.
+    {
+        category: 'Firearms', name: 'Ruger PC Carbine', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=10/17/33;5.7x28mm=20;10mm Auto=15;.45 ACP=13',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Ruger PC/LC family represented as a configurable pistol-caliber carbine. Select chambering and magazine capacity when adding it.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'CZ Scorpion EVO 3 / 3+', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=20/30',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>9mm Scorpion carbine/PCC configuration. Select magazine capacity when adding it.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'SIG Sauer MPX', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=20/30/35',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>9mm MPX PCC configuration. Select magazine capacity when adding it.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Smith & Wesson M&P FPC', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=17/23',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Folding 9mm pistol-caliber carbine. Select magazine capacity when adding it.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'KelTec SUB2000', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=10/15/17/33;.40 S&W=10/15/22',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Folding PCC whose chambering and magazine compatibility vary by configuration. Select both when adding it.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Century Arms AP5', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=30',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>9mm roller-delayed PCC platform using a 30-round magazine.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'CMMG Banshee', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=10/17/33;.40 S&W=10/15/22;10mm Auto=10/15/30;.45 ACP=10/13/26;5.7x28mm=20/30',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Configurable PCC family offered in multiple pistol calibers. Select chambering and magazine capacity when adding it.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Palmetto State Armory AK-V', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=35',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>9mm AK-pattern PCC using a 35-round magazine.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '35', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'B&T APC9 Pro', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=30;.40 S&W=30;10mm Auto=30;.45 ACP=25',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>APC-family PCC represented with selectable chambering and magazine capacity.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Henry Homesteader', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=5/10/17/21',
+        img: 'systems/deltagreen/assets/icons/rifle.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>9mm semi-automatic carbine with several magazine-adapter configurations. Select magazine capacity when adding it.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '10', expense: 'Standard', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'KRISS Vector PCC', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=10/17/33;.40 S&W=10/15/22;10mm Auto=10/15/30;.45 ACP=10/13/25;.357 SIG=10/15/22',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>KRISS Vector carbine configuration. Select chambering and magazine capacity when adding it.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '17', expense: 'Unusual', equipped: true }
+    },
+    {
+        category: 'Firearms', name: 'Springfield Armory Kuna', type: 'weapon', subcategory: 'Pistol-Caliber Carbines', caliber: '9x19mm', variants: '9x19mm=30',
+        img: 'systems/deltagreen/assets/icons/smg.svg', flags: {}, effects: [],
+        system: { name: '', description: '<p><em>Compact 9mm PCC/PDW configuration using a 30-round magazine.</em></p>', skill: 'firearms', skillModifier: 0, customSkillTarget: 50, range: '50M', damage: '1D12', armorPiercing: 0, lethality: 10, isLethal: false, killRadius: 'N/A', ammo: '30', expense: 'Unusual', equipped: true }
+    },
+
     // ── 7.62x39mm ASSAULT RIFLES ───────────────────────────────────────────────
     {
         category: 'Firearms', name: 'AKM', type: 'weapon', subcategory: 'Assault Rifles', caliber: '7.62x39mm',
