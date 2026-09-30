@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.2
+-- Version: v3.3
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -969,8 +969,29 @@ local function buildHistoryRows(history, emptyText)
         )
     end
 
-    local xml = ""
-    local y = -28
+    local xml = [[
+      <Text text="RECENT ROLLS"
+          rectAlignment="UpperLeft"
+          width="300" height="34"
+          offsetXY="42 -24"
+          fontSize="18"
+          fontStyle="Bold"
+          color="#C8D8CC"
+          alignment="MiddleLeft"/>
+
+      <Button id="clear_all_roll_history"
+          onClick="clearAllRollHistory"
+          text="CLEAR ALL"
+          rectAlignment="UpperRight"
+          width="145" height="30"
+          offsetXY="-45 -26"
+          fontSize="11"
+          fontStyle="Bold"
+          color="#5B3030"
+          textColor="#FFFFFF"/>
+    ]]
+
+    local y = -68
 
     for rollIndex, item in ipairs(history) do
         xml = xml .. string.format([[
@@ -2416,7 +2437,7 @@ local function buildXml()
 
     if tab == "rolls" then
         content = buildHistoryRows(state.rollHistory, "No rolls received yet.")
-        contentHeight = math.max(900, 120 + (#state.rollHistory * 62))
+        contentHeight = math.max(900, 165 + (#state.rollHistory * 62))
     elseif tab == "roll" then
         content = buildRoll()
     elseif tab == "home" then
@@ -3290,6 +3311,11 @@ function clearRollHistoryEntry(player, value, id)
     end
 
     table.remove(state.rollHistory, index)
+    rebuildUI()
+end
+
+function clearAllRollHistory(player, value, id)
+    state.rollHistory = {}
     rebuildUI()
 end
 
