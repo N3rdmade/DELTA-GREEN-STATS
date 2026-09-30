@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Red
--- Version: r71
+-- Version: r72
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -163,6 +163,7 @@ local state = {
     addSelectedCapacity = "",
     addReserveRounds = 0,
     addReserveMags = 0,
+    equipmentReplace = nil,
 
     -- Staged weapon attack -> damage/lethality flow.
     -- Kept in saved state so the UI can show the correct next action.
@@ -1750,7 +1751,7 @@ local function buildHomeTimePanel()
           offsetXY="48 -82"
           color="#111A15F2">
 
-        <Text text="HOME TIME — SKILL IMPROVEMENT"
+        <Text text="END SESSION — FAILED SKILL IMPROVEMENT"
             rectAlignment="UpperLeft"
             width="650" height="34"
             offsetXY="22 -16"
@@ -1780,7 +1781,7 @@ local function buildHomeTimePanel()
 
         <Button id="home_time_apply"
             onClick="applyMarkedSkillImprovements"
-            text="ROLL 1D4 FOR MARKED SKILLS"
+            text="IMPROVE ALL MARKED SKILLS"
             interactable="%s"
             rectAlignment="UpperRight"
             width="330" height="48"
@@ -4011,16 +4012,49 @@ local function buildCategorizedEquipmentRows(items)
 
         end
 
+        local equipmentManageButtons = ""
+        if item.kind == "weapon" and tonumber(item.weaponIndex) then
+            equipmentManageButtons = string.format([[
+              <Button id="equipment_remove_weapon_%d" onClick="removeEquipmentItem"
+                  text="REMOVE" rectAlignment="UpperLeft" width="64" height="26"
+                  offsetXY="10 -7" fontSize="9" color="#5B3030" textColor="#FFFFFF"/>
+              <Button id="equipment_replace_weapon_%d" onClick="beginReplaceEquipmentItem"
+                  text="REPLACE" rectAlignment="UpperLeft" width="72" height="26"
+                  offsetXY="78 -7" fontSize="9" color="#355845" textColor="#FFFFFF"/>
+            ]], tonumber(item.weaponIndex), tonumber(item.weaponIndex))
+        elseif item.kind == "armor" and tonumber(item.armorIndex) then
+            equipmentManageButtons = string.format([[
+              <Button id="equipment_remove_armor_%d" onClick="removeEquipmentItem"
+                  text="REMOVE" rectAlignment="UpperLeft" width="64" height="26"
+                  offsetXY="10 -7" fontSize="9" color="#5B3030" textColor="#FFFFFF"/>
+              <Button id="equipment_replace_armor_%d" onClick="beginReplaceEquipmentItem"
+                  text="REPLACE" rectAlignment="UpperLeft" width="72" height="26"
+                  offsetXY="78 -7" fontSize="9" color="#355845" textColor="#FFFFFF"/>
+            ]], tonumber(item.armorIndex), tonumber(item.armorIndex))
+        elseif item.kind == "gear" and tostring(item.gearKey or "") ~= "" then
+            local safeGear = tostring(item.gearKey):gsub("[^%w]","_")
+            equipmentManageButtons = string.format([[
+              <Button id="equipment_remove_gear_%s" onClick="removeEquipmentItem"
+                  text="REMOVE" rectAlignment="UpperLeft" width="64" height="26"
+                  offsetXY="10 -7" fontSize="9" color="#5B3030" textColor="#FFFFFF"/>
+              <Button id="equipment_replace_gear_%s" onClick="beginReplaceEquipmentItem"
+                  text="REPLACE" rectAlignment="UpperLeft" width="72" height="26"
+                  offsetXY="78 -7" fontSize="9" color="#355845" textColor="#FFFFFF"/>
+            ]], esc(safeGear), esc(safeGear))
+        end
+
         xml = xml .. string.format([[
           <Panel rectAlignment="UpperLeft"
               width="1050" height="142"
               offsetXY="0 %d"
               color="#111A15CC">
 
+            %s
+
             <Text text="%s"
                 rectAlignment="UpperLeft"
-                width="170" height="24"
-                offsetXY="12 -7"
+                width="135" height="24"
+                offsetXY="158 -7"
                 fontSize="13"
                 fontStyle="Bold"
                 color="%s"
@@ -4028,8 +4062,8 @@ local function buildCategorizedEquipmentRows(items)
 
             <Text text="%s"
                 rectAlignment="UpperLeft"
-                width="520" height="28"
-                offsetXY="188 -5"
+                width="405" height="28"
+                offsetXY="300 -5"
                 fontSize="18"
                 fontStyle="Bold"
                 color="#E3EEE6"
@@ -4058,6 +4092,7 @@ local function buildCategorizedEquipmentRows(items)
           </Panel>
         ]],
             -y,
+            equipmentManageButtons,
             esc(equipmentCategoryLabel(item.category)),
             equipmentCategoryColor(item.category),
             esc(item.name),
@@ -4659,13 +4694,12 @@ end
 local EQUIPMENT_SUBCATEGORY_ORDER = {
     ["Firearms"] = {
         "All",
-        "Pistols",
-        "Carbines",
-        "Pistol-Caliber Carbines",
-        "Assault Rifles",
-        "Battle Rifles",
-        "Marksman Rifles",
-        "Heavy Snipers",
+        "Light Pistols",
+        "Medium Pistols",
+        "Heavy Pistols",
+        "Light Rifles / Carbines",
+        "Heavy Rifles",
+        "Very Heavy Rifles",
         "SMGs",
         "Shotguns"
     },
@@ -4683,6 +4717,31 @@ local function catalogItemSubcategory(key)
     if not item then return "Other" end
 
     local sub = tostring(item.subcategory or "")
+    local source = tostring(item.sourceCategory or "")
+
+    if source == "Firearms" then
+        if sub == "Pistols" then
+            local name = string.lower(tostring(item.name or ""))
+            local damage = string.upper(tostring(item.damage or ""))
+            if name == "light pistol" or damage == "1D8" then
+                return "Light Pistols"
+            elseif name == "heavy pistol" or damage == "1D12" then
+                return "Heavy Pistols"
+            end
+            return "Medium Pistols"
+        elseif sub == "Carbines" or sub == "Pistol-Caliber Carbines" or sub == "Assault Rifles" then
+            return "Light Rifles / Carbines"
+        elseif sub == "Battle Rifles" or sub == "Marksman Rifles" then
+            return "Heavy Rifles"
+        elseif sub == "Heavy Snipers" then
+            return "Very Heavy Rifles"
+        elseif sub == "SMGs" then
+            return "SMGs"
+        elseif sub == "Shotguns" then
+            return "Shotguns"
+        end
+    end
+
     if sub == "" then sub = "Other" end
     return sub
 end
@@ -4935,8 +4994,9 @@ local function buildAddItemPanel()
     local details = catalogItemDetailsText(selected)
     local expense = catalogItemExpense(selected)
     local cap = selected ~= "" and selectedCatalogCapacity(selected) or nil
-    local showAmmoOptions = selected ~= "" and selectedCatalogHasReserveAmmo()
-    local showQuantity = selected ~= "" and selectedCatalogUsesQuantity()
+    local replacing = state.equipmentReplace ~= nil
+    local showAmmoOptions = (not replacing) and selected ~= "" and selectedCatalogHasReserveAmmo()
+    local showQuantity = (not replacing) and selected ~= "" and selectedCatalogUsesQuantity()
     local mags = math.max(0, math.floor(tonumber(state.addReserveMags) or 0))
     local magHint = ""
 
@@ -5068,15 +5128,24 @@ local function buildAddItemPanel()
         ]], optionsY, math.max(1, math.floor(tonumber(state.addItemQuantity) or 1)))
     end
 
+    local actionLabel = replacing and "REPLACE ITEM" or "ADD TO AGENT"
+    local panelTitle = replacing and ("REPLACE " .. tostring(state.equipmentReplace.name or "ITEM")) or "ADD EQUIPMENT"
+    local cancelReplace = replacing and [[
+        <Button id="equipment_cancel_replace" onClick="cancelEquipmentReplace"
+            text="CANCEL REPLACE" rectAlignment="UpperRight" width="160" height="32"
+            offsetXY="-214 -48" fontSize="10" color="#5B3030" textColor="#FFFFFF"/>
+    ]] or ""
+
     return string.format([[
       <Panel rectAlignment="UpperLeft" width="1050" height="720" offsetXY="0 0" color="#111A15CC">
-        <Text text="ADD EQUIPMENT" rectAlignment="UpperLeft" width="420" height="38"
+        <Text text="%s" rectAlignment="UpperLeft" width="420" height="38"
             offsetXY="20 -16" fontSize="21" fontStyle="Bold" color="#D2E5D6" alignment="MiddleLeft"/>
         <Text text="SOURCE: %s" rectAlignment="UpperLeft" width="650" height="30"
             offsetXY="20 -51" fontSize="12" color="#A9B8AD"/>
         <Button id="equipment_refresh_github" onClick="refreshEquipmentCatalogFromGithub"
             text="REFRESH GITHUB" rectAlignment="UpperRight" width="185" height="32"
             offsetXY="-20 -48" fontSize="11" color="#2D625E" textColor="#FFFFFF"/>
+        %s
 
         %s
 
@@ -5118,13 +5187,15 @@ local function buildAddItemPanel()
           %s
 
           <Button id="equipment_add_selected" onClick="addSelectedCatalogItem"
-              text="ADD TO AGENT" interactable="%s"
+              text="%s" interactable="%s"
               rectAlignment="LowerLeft" width="250" height="42" offsetXY="18 14"
               fontSize="15" fontStyle="Bold" color="%s" textColor="#FFFFFF"/>
         </Panel>
       </Panel>
     ]],
+        esc(panelTitle),
         esc(tostring(equipmentCatalogSource) .. " (" .. tostring(equipmentCatalogCount) .. " items)"),
+        cancelReplace,
         buildBreadcrumbXml(),
         esc(browseTitle()), filterXml,
         browseHeight, browseRows,
@@ -5132,6 +5203,7 @@ local function buildAddItemPanel()
         esc(selected ~= "" and catalogDisplayName(selected) or ""),
         esc(expense), esc(details),
         variantPanel, ammoPanel, qtyPanel,
+        esc(actionLabel),
         selected ~= "" and "true" or "false",
         selected ~= "" and "#355845" or "#252B27"
     )
@@ -10203,6 +10275,79 @@ function addSelectedCatalogItem(player, value, id)
     local catalog = EQUIPMENT_CATALOG[selectedKey]
     if not catalog then return end
 
+    if state.equipmentReplace then
+        local chosenCaliber = selectedCatalogCaliber(selectedKey)
+        local chosenCapacity = selectedCatalogCapacity(selectedKey)
+        local replacement = state.equipmentReplace
+        local displayName = catalogDisplayName(selectedKey)
+        local ok = false
+        local message = ""
+
+        if replacement.kind == "weapon" and catalog.kind == "weapon" then
+            local i = tonumber(replacement.index)
+            local old = i and state.importedWeapons[i] or nil
+            if old then
+                local cap = tonumber(chosenCapacity) or tonumber(tostring(catalog.capacity or ""):match("(%d+)"))
+                state.importedWeapons[i] = {
+                    name = displayName, skill = tostring(catalog.skill or ""),
+                    range = tostring(catalog.range or ""), damage = tostring(catalog.damage or ""),
+                    lethality = tostring(catalog.lethality or ""),
+                    capacity = cap and tostring(cap) or tostring(catalog.capacity or ""),
+                    caliber = tostring(chosenCaliber or catalog.caliber or ""),
+                    ammoCurrent = cap, ammoReserve = 0, quantity = 1, fireMode = "SINGLE",
+                    accessoryMod = tonumber(catalog.accessoryMod) or 0,
+                    ap = tostring(catalog.ap or ""), killRadius = tostring(catalog.killRadius or ""),
+                    expense = tostring(catalog.expense or ""), consumable = catalog.consumable == true,
+                    sourceCategory = tostring(catalog.sourceCategory or ""), notes = tostring(catalog.notes or "")
+                }
+                ok = true
+                message = tostring(old.name or "Weapon") .. " replaced with " .. displayName .. ". Shared reserve ammo was preserved."
+            end
+        elseif replacement.kind == "armor" and catalog.kind == "armor" then
+            local i = tonumber(replacement.index)
+            local old = i and state.importedArmor[i] or nil
+            if old then
+                state.importedArmor[i] = {
+                    name = displayName, armor = tostring(catalog.armor or ""),
+                    expense = tostring(catalog.expense or ""), notes = tostring(catalog.notes or "")
+                }
+                ok = true
+                message = tostring(old.name or "Armor") .. " replaced with " .. displayName .. "."
+            end
+        elseif replacement.kind == "gear" and catalog.kind == "gear" then
+            local safe = tostring(replacement.key or "")
+            for i, g in ipairs(state.importedGear or {}) do
+                local oldName = tostring(g or "")
+                if string.lower(oldName):gsub("[^%w]","_") == safe then
+                    state.itemQuantities[string.lower(oldName)] = nil
+                    state.importedGear[i] = displayName
+                    state.itemQuantities[string.lower(displayName)] = 1
+                    ok = true
+                    message = oldName .. " replaced with " .. displayName .. "."
+                    break
+                end
+            end
+        end
+
+        if not ok then
+            broadcastToAll("[DG] Choose an item from the same replacement class.", {1.0,0.45,0.35})
+            return
+        end
+
+        state.equipmentReplace = nil
+        state.equipmentSubtab = "all"
+        state.addReserveRounds = 0
+        state.addReserveMags = 0
+        state.addItemQuantity = 1
+        state.pendingWeaponRoll = nil
+        cachedPageDirty["equipment"] = true
+        broadcastToAll("[DG] " .. message, {0.55,0.85,0.65})
+        queueDashboardSnapshot(SHEET_COLOR, "inventory", message)
+        rebuildCachedPage("equipment")
+        activateCachedPage("equipment")
+        return
+    end
+
     local requestedQty =
         math.max(1, math.floor(tonumber(state.addItemQuantity) or 1))
 
@@ -10698,6 +10843,98 @@ function handlerAddEquipmentItem(params)
         itemName = catalogDisplayName(key),
         reserveAdded = reserveAdded
     }
+end
+
+local function equipmentReplacementTarget(kind, token)
+    ensureStructuredImportState()
+    if kind == "weapon" then
+        local i = tonumber(token)
+        local w = i and state.importedWeapons[i] or nil
+        if not w then return nil end
+        local key = string.lower(tostring(w.name or ""))
+        local catalog = EQUIPMENT_CATALOG[key]
+        return {kind="weapon", index=i, name=tostring(w.name or "Weapon"),
+            category=tostring((catalog and catalog.sourceCategory) or w.sourceCategory or "Firearms"),
+            subcategory=catalog and catalogItemSubcategory(key) or ""}
+    elseif kind == "armor" then
+        local i = tonumber(token)
+        local a = i and state.importedArmor[i] or nil
+        if not a then return nil end
+        return {kind="armor", index=i, name=tostring(a.name or "Armor"), category="Armor", subcategory=""}
+    elseif kind == "gear" then
+        local safe = tostring(token or "")
+        for _, g in ipairs(state.importedGear or {}) do
+            local name = tostring(g or "")
+            if string.lower(name):gsub("[^%w]","_") == safe then
+                local key = string.lower(name)
+                local catalog = EQUIPMENT_CATALOG[key]
+                return {kind="gear", key=safe, name=name,
+                    category=tostring((catalog and catalog.sourceCategory) or "Survival & Medical"),
+                    subcategory=catalog and catalogItemSubcategory(key) or ""}
+            end
+        end
+    end
+    return nil
+end
+
+function removeEquipmentItem(player, value, id)
+    local kind, token = tostring(id or ""):match("^equipment_remove_([%a]+)_(.+)$")
+    local target = equipmentReplacementTarget(kind, token)
+    if not target then return end
+    if kind == "weapon" then
+        table.remove(state.importedWeapons, target.index)
+        state.pendingWeaponRoll = nil
+    elseif kind == "armor" then
+        table.remove(state.importedArmor, target.index)
+        if tonumber(state.activeArmorIndex) > #state.importedArmor then
+            state.activeArmorIndex = math.max(1, #state.importedArmor)
+        end
+    elseif kind == "gear" then
+        for i, g in ipairs(state.importedGear or {}) do
+            if string.lower(tostring(g or "")):gsub("[^%w]","_") == target.key then
+                state.itemQuantities[string.lower(tostring(g or ""))] = nil
+                table.remove(state.importedGear, i)
+                break
+            end
+        end
+    end
+    local msg = tostring(target.name or "Item") .. " removed."
+    cachedPageDirty["equipment"] = true
+    broadcastToAll("[DG] " .. msg, {0.80,0.60,0.45})
+    queueDashboardSnapshot(SHEET_COLOR, "inventory", msg)
+    rebuildCachedPage("equipment")
+    activateCachedPage("equipment")
+end
+
+function beginReplaceEquipmentItem(player, value, id)
+    local kind, token = tostring(id or ""):match("^equipment_replace_([%a]+)_(.+)$")
+    local target = equipmentReplacementTarget(kind, token)
+    if not target then return end
+    state.equipmentReplace = target
+    state.equipmentSubtab = "add"
+    state.addItemCategory = target.category
+    state.addItemSubcategory = target.subcategory
+    state.addCaliberFilter = "ALL"
+    state.addItemName = ""
+    if categoryHasSubcategories(target.category) and target.subcategory ~= "" then
+        state.addItemBrowseLevel = "subcategory"
+        state.addItemName = firstCatalogKeyForCategoryAndSubcategory(target.category, target.subcategory)
+    else
+        state.addItemBrowseLevel = "category"
+        state.addItemName = firstCatalogKeyForCategory(target.category) or ""
+    end
+    resetSelectedCatalogVariant(state.addItemName)
+    cachedPageDirty["equipment"] = true
+    rebuildCachedPage("equipment")
+    activateCachedPage("equipment")
+end
+
+function cancelEquipmentReplace(player, value, id)
+    state.equipmentReplace = nil
+    state.equipmentSubtab = "all"
+    cachedPageDirty["equipment"] = true
+    rebuildCachedPage("equipment")
+    activateCachedPage("equipment")
 end
 
 function adjustWeaponAmmo(player, value, id)
@@ -11387,7 +11624,7 @@ function applyMarkedSkillImprovements(player, value, id)
     local agentName = tostring(state.agent.name or "Agent")
     if agentName == "" then agentName = "Agent" end
 
-    local header = agentName .. " - HOME TIME SKILL IMPROVEMENTS"
+    local header = agentName .. " - END SESSION SKILL IMPROVEMENTS"
     broadcastToAll(header, {0.35,0.75,1.0})
 
     startGenericPhysicalDieRoll(
@@ -12869,7 +13106,7 @@ local function finishGenericPhysicalRoll()
         )
 
         local improveMessage = string.format(
-            "%s - HOME TIME {%s} %d%% -> %d%% (+%d)",
+            "%s - END SESSION {%s} %d%% -> %d%% (+%d)",
             agentName,
             skillName,
             oldValue,
@@ -13984,25 +14221,8 @@ function rollEquipmentWeapon(player, value, id)
             w.ammoCurrent = math.max(0, tonumber(w.ammoCurrent) - cost)
             refreshWeaponInventoryUi(weaponIndex)
 
-            if extra ~= "" then extra = extra .. " " end
-            if weaponSupportsSelectiveFire(fireInfo) then
-                extra = extra .. string.format(
-                    "[ATTACK D%%; %s fire; %d rounds; ammo %d/%d; modifier %+d%%]",
-                    mode,
-                    cost,
-                    tonumber(w.ammoCurrent),
-                    cap,
-                    accessoryMod
-                )
-            else
-                extra = extra .. string.format(
-                    "[ATTACK D%%; ammo %d/%d; modifier %+d%%]",
-                    tonumber(w.ammoCurrent),
-                    cap,
-                    accessoryMod
-                )
-            end
-
+            -- Keep chat focused on the actual roll result. Ammo, fire mode,
+            -- and modifiers remain visible on the Agent sheet.
             cachedPageDirty["equipment"] = true
         end
     end
