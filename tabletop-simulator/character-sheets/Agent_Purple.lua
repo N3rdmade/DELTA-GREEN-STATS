@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Purple
--- Version: r68
+-- Version: r69
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -4554,6 +4554,21 @@ local function itemMatchesSubcategory(key, subcategory)
     return catalogItemSubcategory(key) == tostring(subcategory)
 end
 
+local function subcategoryHasFilteredItems(category, subcategory)
+    local filter = tostring(state.addCaliberFilter or "ALL")
+
+    for _, key in ipairs(sortedCatalogNamesForCategory(category)) do
+        if itemMatchesSubcategory(key, subcategory) and
+           (category ~= "Firearms" or
+            catalogItemMatchesCaliberFilter(key, filter))
+        then
+            return true
+        end
+    end
+
+    return false
+end
+
 local function firstCatalogKeyForCategoryAndSubcategory(category, subcategory)
     local names = sortedCatalogNamesForCategory(category)
 
@@ -4699,7 +4714,10 @@ local function buildBrowseLevelRows()
 
         if order then
             for _, sub in ipairs(order) do
-                if sub ~= "All" then
+                if sub ~= "All" and
+                   (category ~= "Firearms" or
+                    subcategoryHasFilteredItems(category, sub))
+                then
                     addRow(sub, sub, "subcategory")
                 end
             end
