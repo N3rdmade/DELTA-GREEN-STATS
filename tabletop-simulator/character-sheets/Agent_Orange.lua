@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Orange
--- Version: r77
+-- Version: r78
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -4361,7 +4361,51 @@ local function displayCatalogSkill(skill)
     return map[string.lower(tostring(skill or ""))] or tostring(skill or "")
 end
 
-local catalogItemSubcategory
+local function catalogItemSubcategory(key)
+    local item = EQUIPMENT_CATALOG[tostring(key or "")]
+    if not item then return "Other" end
+
+    local sub = tostring(item.subcategory or "")
+    local source = tostring(item.sourceCategory or "")
+
+    if source == "Firearms" then
+        if sub == "Pistols" then
+            local name = string.lower(tostring(item.name or ""))
+            local caliber = string.lower(tostring(item.caliber or ""))
+
+            if name == "light pistol" or
+               caliber == ".22 lr" or caliber == ".22 short" or
+               caliber == ".25 acp" or caliber == ".32 acp" or
+               caliber == ".32 h&r magnum" or caliber == ".380 acp" or
+               caliber == ".38 special"
+            then
+                return "Light Pistols"
+
+            elseif name == "heavy pistol" or
+                   caliber == ".357 magnum" or caliber == ".44 magnum" or
+                   caliber == ".41 magnum" or caliber == "10mm auto" or
+                   caliber == ".50 ae" or caliber == ".454 casull" or
+                   caliber == ".500 s&w magnum"
+            then
+                return "Heavy Pistols"
+            end
+
+            return "Medium Pistols"
+        elseif sub == "Carbines" or sub == "Pistol-Caliber Carbines" or sub == "Assault Rifles" then
+            return "Light Rifles / Carbines"
+        elseif sub == "Battle Rifles" or sub == "Marksman Rifles" then
+            return "Heavy Rifles"
+        elseif sub == "Heavy Snipers" then
+            return "Very Heavy Rifles"
+        elseif sub == "SMGs" then
+            return "SMGs"
+        elseif sub == "Shotguns" then
+            return "Shotguns"
+        end
+    end
+
+    return sub
+end
 
 local function catalogItemDetailsXml(key)
     local item = EQUIPMENT_CATALOG[tostring(key or "")]
@@ -4870,56 +4914,6 @@ local EQUIPMENT_SUBCATEGORY_ORDER = {
         "Emergency and Survival Gear"
     }
 }
-
-catalogItemSubcategory = function(key)
-    local item = EQUIPMENT_CATALOG[tostring(key or "")]
-    if not item then return "Other" end
-
-    local sub = tostring(item.subcategory or "")
-    local source = tostring(item.sourceCategory or "")
-
-    if source == "Firearms" then
-        if sub == "Pistols" then
-            local name = string.lower(tostring(item.name or ""))
-            local caliber = string.lower(tostring(item.caliber or ""))
-
-            -- Delta Green pistol classes follow the weapon/cartridge profile,
-            -- not simply physical size or the current damage string.
-            if name == "light pistol" or
-               caliber == ".22 lr" or caliber == ".22 short" or
-               caliber == ".25 acp" or caliber == ".32 acp" or
-               caliber == ".32 h&r magnum" or caliber == ".380 acp" or
-               caliber == ".38 special"
-            then
-                return "Light Pistols"
-
-            elseif name == "heavy pistol" or
-                   caliber == ".357 magnum" or caliber == ".44 magnum" or
-                   caliber == ".41 magnum" or caliber == "10mm auto" or
-                   caliber == ".50 ae" or caliber == ".454 casull" or
-                   caliber == ".500 s&w magnum"
-            then
-                return "Heavy Pistols"
-            end
-
-            -- 9mm, .40 S&W, .45 ACP, 5.7x28mm, .357 SIG, etc. use the
-            -- medium-pistol replacement class unless explicitly heavy/light.
-            return "Medium Pistols"
-        elseif sub == "Carbines" or sub == "Pistol-Caliber Carbines" or sub == "Assault Rifles" then
-            return "Light Rifles / Carbines"
-        elseif sub == "Battle Rifles" or sub == "Marksman Rifles" then
-            return "Heavy Rifles"
-        elseif sub == "Heavy Snipers" then
-            return "Very Heavy Rifles"
-        elseif sub == "SMGs" then
-            return "SMGs"
-        elseif sub == "Shotguns" then
-            return "Shotguns"
-        end
-    end
-
-    return sub
-end
 
 local function itemMatchesSubcategory(key, subcategory)
     if tostring(subcategory or "All") == "All" then
