@@ -26,8 +26,8 @@ The Agent scripts are the same feature set with sheet-specific color, nameplate,
 
 ## Current versions
 
-- Agent sheets: **r74**
-- Handler dashboard: **v3.8**
+- Agent sheets: **r76**
+- Handler dashboard: **v3.9**
 
 ## Notes
 
@@ -39,3 +39,11 @@ The scripts use shared dice storage and sheet-specific dice towers/GUIDs already
 - Firearm replacement classes now classify pistols primarily by cartridge/profile instead of damage die. FN Five-seveN and 9mm compact pistols such as the SIG P365 are Medium Pistols.
 - Fixed duplicated reserve labels such as `9x19mm RESERVE RESERVE`.
 - Replace mode is locked to the original item's replacement class; backing out cancels Replace instead of exposing unrelated categories.
+
+
+### r76 equipment catalog cleanup
+- Selected-item details render as one field per line instead of a wrapped text blob.
+- TTS equipment browsing uses Delta Green-facing top-level sections: Firearms, Melee Weapons, Heavy Weapons, Less-Lethal Weapons, Body Armor, and Other Gear.
+- Other Gear uses the Agent's Handbook subsections represented by the catalog: Restraints, Communications and Computers, Surveillance, Lighting and Vision, Breaking and Entering, and Emergency and Survival Gear.
+- Reusable capacity-fed weapons use loaded ammo/reserve controls; quantity is reserved for disposable/single-use weapons and munitions.
+- The firearm catalog has no unmapped entries across the current base catalog plus firearm expansion.
