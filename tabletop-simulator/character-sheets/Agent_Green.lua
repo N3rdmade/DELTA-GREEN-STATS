@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Green
--- Version: r74
+-- Version: r75
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -2739,15 +2739,62 @@ local equipmentCatalogCount = 0
 local equipmentCatalogRefreshRunning = false
 local sortedCatalogNamesForCategory
 
+local function officialCatalogCategory(rawCategory)
+    rawCategory = tostring(rawCategory or "")
+    if rawCategory == "Firearms" then return "Firearms" end
+    if rawCategory == "Melee Weapons" then return "Melee Weapons" end
+    if rawCategory == "Heavy Weapons" or rawCategory == "Artillery" or rawCategory == "Demolitions" then
+        return "Heavy Weapons"
+    end
+    if rawCategory == "Less-Lethal" then return "Less-Lethal Weapons" end
+    if rawCategory == "Armor" then return "Body Armor" end
+    return "Other Gear"
+end
+
+local function officialOtherGearSubcategory(rawCategory, name)
+    rawCategory = tostring(rawCategory or "")
+    name = string.lower(tostring(name or ""))
+
+    if rawCategory == "Surveillance" then return "Surveillance" end
+    if rawCategory == "Comms & Tech" then return "Communications and Computers" end
+    if rawCategory == "Optics & Vision" then return "Lighting and Vision" end
+    if rawCategory == "Entry Tools" then return "Breaking and Entering" end
+    if rawCategory == "Restraints" then return "Restraints" end
+    if rawCategory == "Survival & Medical" then return "Emergency and Survival Gear" end
+
+    if rawCategory == "Weapon Accessories" then
+        if name:find("sight",1,true) or name:find("optic",1,true) or
+           name:find("laser",1,true) or name:find("light",1,true)
+        then
+            return "Lighting and Vision"
+        end
+        -- Suppressors, slings and bipods are still Other Gear in the rules,
+        -- but are left un-foldered rather than inventing a new rules category.
+        return ""
+    end
+
+    return ""
+end
+
+local function officialCatalogSubcategory(rawCategory, rawSubcategory, name)
+    rawCategory = tostring(rawCategory or "")
+    if rawCategory == "Firearms" then return tostring(rawSubcategory or "") end
+    if rawCategory == "Artillery" then return "Artillery" end
+    if rawCategory == "Demolitions" then return "Demolitions" end
+    if rawCategory == "Heavy Weapons" then return "" end
+    if rawCategory == "Less-Lethal" or rawCategory == "Armor" or rawCategory == "Melee Weapons" then
+        return ""
+    end
+    return officialOtherGearSubcategory(rawCategory, name)
+end
+
 local function equipmentUiCategoryFromSource(sourceCategory)
     local map = {
         ["Firearms"] = "firearms",
         ["Melee Weapons"] = "melee",
         ["Heavy Weapons"] = "heavy",
-        ["Artillery"] = "heavy",
-        ["Demolitions"] = "heavy",
-        ["Less-Lethal"] = "lesslethal",
-        ["Armor"] = "armor"
+        ["Less-Lethal Weapons"] = "lesslethal",
+        ["Body Armor"] = "armor"
     }
     return map[tostring(sourceCategory or "")] or "gear"
 end
@@ -2758,12 +2805,38 @@ local function equipmentCatalogConsumable(category, name, ammo)
     ammo = tostring(ammo or "")
 
     if category == "Demolitions" then return true end
-    if category == "Artillery" and ammo == "" then return true end
 
-    if name:find("grenade", 1, true) or
-       name:find("bomb", 1, true) or
-       name:find("mine", 1, true) or
-       name:find("missile", 1, true)
+    -- Reusable launchers must keep ammo/reserve even though their names contain
+    -- "grenade". Only the projectile/disposable item itself uses quantity.
+    if name:find("grenade launcher",1,true) or
+       name:find("grenade machine gun",1,true) or
+       name:find("rpg%-7",1,false) or
+       name:find("rocket%-propelled grenade launcher",1,false) or
+       name:find("40mm sponge round launcher",1,true)
+    then
+        return false
+    end
+
+    if name:find("m72 law",1,true) or name:find("at4 launcher",1,true) then
+        return true
+    end
+
+    if name:find("hand grenade",1,true) or
+       name:find("fragmentation grenade",1,true) or
+       name:find("incendiary grenade",1,true) or
+       name:find("flash%-bang grenade",1,false) or
+       name:find("stun grenade",1,true) or
+       name:find("smoke grenade",1,true) or
+       name:find("tear gas grenade",1,true) or
+       name:find("molotov",1,true) or
+       name:find("mine",1,true) or
+       name:find("bomb",1,true) or
+       name:find("missile",1,true) or
+       name:find("ied",1,true) or
+       name:find("demolition charge",1,true) or
+       name:find("blasting charge",1,true) or
+       name:find("satchel charge",1,true) or
+       name:find("beanbag shotgun rounds",1,true)
     then
         return true
     end
@@ -2785,14 +2858,17 @@ local function parseGithubEquipmentCatalog(text)
         )
 
         if category and name and itemType then
+            local rawSubcategory = line:match("subcategory:%s*'([^']+)'") or ""
+            local officialCategory = officialCatalogCategory(category)
             current = {
-                sourceCategory = category,
-                category = equipmentUiCategoryFromSource(category),
+                sourceCategory = officialCategory,
+                originalCategory = category,
+                category = equipmentUiCategoryFromSource(officialCategory),
                 kind = itemType == "weapon" and "weapon" or
                        (itemType == "armor" and "armor" or "gear"),
-                type = category,
+                type = officialCategory,
                 name = name,
-                subcategory = line:match("subcategory:%s*'([^']+)'") or "",
+                subcategory = officialCatalogSubcategory(category, rawSubcategory, name),
                 caliber = line:match("caliber:%s*'([^']+)'") or "",
                 variantSpec = line:match("variants:%s*'([^']+)'") or ""
             }
@@ -2814,6 +2890,9 @@ local function parseGithubEquipmentCatalog(text)
                 current.skill = textField("skill")
                 current.accessoryMod = numberField("skillModifier") or 0
                 current.range = textField("range")
+                if current.range == "" and current.originalCategory == "Demolitions" then
+                    current.range = "N/A"
+                end
                 current.damage = textField("damage")
                 current.ap = tostring(numberField("armorPiercing") or 0)
 
@@ -2833,9 +2912,11 @@ local function parseGithubEquipmentCatalog(text)
             elseif current.kind == "armor" then
                 current.armor = tostring(numberField("protection") or 0)
                 current.expense = textField("expense")
+                current.description = textField("description")
 
             else
                 current.expense = textField("expense")
+                current.description = textField("description")
             end
 
             current = nil
@@ -3076,10 +3157,12 @@ end
 local EQUIPMENT_CATALOG_DISPLAY_NAMES = {}
 
 local EQUIPMENT_ADD_CATEGORY_ORDER = {
-    "Firearms", "Melee Weapons", "Heavy Weapons", "Artillery",
-    "Demolitions", "Less-Lethal", "Armor", "Surveillance",
-    "Comms & Tech", "Optics & Vision", "Weapon Accessories",
-    "Entry Tools", "Restraints", "Survival & Medical"
+    "Firearms",
+    "Melee Weapons",
+    "Heavy Weapons",
+    "Less-Lethal Weapons",
+    "Body Armor",
+    "Other Gear"
 }
 
 sortedCatalogNamesForCategory = function(category)
@@ -3576,33 +3659,24 @@ end
 
 local function weaponIsThrowableOrConsumable(info)
     if not info then return false end
-    if info.consumable == true then return true end
+    if info.consumable ~= nil then return info.consumable == true end
 
     local name = string.lower(tostring(info.name or ""))
-    local source = tostring(info.sourceCategory or "")
 
-    if source == "Demolitions" then return true end
+    if name:find("launcher",1,true) or name:find("machine gun",1,true) then
+        return false
+    end
 
     local words = {
-        "grenade",
-        "flash-bang",
-        "flashbang",
-        "tear gas",
-        "ied",
-        "pipe bomb",
-        "car bomb",
-        "bomb",
-        "mine",
-        "explosive",
-        "molotov"
+        "hand grenade", "fragmentation grenade", "stun grenade",
+        "smoke grenade", "tear gas grenade", "flashbang", "flash-bang",
+        "ied", "pipe bomb", "car bomb", "bomb", "mine", "molotov",
+        "demolition charge", "blasting charge", "satchel charge"
     }
 
     for _, word in ipairs(words) do
-        if name:find(word, 1, true) then
-            return true
-        end
+        if name:find(word, 1, true) then return true end
     end
-
     return false
 end
 
@@ -4263,6 +4337,91 @@ local function catalogItemDetailsText(key)
     return table.concat(pieces, "\n")
 end
 
+local function cleanCatalogDescription(text)
+    text = tostring(text or "")
+    text = text:gsub("<br%s*/?>", " ")
+    text = text:gsub("</p>", " ")
+    text = text:gsub("<[^>]+>", "")
+    text = text:gsub("&amp;", "&")
+    text = text:gsub("&quot;", '"')
+    text = text:gsub("&#39;", "'")
+    text = text:gsub("%s+", " ")
+    return text
+end
+
+local function displayCatalogSkill(skill)
+    local map = {
+        firearms="Firearms", heavy_weapons="Heavy Weapons",
+        melee_weapons="Melee Weapons", unarmed_combat="Unarmed Combat",
+        demolitions="Demolitions", artillery="Artillery",
+        athletics="Athletics", dex="DEX×5", throw="Athletics"
+    }
+    return map[string.lower(tostring(skill or ""))] or tostring(skill or "")
+end
+
+local function catalogItemDetailsXml(key)
+    local item = EQUIPMENT_CATALOG[tostring(key or "")]
+    if not item then return "", 0 end
+
+    local rows = {}
+    local function add(label, value, allowBlank)
+        value = tostring(value or "")
+        if value ~= "" or allowBlank then
+            if value == "" then value = "N/A" end
+            table.insert(rows, {label=label, value=value})
+        end
+    end
+
+    if item.kind == "weapon" then
+        add("TYPE", "Weapon")
+        local cls = catalogItemSubcategory(key)
+        if cls == "" then cls = tostring(item.sourceCategory or "Weapon") end
+        add("WEAPON CLASS", cls)
+        if tostring(item.caliber or "") ~= "" and string.lower(tostring(item.caliber)) ~= "various" then
+            add("CALIBER", item.caliber)
+        end
+        add("SKILL", displayCatalogSkill(item.skill), true)
+        add("RANGE", item.range, true)
+        if tostring(item.damage or "") ~= "" then add("DAMAGE", item.damage) end
+        if tostring(item.lethality or "") ~= "" then add("LETHALITY", item.lethality) end
+        add("ARMOR PIERCING", item.ap ~= "" and item.ap or "0")
+        if tostring(item.killRadius or "") ~= "" and tostring(item.killRadius) ~= "N/A" then
+            add("BLAST RADIUS", item.killRadius)
+        end
+        if tostring(item.capacity or "") ~= "" then
+            add("MAG / CAPACITY", item.capacity)
+        end
+
+    elseif item.kind == "armor" then
+        add("TYPE", "Body Armor")
+        add("ARMOR RATING", item.armor, true)
+        local d = cleanCatalogDescription(item.description)
+        if d ~= "" then add("NOTES", d) end
+
+    else
+        add("TYPE", "Gear")
+        local sub = catalogItemSubcategory(key)
+        add("GEAR CATEGORY", sub ~= "" and sub or "Other Gear")
+        local d = cleanCatalogDescription(item.description)
+        if d ~= "" then add("DETAILS", d) end
+    end
+
+    local xml = ""
+    local y = 0
+    for _, row in ipairs(rows) do
+        local h = (row.label == "DETAILS" or row.label == "NOTES") and 34 or 17
+        xml = xml .. string.format([[
+          <Text text="%s: %s" rectAlignment="UpperLeft"
+              width="250" height="%d" offsetXY="18 %d"
+              fontSize="10" color="#D5E1D8" alignment="UpperLeft"
+              horizontalOverflow="Wrap"/>
+        ]], esc(row.label), esc(row.value), h, -y)
+        y = y + h
+    end
+    return xml, y
+end
+
+
 local function catalogItemMagazineCapacity(key)
     local item = EQUIPMENT_CATALOG[tostring(key or "")]
     if not item or item.kind ~= "weapon" then return nil end
@@ -4573,12 +4732,6 @@ local function selectedCatalogHasReserveAmmo()
     local item = EQUIPMENT_CATALOG[key]
     if not item or item.kind ~= "weapon" then return false end
 
-    if tostring(item.sourceCategory or "") ~= "Firearms" and
-       tostring(item.sourceCategory or "") ~= "Heavy Weapons"
-    then
-        return false
-    end
-
     local cap = catalogItemMagazineCapacity(key)
     if not cap then return false end
 
@@ -4611,12 +4764,6 @@ local function catalogKeyHasReserveAmmo(key)
     key = string.lower(tostring(key or ""))
     local item = EQUIPMENT_CATALOG[key]
     if not item or item.kind ~= "weapon" then return false end
-
-    if tostring(item.sourceCategory or "") ~= "Firearms" and
-       tostring(item.sourceCategory or "") ~= "Heavy Weapons"
-    then
-        return false
-    end
 
     if not catalogItemMagazineCapacity(key) then return false end
 
@@ -4703,12 +4850,19 @@ local EQUIPMENT_SUBCATEGORY_ORDER = {
         "SMGs",
         "Shotguns"
     },
-
-    ["Melee Weapons"] = {
+    ["Heavy Weapons"] = {
         "All",
-        "Knives",
-        "Swords",
-        "Other"
+        "Demolitions",
+        "Artillery"
+    },
+    ["Other Gear"] = {
+        "All",
+        "Restraints",
+        "Communications and Computers",
+        "Surveillance",
+        "Lighting and Vision",
+        "Breaking and Entering",
+        "Emergency and Survival Gear"
     }
 }
 
@@ -4759,7 +4913,6 @@ local function catalogItemSubcategory(key)
         end
     end
 
-    if sub == "" then sub = "Other" end
     return sub
 end
 
@@ -4931,10 +5084,19 @@ local function buildBrowseLevelRows()
         if order then
             for _, sub in ipairs(order) do
                 if sub ~= "All" and
-                   (category ~= "Firearms" or
-                    subcategoryHasFilteredItems(category, sub))
+                   subcategoryHasFilteredItems(category, sub)
                 then
                     addRow(sub, sub, "subcategory")
+                end
+            end
+
+            -- Items with no rules-defined subsection stay directly in their
+            -- official top-level category instead of being forced into a made-up folder.
+            for _, key in ipairs(sortedCatalogNamesForCategory(category)) do
+                if catalogItemSubcategory(key) == "" and
+                   (category ~= "Firearms" or catalogItemMatchesCaliberFilter(key, state.addCaliberFilter))
+                then
+                    addRow(key, catalogDisplayName(key), "item")
                 end
             end
         else
@@ -5008,7 +5170,7 @@ local function buildAddItemPanel()
         state.addItemName = ""
     end
 
-    local details = catalogItemDetailsText(selected)
+    local detailsXml, detailsHeight = catalogItemDetailsXml(selected)
     local expense = catalogItemExpense(selected)
     local cap = selected ~= "" and selectedCatalogCapacity(selected) or nil
     local replacing = state.equipmentReplace ~= nil
@@ -5195,9 +5357,10 @@ local function buildAddItemPanel()
               rectAlignment="UpperLeft" width="250" height="26" offsetXY="18 -122"
               fontSize="14" fontStyle="Bold" color="#D9C07A"/>
 
-          <Text id="equipment_add_selected_details" text="%s"
-              rectAlignment="UpperLeft" width="250" height="112" offsetXY="18 -154"
-              fontSize="12" color="#D5E1D8" alignment="UpperLeft" horizontalOverflow="Wrap"/>
+          <Panel id="equipment_add_selected_details"
+              rectAlignment="UpperLeft" width="250" height="150" offsetXY="0 -154">
+            %s
+          </Panel>
 
           %s
           %s
@@ -5218,7 +5381,7 @@ local function buildAddItemPanel()
         browseHeight, browseRows,
         selected ~= "" and "true" or "false",
         esc(selected ~= "" and catalogDisplayName(selected) or ""),
-        esc(expense), esc(details),
+        esc(expense), detailsXml,
         variantPanel, ammoPanel, qtyPanel,
         esc(actionLabel),
         selected ~= "" and "true" or "false",
@@ -10131,13 +10294,8 @@ function equipmentBrowseRowClick(player, value, id)
         state.addItemName = selected
         resetSelectedCatalogVariant(selected)
 
-        local item = EQUIPMENT_CATALOG[selected]
-        if item and tostring(item.variantSpec or "") ~= "" then
-            rebuildCachedPage("equipment")
-            activateCachedPage("equipment")
-        else
-            updateAddItemSelectionUi(previous, selected)
-        end
+        rebuildCachedPage("equipment")
+        activateCachedPage("equipment")
         return
     else
         return
@@ -10887,7 +11045,7 @@ local function equipmentReplacementTarget(kind, token)
         local i = tonumber(token)
         local a = i and state.importedArmor[i] or nil
         if not a then return nil end
-        return {kind="armor", index=i, name=tostring(a.name or "Armor"), category="Armor", subcategory=""}
+        return {kind="armor", index=i, name=tostring(a.name or "Armor"), category="Body Armor", subcategory=""}
     elseif kind == "gear" then
         local safe = tostring(token or "")
         for _, g in ipairs(state.importedGear or {}) do
@@ -10896,7 +11054,7 @@ local function equipmentReplacementTarget(kind, token)
                 local key = string.lower(name)
                 local catalog = EQUIPMENT_CATALOG[key]
                 return {kind="gear", key=safe, name=name,
-                    category=tostring((catalog and catalog.sourceCategory) or "Survival & Medical"),
+                    category=tostring((catalog and catalog.sourceCategory) or "Other Gear"),
                     subcategory=catalog and catalogItemSubcategory(key) or ""}
             end
         end
