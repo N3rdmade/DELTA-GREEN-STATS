@@ -26,8 +26,8 @@ The Agent scripts are the same feature set with sheet-specific color, nameplate,
 
 ## Current versions
 
-- Agent sheets: **r76**
-- Handler dashboard: **v3.9**
+- Agent sheets: **r79**
+- Handler dashboard: **v3.10**
 
 ## Notes
 
@@ -47,3 +47,5 @@ The scripts use shared dice storage and sheet-specific dice towers/GUIDs already
 - Other Gear uses the Agent's Handbook subsections represented by the catalog: Restraints, Communications and Computers, Surveillance, Lighting and Vision, Breaking and Entering, and Emergency and Survival Gear.
 - Reusable capacity-fed weapons use loaded ammo/reserve controls; quantity is reserved for disposable/single-use weapons and munitions.
 - The firearm catalog has no unmapped entries across the current base catalog plus firearm expansion.
+
+- Body Armor now includes an **Armor Rating** filter dropdown in both Agent and Handler equipment browsers.
