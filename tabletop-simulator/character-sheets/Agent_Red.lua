@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Red
--- Version: r72
+-- Version: r73
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -1859,7 +1859,7 @@ local function buildSkills()
         "SHOW INACTIVE SKILLS" or
         "HIDE INACTIVE SKILLS"
     local filterColor = state.skillsActiveOnly and "#293A31" or "#3B644D"
-    local homeText = state.homeTimeOpen and "HOME TIME: OPEN" or "HOME TIME"
+    local homeText = state.homeTimeOpen and "END SESSION: OPEN" or "END SESSION"
 
     return string.format([[
     <VerticalScrollView id="scroll_skills"
