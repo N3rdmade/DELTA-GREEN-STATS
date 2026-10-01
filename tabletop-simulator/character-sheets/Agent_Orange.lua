@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Orange
--- Version: r80
+-- Version: r81
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -1736,83 +1736,6 @@ local function markedSkillNames()
     return names
 end
 
-local function buildHomeTimePanel()
-    local marked = markedSkillNames()
-    local lines = {}
-
-    for _, name in ipairs(marked) do
-        table.insert(lines, string.format("%s  %d%%", name, tonumber(state.skills[name]) or 0))
-    end
-
-    local summary = #lines > 0 and table.concat(lines, "\n") or "No skills are marked for improvement."
-    local panelHeight = math.max(250, 150 + (#marked * 26))
-
-    return string.format([[
-      <Panel id="home_time_panel"
-          rectAlignment="UpperLeft"
-          width="1060" height="%d"
-          offsetXY="48 -82"
-          color="#111A15F2">
-
-        <Text text="END SESSION — FAILED SKILL IMPROVEMENT"
-            rectAlignment="UpperLeft"
-            width="650" height="34"
-            offsetXY="22 -16"
-            fontSize="20"
-            fontStyle="Bold"
-            color="#D7E7DA"
-            alignment="MiddleLeft"/>
-
-        <Text text="Failed skill rolls are marked automatically. At session end, every marked skill gains 1D4%% (maximum 99%%), then its mark is cleared."
-            rectAlignment="UpperLeft"
-            width="1000" height="54"
-            offsetXY="22 -50"
-            fontSize="14"
-            color="#A9B8AD"
-            alignment="UpperLeft"
-            horizontalOverflow="Wrap"/>
-
-        <Text text="%s"
-            rectAlignment="UpperLeft"
-            width="650" height="%d"
-            offsetXY="22 -110"
-            fontSize="15"
-            color="#E4EFE7"
-            alignment="UpperLeft"
-            horizontalOverflow="Wrap"
-            verticalOverflow="Overflow"/>
-
-        <Button id="home_time_apply"
-            onClick="applyMarkedSkillImprovements"
-            text="IMPROVE ALL MARKED SKILLS"
-            interactable="%s"
-            rectAlignment="UpperRight"
-            width="330" height="48"
-            offsetXY="-24 -112"
-            fontSize="16"
-            fontStyle="Bold"
-            color="#426A52"
-            textColor="#FFFFFF"/>
-
-        <Button id="home_time_close"
-            onClick="toggleHomeTime"
-            text="CLOSE"
-            rectAlignment="UpperRight"
-            width="150" height="40"
-            offsetXY="-24 -172"
-            fontSize="15"
-            color="#293A31"
-            textColor="#FFFFFF"/>
-
-      </Panel>
-    ]],
-        panelHeight,
-        esc(summary),
-        math.max(90, #marked * 26),
-        #marked > 0 and "true" or "false"
-    )
-end
-
 local genericRollOptionsXml
 
 local findNamedDieGuid
@@ -1834,7 +1757,7 @@ local function buildSkills()
     local rowStep = 48
     local leftX = 28
     local rightX = 590
-    local startY = state.homeTimeOpen and -390 or -92
+    local startY = -92
     local rowsXml = ""
 
     for i,n in ipairs(names) do
@@ -1854,7 +1777,7 @@ local function buildSkills()
     end
 
     local maxRows = math.max(split, #names - split)
-    local extraTop = state.homeTimeOpen and 300 or 0
+    local extraTop = 0
     local contentHeight = math.max(700, 125 + extraTop + (maxRows * rowStep))
 
     local filterText =
@@ -1862,7 +1785,6 @@ local function buildSkills()
         "SHOW INACTIVE SKILLS" or
         "HIDE INACTIVE SKILLS"
     local filterColor = state.skillsActiveOnly and "#293A31" or "#3B644D"
-    local homeText = state.homeTimeOpen and "END SESSION: OPEN" or "END SESSION"
 
     return string.format([[
     <VerticalScrollView id="scroll_skills"
@@ -1907,17 +1829,6 @@ local function buildSkills()
             color="%s"
             textColor="#FFFFFF"/>
 
-        <Button id="home_time"
-            onClick="toggleHomeTime"
-            text="%s"
-            rectAlignment="UpperLeft"
-            width="190" height="42"
-            offsetXY="742 -18"
-            fontSize="15"
-            fontStyle="Bold"
-            color="#57492E"
-            textColor="#FFFFFF"/>
-
         <Dropdown id="generic_roll_dropdown"
             onValueChanged="selectGenericRoll"
             rectAlignment="UpperLeft"
@@ -1955,9 +1866,7 @@ local function buildSkills()
       contentHeight,
       filterText,
       filterColor,
-      homeText,
       genericRollOptionsXml(),
-      state.homeTimeOpen and buildHomeTimePanel() or "",
       rowsXml)
 end
 
@@ -6594,59 +6503,99 @@ local function buildMotivationsPanel()
 end
 
 local function buildSessionPanel()
-    local marked = currentMarkedSkillsForDashboard()
-    local markedText = #marked > 0 and table.concat(marked, ", ") or "None"
+    local marked = markedSkillNames()
+    local markedLines = {}
+
+    for _, name in ipairs(marked) do
+        table.insert(markedLines,
+            string.format("★ %s  %d%%", name, tonumber(state.skills[name]) or 0))
+    end
+
+    local markedText =
+        #markedLines > 0 and table.concat(markedLines, "\n") or
+        "No failed skills are waiting for improvement."
+
     local p = state.psychology
+    local ready = #marked == 0
+    local readyText = ready and
+        "READY — session bookkeeping can be completed." or
+        string.format("%d SKILL IMPROVEMENT%s REMAIN",
+            #marked, #marked == 1 and "" or "S")
 
     return string.format([[
-      <Panel rectAlignment="UpperLeft" width="1080" height="590"
+      <Panel rectAlignment="UpperLeft" width="1080" height="760"
           offsetXY="40 -112" color="#111A15CC">
 
-        <Text text="SESSION AUTOMATION SUMMARY"
+        <Text text="END OF SESSION"
             rectAlignment="UpperLeft" width="500" height="36"
             offsetXY="18 -14" fontSize="20" fontStyle="Bold"
             color="#D2E5D6" alignment="MiddleLeft"/>
 
-        <Text text="SAN LOST THIS SESSION: %d"
-            rectAlignment="UpperLeft" width="360" height="34"
-            offsetXY="18 -70" fontSize="17" color="#E0BA75" alignment="MiddleLeft"/>
+        <Text text="SAN LOST: %d    BREAKING POINTS: %d    BOND DAMAGE: %d"
+            rectAlignment="UpperLeft" width="760" height="34"
+            offsetXY="18 -58" fontSize="16" color="#E0BA75"
+            alignment="MiddleLeft"/>
 
-        <Text text="BREAKING POINTS CROSSED: %d"
-            rectAlignment="UpperLeft" width="360" height="34"
-            offsetXY="18 -110" fontSize="17" color="#E0BA75" alignment="MiddleLeft"/>
-
-        <Text text="BOND DAMAGE THIS SESSION: %d"
-            rectAlignment="UpperLeft" width="360" height="34"
-            offsetXY="18 -150" fontSize="17" color="#E0BA75" alignment="MiddleLeft"/>
-
-        <Text text="WP STATUS: %d / %d%s"
-            rectAlignment="UpperLeft" width="520" height="34"
-            offsetXY="18 -205" fontSize="17" fontStyle="Bold"
+        <Text text="WP: %d / %d%s"
+            rectAlignment="UpperLeft" width="430" height="34"
+            offsetXY="18 -96" fontSize="16" fontStyle="Bold"
             color="%s" alignment="MiddleLeft"/>
 
-        <Text text="VIOLENCE TRACK: %s"
-            rectAlignment="UpperLeft" width="500" height="34"
-            offsetXY="18 -255" fontSize="19" fontStyle="Bold" color="#D5E1D8" alignment="MiddleLeft"/>
+        <Text text="VIOLENCE: %s"
+            rectAlignment="UpperLeft" width="500" height="32"
+            offsetXY="18 -134" fontSize="16" color="#D5E1D8"
+            alignment="MiddleLeft"/>
 
-        <Text text="HELPLESSNESS TRACK: %s"
-            rectAlignment="UpperLeft" width="550" height="34"
-            offsetXY="18 -295" fontSize="19" fontStyle="Bold" color="#D5E1D8" alignment="MiddleLeft"/>
+        <Text text="HELPLESSNESS: %s"
+            rectAlignment="UpperLeft" width="550" height="32"
+            offsetXY="18 -168" fontSize="16" color="#D5E1D8"
+            alignment="MiddleLeft"/>
 
-        <Text text="MARKED SKILLS: %s"
-            rectAlignment="UpperLeft" width="1030" height="90"
-            offsetXY="18 -350" fontSize="15" color="#D5E1D8"
-            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+        <Text text="PENDING SKILL IMPROVEMENTS"
+            rectAlignment="UpperLeft" width="520" height="32"
+            offsetXY="18 -218" fontSize="18" fontStyle="Bold"
+            color="#D2E5D6" alignment="MiddleLeft"/>
+
+        <Text text="Every failed skill marked with ★ gains 1D4%% at session end, to a maximum of 99%%."
+            rectAlignment="UpperLeft" width="1020" height="34"
+            offsetXY="18 -250" fontSize="13" color="#A9B8AD"
+            alignment="MiddleLeft"/>
+
+        <Text text="%s"
+            rectAlignment="UpperLeft" width="650" height="210"
+            offsetXY="18 -292" fontSize="15" color="#E4EFE7"
+            alignment="UpperLeft" horizontalOverflow="Wrap"
+            verticalOverflow="Overflow"/>
+
+        <Button id="session_improve_all"
+            onClick="applyMarkedSkillImprovements"
+            text="IMPROVE ALL MARKED SKILLS"
+            interactable="%s"
+            rectAlignment="UpperRight" width="330" height="48"
+            offsetXY="-24 -300" fontSize="15" fontStyle="Bold"
+            color="%s" textColor="#FFFFFF"/>
+
+        <Text text="%s"
+            rectAlignment="UpperLeft" width="650" height="34"
+            offsetXY="18 -536" fontSize="15" fontStyle="Bold"
+            color="%s" alignment="MiddleLeft"/>
 
         <Button id="session_reset" onClick="resetSessionAutomation"
-            text="END / RESET SESSION TRACKING"
-            rectAlignment="UpperLeft" width="330" height="44"
-            offsetXY="18 -475" fontSize="14" fontStyle="Bold"
-            color="#57492E" textColor="#FFFFFF"/>
+            text="END SESSION"
+            interactable="%s"
+            rectAlignment="UpperLeft" width="330" height="50"
+            offsetXY="18 -582" fontSize="16" fontStyle="Bold"
+            color="%s" textColor="#FFFFFF"/>
 
-        <Text text="Reset clears motivation-use flags, damaged-Bond session markers, and session counters. Character values remain."
-            rectAlignment="UpperLeft" width="690" height="54"
-            offsetXY="370 -471" fontSize="13" color="#A9B8AD"
-            alignment="MiddleLeft" horizontalOverflow="Wrap"/>
+        <Text text="END SESSION reloads magazine-fed weapons from existing shared ammo reserves, resets session-only counters and Motivation-use flags, and preserves permanent character values. If a magazine-fed weapon is completely empty with no reserve remaining, it receives one loaded magazine so the next session does not begin unusable."
+            rectAlignment="UpperLeft" width="690" height="104"
+            offsetXY="370 -574" fontSize="13" color="#A9B8AD"
+            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+
+        <Text text="Home Time / Personal Pursuits are separate downtime activities between operations and are not triggered by END SESSION."
+            rectAlignment="UpperLeft" width="1020" height="54"
+            offsetXY="18 -666" fontSize="13" color="#A9B8AD"
+            alignment="UpperLeft" horizontalOverflow="Wrap"/>
 
       </Panel>
     ]],
@@ -6660,7 +6609,13 @@ local function buildSessionPanel()
         (tonumber(state.agent.wp) or 0) <= 2 and "#D98A66" or "#D2E5D6",
         esc(incidentBoxes(p.violenceIncidents,p.adaptedViolence)),
         esc(incidentBoxes(p.helplessnessIncidents,p.adaptedHelplessness)),
-        esc(markedText)
+        esc(markedText),
+        #marked > 0 and "true" or "false",
+        #marked > 0 and "#426A52" or "#252B27",
+        esc(readyText),
+        ready and "#8FC79D" or "#E0BA75",
+        ready and "true" or "false",
+        ready and "#57492E" or "#252B27"
     )
 end
 
@@ -6699,7 +6654,7 @@ local function buildPsychology()
 
     elseif tab == "session" then
         content = buildSessionPanel()
-        pageHeight = 780
+        pageHeight = 940
 
     else
         content =
@@ -10402,7 +10357,63 @@ function useMotivation(player, value, id)
     cachedPageDirty["psychology"] = true
 end
 
+local function reloadWeaponsForNewSession()
+    local reloadedRounds = 0
+    local emergencyMagazines = 0
+
+    for _, w in ipairs(state.importedWeapons or {}) do
+        local cap = tonumber(tostring(w.capacity or ""):match("(%d+)"))
+
+        if cap and cap > 0 and not weaponIsThrowableOrConsumable(w) then
+            local current = math.max(0,
+                math.min(cap, math.floor(tonumber(w.ammoCurrent) or cap)))
+
+            if current < cap then
+                local reserve = getSharedAmmoReserve(w)
+                local needed = cap - current
+                local moved = math.min(needed, reserve)
+
+                if moved > 0 then
+                    current = current + moved
+                    reserve = reserve - moved
+                    setSharedAmmoReserve(w, reserve)
+                    reloadedRounds = reloadedRounds + moved
+                end
+
+                -- Session-start safety fallback requested for magazine-fed
+                -- weapons that otherwise have absolutely no ammunition.
+                if current <= 0 and reserve <= 0 then
+                    current = cap
+                    emergencyMagazines = emergencyMagazines + 1
+                end
+
+                w.ammoCurrent = current
+            end
+        end
+    end
+
+    return reloadedRounds, emergencyMagazines
+end
+
 function resetSessionAutomation(player, value, id)
+    ensureStructuredImportState()
+
+    local marked = markedSkillNames()
+    if #marked > 0 then
+        broadcastToAll(
+            string.format(
+                "[DG] Resolve %d marked skill improvement%s before ending the session.",
+                #marked,
+                #marked == 1 and "" or "s"
+            ),
+            {1.0,0.65,0.25}
+        )
+        refreshPsychologyPage()
+        return
+    end
+
+    local reloadedRounds, emergencyMagazines = reloadWeaponsForNewSession()
+
     state.psychology.motivationUsed = {}
     state.psychology.sessionSanLost = 0
     state.psychology.sessionBreakingPoints = 0
@@ -10413,15 +10424,38 @@ function resetSessionAutomation(player, value, id)
         bond.damaged = false
     end
 
+    cachedPageDirty["equipment"] = true
+    cachedPageDirty["psychology"] = true
+
+    local ammoText = ""
+    if reloadedRounds > 0 then
+        ammoText = ammoText .. string.format(
+            " Reloaded %d round%s from carried reserve.",
+            reloadedRounds,
+            reloadedRounds == 1 and "" or "s"
+        )
+    end
+    if emergencyMagazines > 0 then
+        ammoText = ammoText .. string.format(
+            " Issued %d emergency session-start magazine%s.",
+            emergencyMagazines,
+            emergencyMagazines == 1 and "" or "s"
+        )
+    end
+
     broadcastToAll(
-        "[DG] Session tracking reset. Character values and adaptation progress were preserved.",
+        "[DG] Session ended. Session-only tracking reset; permanent character values and adaptation progress were preserved." ..
+        ammoText,
         {0.55,0.85,0.65}
     )
 
-    queueDashboardSnapshot(SHEET_COLOR, "home", "Session tracking reset")
+    queueDashboardSnapshot(
+        SHEET_COLOR,
+        "home",
+        "Session ended." .. ammoText
+    )
     refreshPsychologyPage()
 end
-
 
 
 function equipmentBreadcrumbClick(player, value, id)
@@ -12044,7 +12078,7 @@ function applyMarkedSkillImprovements(player, value, id)
 
     if not storage or not findNamedDieGuid(storage, "d4", SHEET_COLOR) then
         broadcastToAll(
-            "[DG] Home Time needs a die named d4 with description " ..
+            "[DG] Session advancement needs a die named d4 with description " ..
             SHEET_COLOR .. " in that player's dice container.",
             {1,0.45,0.35}
         )
@@ -13565,7 +13599,8 @@ local function finishGenericPhysicalRoll()
                 end, 0.5)
             else
                 state.homeTimeOpen = false
-                rebuildUI()
+                cachedPageDirty["psychology"] = true
+                refreshPsychologyPage()
             end
         end, PHYSICAL_DICE_RETURN_DELAY)
 
