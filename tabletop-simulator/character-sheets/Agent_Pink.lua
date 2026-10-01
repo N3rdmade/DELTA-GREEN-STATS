@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Pink
--- Version: r84
+-- Version: r85
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -9634,6 +9634,34 @@ function onLoad(saved_data)
         if state.skillEnabled[name] == nil then
             state.skillEnabled[name] = true
         end
+    end
+
+    -- Repair older/current saves where every skill was accidentally marked
+    -- inactive even though the character still has positive skill values.
+    -- Only positive-value skills are restored; genuine 0%/inactive skills stay
+    -- hidden in active-only mode until the player adds them.
+    local enabledSkillCount = 0
+    local positiveSkillCount = 0
+
+    for name, amount in pairs(state.skills or {}) do
+        if state.skillEnabled[name] ~= false then
+            enabledSkillCount = enabledSkillCount + 1
+        end
+
+        if (tonumber(amount) or 0) > 0 then
+            positiveSkillCount = positiveSkillCount + 1
+        end
+    end
+
+    if enabledSkillCount == 0 and positiveSkillCount > 0 then
+        for name, amount in pairs(state.skills or {}) do
+            if (tonumber(amount) or 0) > 0 then
+                state.skillEnabled[name] = true
+            end
+        end
+
+        cachedPageDirty["skills"] = true
+        cachedPageDirty["skills_active"] = true
     end
 
     lastScale = nil
