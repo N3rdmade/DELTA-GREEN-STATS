@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Pink
--- Version: r83
+-- Version: r84
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -6609,57 +6609,265 @@ local function buildSessionPanel()
     )
 end
 
+local HOME_PURSUIT_OPTIONS = {
+    "Fulfill Responsibilities",
+    "Back to Nature",
+    "Establish a New Bond",
+    "Go to Therapy — Truthfully",
+    "Go to Therapy — Not Truthfully",
+    "Improve Skills or Stats",
+    "Indulge a Personal Motivation",
+    "Special Training",
+    "Stay on the Case",
+    "Study the Unnatural"
+}
+
+local function homeImprovementOptionsXml(selected)
+    local options = {
+        "STAT: STR","STAT: CON","STAT: DEX",
+        "STAT: INT","STAT: POW","STAT: CHA"
+    }
+
+    local skills = {}
+    for name,_ in pairs(state.skills or {}) do
+        if name ~= "Unnatural" then table.insert(skills,name) end
+    end
+    table.sort(skills)
+
+    for _,name in ipairs(skills) do
+        table.insert(options,"SKILL: "..name)
+    end
+
+    return simpleOptionList(options, selected)
+end
+
+local function homeSelectedBondText()
+    local bonds = state.importedBonds or {}
+    local i = tonumber(state.psychology.selectedBondIndex) or 1
+    local bond = bonds[i]
+
+    if not bond then
+        return "NO NON-DG BOND AVAILABLE — Bond costs are ignored."
+    end
+
+    return string.format(
+        "COST BOND: %s (%d) — select another Bond below if needed.",
+        tostring(bond.name or "Bond"),
+        tonumber(bond.score) or 0
+    )
+end
+
+local function homeBondButtonsXml()
+    local bonds = state.importedBonds or {}
+    if #bonds == 0 then return "" end
+
+    local xml = ""
+    local selected = tonumber(state.psychology.selectedBondIndex) or 1
+
+    for i,bond in ipairs(bonds) do
+        if i > 5 then break end
+        local x = 18 + ((i-1) * 202)
+        xml = xml .. string.format([[
+          <Button id="bond_select_%d"
+              onClick="selectBond"
+              text="%s (%d)"
+              rectAlignment="UpperLeft"
+              width="190" height="34"
+              offsetXY="%d -418"
+              fontSize="11"
+              color="%s"
+              textColor="#FFFFFF"/>
+        ]],
+            i,
+            esc(tostring(bond.name or ("Bond "..i))),
+            tonumber(bond.score) or 0,
+            x,
+            i == selected and "#426A52" or "#223229"
+        )
+    end
+
+    return xml
+end
+
 local function buildHomeTimePanel()
-    local bondText
-    if #(state.importedBonds or {}) == 0 then
-        bondText = "No Bonds are currently on the sheet. Home Time is still available; having no Bond does not hide this page."
+    if state.homeTimeOpen ~= true then
+        return [[
+      <Panel rectAlignment="UpperLeft" width="1080" height="500"
+          offsetXY="40 -112" color="#111A15CC">
+
+        <Text text="HOME TIME"
+            rectAlignment="UpperLeft" width="400" height="38"
+            offsetXY="18 -18" fontSize="22" fontStyle="Bold"
+            color="#D2E5D6" alignment="MiddleLeft"/>
+
+        <Text text="Home Time is downtime between operations. Start it when the Handler says the Agent has a Home scene available."
+            rectAlignment="UpperLeft" width="1020" height="60"
+            offsetXY="18 -72" fontSize="15" color="#A9B8AD"
+            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+
+        <Button id="home_time_start"
+            onClick="toggleHomeTime"
+            text="START HOME TIME"
+            rectAlignment="UpperLeft"
+            width="320" height="56"
+            offsetXY="18 -160"
+            fontSize="18" fontStyle="Bold"
+            color="#426A52" textColor="#FFFFFF"/>
+
+        <Text text="Starting Home Time does not end a game session and does not touch ★ session improvements."
+            rectAlignment="UpperLeft" width="650" height="56"
+            offsetXY="365 -160" fontSize="13" color="#A9B8AD"
+            alignment="MiddleLeft" horizontalOverflow="Wrap"/>
+
+      </Panel>
+        ]]
+    end
+
+    local pursuit = tostring(state.homePursuitChoice or "Improve Skills or Stats")
+    local resolved = state.homeTimeResolved or {false,false}
+    local improveActive = pursuit == "Improve Skills or Stats"
+
+    local pursuitHelp = ({
+        ["Fulfill Responsibilities"] = "Support a non-DG Bond. Roll SAN; the result determines Bond improvement and possible SAN change.",
+        ["Back to Nature"] = "Spend time alone. Costs 1 non-DG Bond, then roll SAN to determine SAN recovery or loss.",
+        ["Establish a New Bond"] = "Attempt CHA×5. On success, create a new Bond at half CHA and reduce another non-DG Bond by 1.",
+        ["Go to Therapy — Truthfully"] = "Therapy uses Luck or therapist Psychotherapy and can restore SAN or place a disorder into remission.",
+        ["Go to Therapy — Not Truthfully"] = "Safer disclosure, but generally less SAN recovery than truthful therapy.",
+        ["Improve Skills or Stats"] = "Choose two separate targets. Roll each target. A FAILED test improves it: stat +1 or skill +3D6.",
+        ["Indulge a Personal Motivation"] = "Roll SAN. Success or critical can restore SAN; an actual SAN increase costs 1 non-DG Bond.",
+        ["Special Training"] = "Gain approved special training and reduce a non-DG Bond by 1.",
+        ["Stay on the Case"] = "The Handler secretly rolls Criminology or Occult and resolves the clue and SAN change.",
+        ["Study the Unnatural"] = "Handler-guided pursuit. Cost and roll depend on the source being studied."
+    })[pursuit] or ""
+
+    local improveXml = ""
+    if improveActive then
+        improveXml = string.format([[
+        <Text text="TARGET 1"
+            rectAlignment="UpperLeft" width="120" height="28"
+            offsetXY="18 -236" fontSize="13" fontStyle="Bold"
+            color="#A7C8B0" alignment="MiddleLeft"/>
+
+        <Dropdown id="home_target_1"
+            onValueChanged="selectHomeImproveTarget"
+            rectAlignment="UpperLeft" width="390" height="40"
+            offsetXY="18 -270" fontSize="13"
+            color="#1D2B24" textColor="#FFFFFF"
+            itemBackgroundColors="#1B2922|#294034|#355244|#15201A"
+            itemTextColor="#FFFFFF" dropdownBackgroundColor="#121B16"
+            checkColor="#8FC79D" arrowColor="#FFFFFF"
+            itemHeight="32" dropdownHeight="420">
+            %s
+        </Dropdown>
+
+        <Button id="home_roll_target_1"
+            onClick="rollHomeImproveTarget"
+            text="%s"
+            interactable="%s"
+            rectAlignment="UpperLeft" width="170" height="40"
+            offsetXY="420 -270" fontSize="13" fontStyle="Bold"
+            color="%s" textColor="#FFFFFF"/>
+
+        <Text text="TARGET 2"
+            rectAlignment="UpperLeft" width="120" height="28"
+            offsetXY="18 -322" fontSize="13" fontStyle="Bold"
+            color="#A7C8B0" alignment="MiddleLeft"/>
+
+        <Dropdown id="home_target_2"
+            onValueChanged="selectHomeImproveTarget"
+            rectAlignment="UpperLeft" width="390" height="40"
+            offsetXY="18 -356" fontSize="13"
+            color="#1D2B24" textColor="#FFFFFF"
+            itemBackgroundColors="#1B2922|#294034|#355244|#15201A"
+            itemTextColor="#FFFFFF" dropdownBackgroundColor="#121B16"
+            checkColor="#8FC79D" arrowColor="#FFFFFF"
+            itemHeight="32" dropdownHeight="420">
+            %s
+        </Dropdown>
+
+        <Button id="home_roll_target_2"
+            onClick="rollHomeImproveTarget"
+            text="%s"
+            interactable="%s"
+            rectAlignment="UpperLeft" width="170" height="40"
+            offsetXY="420 -356" fontSize="13" fontStyle="Bold"
+            color="%s" textColor="#FFFFFF"/>
+
+        <Text text="%s"
+            rectAlignment="UpperLeft" width="1015" height="38"
+            offsetXY="18 -398" fontSize="13" color="#D5E1D8"
+            alignment="MiddleLeft"/>
+
+        %s
+        ]],
+            homeImprovementOptionsXml(state.homeImproveTarget1),
+            resolved[1] and "RESOLVED" or "ROLL TARGET 1",
+            resolved[1] and "false" or "true",
+            resolved[1] and "#252B27" or "#355845",
+            homeImprovementOptionsXml(state.homeImproveTarget2),
+            resolved[2] and "RESOLVED" or "ROLL TARGET 2",
+            resolved[2] and "false" or "true",
+            resolved[2] and "#252B27" or "#355845",
+            esc(homeSelectedBondText()),
+            homeBondButtonsXml()
+        )
     else
-        local parts = {}
-        for _, bond in ipairs(state.importedBonds or {}) do
-            table.insert(parts,
-                string.format("%s (%d)",
-                    tostring(bond.name or "Bond"),
-                    tonumber(bond.score) or 0))
-        end
-        bondText = "Current Bonds: " .. table.concat(parts, ", ")
+        improveXml = [[
+        <Text text="This pursuit is listed correctly here, but its full automatic resolution is Handler-facing for now. Use the rule summary above and record the result on the sheet."
+            rectAlignment="UpperLeft" width="1015" height="80"
+            offsetXY="18 -250" fontSize="14" color="#D5E1D8"
+            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+        ]]
     end
 
     return string.format([[
-      <Panel rectAlignment="UpperLeft" width="1080" height="590"
+      <Panel rectAlignment="UpperLeft" width="1080" height="680"
           offsetXY="40 -112" color="#111A15CC">
 
-        <Text text="HOME TIME / PERSONAL PURSUITS"
-            rectAlignment="UpperLeft" width="650" height="38"
+        <Text text="HOME TIME — ACTIVE"
+            rectAlignment="UpperLeft" width="450" height="38"
             offsetXY="18 -14" fontSize="20" fontStyle="Bold"
             color="#D2E5D6" alignment="MiddleLeft"/>
 
-        <Text text="Home Time is separate from END SESSION. Use this page when the Handler says the Agent has downtime between operations."
-            rectAlignment="UpperLeft" width="1020" height="56"
-            offsetXY="18 -62" fontSize="14" color="#A9B8AD"
-            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+        <Button id="home_time_finish"
+            onClick="toggleHomeTime"
+            text="FINISH HOME TIME"
+            rectAlignment="UpperRight"
+            width="220" height="40"
+            offsetXY="-18 -14"
+            fontSize="13" fontStyle="Bold"
+            color="#57492E" textColor="#FFFFFF"/>
+
+        <Text text="PERSONAL PURSUIT"
+            rectAlignment="UpperLeft" width="180" height="28"
+            offsetXY="18 -68" fontSize="13" fontStyle="Bold"
+            color="#A7C8B0" alignment="MiddleLeft"/>
+
+        <Dropdown id="home_pursuit"
+            onValueChanged="selectHomePursuit"
+            rectAlignment="UpperLeft" width="430" height="42"
+            offsetXY="18 -100" fontSize="13"
+            color="#1D2B24" textColor="#FFFFFF"
+            itemBackgroundColors="#1B2922|#294034|#355244|#15201A"
+            itemTextColor="#FFFFFF" dropdownBackgroundColor="#121B16"
+            checkColor="#8FC79D" arrowColor="#FFFFFF"
+            itemHeight="32" dropdownHeight="400">
+            %s
+        </Dropdown>
 
         <Text text="%s"
-            rectAlignment="UpperLeft" width="1020" height="70"
-            offsetXY="18 -128" fontSize="14" color="#D5E1D8"
+            rectAlignment="UpperLeft" width="1015" height="70"
+            offsetXY="18 -154" fontSize="14" color="#A9B8AD"
             alignment="UpperLeft" horizontalOverflow="Wrap"/>
 
-        <Text text="PERSONAL PURSUIT CONTROLS"
-            rectAlignment="UpperLeft" width="450" height="34"
-            offsetXY="18 -220" fontSize="18" fontStyle="Bold"
-            color="#D2E5D6" alignment="MiddleLeft"/>
-
-        <Text text="The Home Time picker is kept separate from failed-skill ★ marks. Session improvements never consume a Home Time pursuit, and Home Time never clears session improvement marks."
-            rectAlignment="UpperLeft" width="1020" height="78"
-            offsetXY="18 -260" fontSize="14" color="#A9B8AD"
-            alignment="UpperLeft" horizontalOverflow="Wrap"/>
-
-        <Text text="Home Time is available here even with no Bonds. Pursuits that affect a non-Delta Green Bond can handle that requirement when the pursuit is resolved."
-            rectAlignment="UpperLeft" width="1020" height="78"
-            offsetXY="18 -360" fontSize="14" color="#A9B8AD"
-            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+        %s
 
       </Panel>
-    ]], esc(bondText))
+    ]],
+        simpleOptionList(HOME_PURSUIT_OPTIONS,pursuit),
+        esc(pursuitHelp),
+        improveXml
+    )
 end
 
 local function buildPsychology()
@@ -6702,7 +6910,7 @@ local function buildPsychology()
 
     elseif tab == "home" then
         content = buildHomeTimePanel()
-        pageHeight = 780
+        pageHeight = state.homeTimeOpen and 880 or 700
 
     else
         content =
@@ -6954,6 +7162,16 @@ ensureStructuredImportState = function()
     if state.homeTimeOpen == nil then
         state.homeTimeOpen = false
     end
+    if state.homePursuitChoice == nil or state.homePursuitChoice == "" then
+        state.homePursuitChoice = "Improve Skills or Stats"
+    end
+    if state.homeImproveTarget1 == nil or state.homeImproveTarget1 == "" then
+        state.homeImproveTarget1 = "STAT: STR"
+    end
+    if state.homeImproveTarget2 == nil or state.homeImproveTarget2 == "" then
+        state.homeImproveTarget2 = "SKILL: Alertness"
+    end
+    state.homeTimeResolved = state.homeTimeResolved or {false,false}
 
     if state.genericRollChoice == nil or state.genericRollChoice == "" then
         state.genericRollChoice = "GUMSHOE"
@@ -7937,6 +8155,10 @@ local function resetCharacterData()
     state.skillImprovementMarked = {}
     state.skillsActiveOnly = true
     state.homeTimeOpen = false
+    state.homePursuitChoice = "Improve Skills or Stats"
+    state.homeImproveTarget1 = "STAT: STR"
+    state.homeImproveTarget2 = "SKILL: Alertness"
+    state.homeTimeResolved = {false,false}
 
     state.genericRollChoice = "GUMSHOE"
     state.multiQty1 = 1
@@ -12108,9 +12330,134 @@ end
 
 function toggleHomeTime(player, value, id)
     ensureStructuredImportState()
-    state.homeTimeOpen = not state.homeTimeOpen
-    rebuildUI()
+
+    if state.homeTimeOpen == true then
+        state.homeTimeOpen = false
+    else
+        state.homeTimeOpen = true
+        state.homePursuitChoice = "Improve Skills or Stats"
+        state.homeTimeResolved = {false,false}
+    end
+
+    cachedPageDirty["psychology"] = true
+    refreshPsychologyPage()
 end
+
+function selectHomePursuit(player, value, id)
+    ensureStructuredImportState()
+    state.homePursuitChoice = tostring(value or "Improve Skills or Stats")
+    state.homeTimeResolved = {false,false}
+    cachedPageDirty["psychology"] = true
+    refreshPsychologyPage()
+end
+
+function selectHomeImproveTarget(player, value, id)
+    ensureStructuredImportState()
+
+    if id == "home_target_1" then
+        state.homeImproveTarget1 = tostring(value or "STAT: STR")
+        state.homeTimeResolved[1] = false
+    elseif id == "home_target_2" then
+        state.homeImproveTarget2 = tostring(value or "SKILL: Alertness")
+        state.homeTimeResolved[2] = false
+    end
+end
+
+local function homeImprovementTargetInfo(raw)
+    raw = tostring(raw or "")
+
+    local stat = raw:match("^STAT:%s*(%a+)$")
+    if stat then
+        stat = string.lower(stat)
+        local valid = {str=true,con=true,dex=true,int=true,pow=true,cha=true}
+        if valid[stat] then
+            return "stat", stat, string.upper(stat),
+                clamp((tonumber(state.agent[stat]) or 0) * 5,0,99)
+        end
+    end
+
+    local skill = raw:match("^SKILL:%s*(.+)$")
+    if skill and state.skills[skill] ~= nil then
+        return "skill", skill, skill,
+            clamp(tonumber(state.skills[skill]) or 0,0,99)
+    end
+
+    return nil,nil,nil,nil
+end
+
+local function applyHomeBondCost(amount)
+    amount = math.max(0,math.floor(tonumber(amount) or 0))
+    if amount <= 0 then return "" end
+
+    local bonds = state.importedBonds or {}
+    local i = tonumber(state.psychology.selectedBondIndex) or 1
+    local bond = bonds[i]
+
+    if not bond then
+        return " No non-DG Bond available; Bond cost ignored."
+    end
+
+    local before = tonumber(bond.score) or 0
+    adjustBondScore(i,-amount,true)
+    local after = tonumber(bond.score) or 0
+
+    return string.format(
+        " %s Bond %d->%d.",
+        tostring(bond.name or "Bond"),
+        before,after
+    )
+end
+
+function rollHomeImproveTarget(player, value, id)
+    ensureStructuredImportState()
+
+    if state.homeTimeOpen ~= true or
+       tostring(state.homePursuitChoice or "") ~= "Improve Skills or Stats"
+    then return end
+
+    if physicalRoll or genericPhysicalRoll or diceBatchRoll then
+        broadcastToAll("[DG] Finish the current physical roll first.",{1,0.65,0.25})
+        return
+    end
+
+    local slot = tonumber(tostring(id or ""):match("home_roll_target_(%d)"))
+    if slot ~= 1 and slot ~= 2 then return end
+
+    state.homeTimeResolved = state.homeTimeResolved or {false,false}
+    if state.homeTimeResolved[slot] == true then return end
+
+    local raw =
+        slot == 1 and state.homeImproveTarget1 or state.homeImproveTarget2
+    local other =
+        slot == 1 and state.homeImproveTarget2 or state.homeImproveTarget1
+
+    if tostring(raw) == tostring(other) then
+        broadcastToAll(
+            "[DG] Home Time improvement targets must be two separate skills/stats.",
+            {1,0.65,0.25}
+        )
+        return
+    end
+
+    local kind,key,label,target = homeImprovementTargetInfo(raw)
+    if not kind then return end
+
+    startPhysicalPercentileRoll(
+        player and player.color or SHEET_COLOR,
+        "HOME TIME — "..label,
+        target,
+        "[Improve Skills or Stats]",
+        nil,
+        {
+            kind="homeImproveTest",
+            targetKind=kind,
+            targetKey=key,
+            targetLabel=label,
+            slot=slot
+        }
+    )
+end
+
 
 function applyMarkedSkillImprovements(player, value, id)
     ensureStructuredImportState()
@@ -12858,6 +13205,35 @@ local function finalizeDiceBatch()
 
             refreshPsychologyPage()
         end
+
+    elseif batch.kind == "homeImproveSkill" then
+        local ctx = batch.context or {}
+        local skill = tostring(ctx.targetKey or "")
+        local old = math.floor(tonumber(state.skills[skill]) or 0)
+        local gain = math.max(0,math.floor(tonumber(total) or 0))
+        local newValue = math.min(99,old + gain)
+        local actual = newValue - old
+
+        if state.skills[skill] ~= nil then
+            state.skills[skill] = newValue
+        end
+
+        local costText = ""
+        if actual > 0 then
+            costText = applyHomeBondCost(1)
+        end
+
+        message = string.format(
+            "%s - HOME TIME {%s} %d%% -> %d%% (+%d).%s",
+            agentName,
+            tostring(ctx.targetLabel or skill),
+            old,newValue,actual,costText
+        )
+
+        cachedPageDirty["skills"] = true
+        cachedPageDirty["skills_active"] = true
+        cachedPageDirty["psychology"] = true
+        refreshPsychologyPage()
 
     elseif batch.kind == "bondProjection" then
         local ctx = batch.context or {}
@@ -14157,6 +14533,48 @@ local function announcePhysicalRollResult()
         rebuildUI()
     end
 
+    if automation and automation.kind == "homeImproveTest" then
+        local ctx = automation
+        local failed =
+            resultText == "FAILURE" or resultText == "FUMBLE"
+        local slot = tonumber(ctx.slot) or 1
+
+        state.homeTimeResolved = state.homeTimeResolved or {false,false}
+        state.homeTimeResolved[slot] = true
+
+        if failed and tostring(ctx.targetKind) == "stat" then
+            local key = tostring(ctx.targetKey or "")
+            local old = tonumber(state.agent[key]) or 0
+            local newValue = math.min(18,old + 1)
+            state.agent[key] = newValue
+
+            local costText = ""
+            if newValue > old then
+                costText = applyHomeBondCost(1)
+            end
+
+            local homeMsg = string.format(
+                "%s - HOME TIME %s failed as required: %d -> %d.%s",
+                tostring(state.agent.name or "Agent"),
+                tostring(ctx.targetLabel or string.upper(key)),
+                old,newValue,costText
+            )
+            broadcastToAll(homeMsg,{0.55,0.90,0.60})
+            queueDashboardSnapshot(SHEET_COLOR,"home",homeMsg)
+            cachedPageDirty["psychology"] = true
+
+        elseif not failed then
+            local homeMsg = string.format(
+                "%s - HOME TIME %s test succeeded: no improvement.",
+                tostring(state.agent.name or "Agent"),
+                tostring(ctx.targetLabel or "target")
+            )
+            broadcastToAll(homeMsg,{0.75,0.75,0.75})
+            queueDashboardSnapshot(SHEET_COLOR,"home",homeMsg)
+            cachedPageDirty["psychology"] = true
+        end
+    end
+
     if automation and automation.kind == "repressTest" then
         local success =
             resultText == "SUCCESS" or
@@ -14178,7 +14596,36 @@ local function announcePhysicalRollResult()
         cachedPageDirty["psychology"] = true
     end
 
-    if automation and automation.kind == "weaponAttack" then
+    if automation and automation.kind == "homeImproveTest" then
+        local failed =
+            resultText == "FAILURE" or resultText == "FUMBLE"
+
+        if failed and tostring(automation.targetKind) == "skill" then
+            local ctx = {
+                targetKey=tostring(automation.targetKey or ""),
+                targetLabel=tostring(automation.targetLabel or ""),
+                slot=tonumber(automation.slot) or 1
+            }
+
+            Wait.time(function()
+                returnPhysicalDice()
+                Wait.time(function()
+                    startDiceExpressionRoll(
+                        "HOME TIME — "..ctx.targetLabel.." IMPROVEMENT",
+                        "3d6",
+                        "homeImproveSkill",
+                        ctx
+                    )
+                end,0.30)
+            end,PHYSICAL_DICE_RETURN_DELAY)
+        else
+            Wait.time(function()
+                returnPhysicalDice()
+                refreshPsychologyPage()
+            end,PHYSICAL_DICE_RETURN_DELAY)
+        end
+
+    elseif automation and automation.kind == "weaponAttack" then
         local attackSucceeded =
             resultText == "SUCCESS" or
             resultText == "CRITICAL SUCCESS"
