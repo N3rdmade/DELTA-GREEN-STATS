@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Pink
--- Version: r81
+-- Version: r82
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -1856,7 +1856,6 @@ local function buildSkills()
             color="#32483B"
             textColor="#FFFFFF"/>
 
-        %s
         %s
 
       </Panel>
@@ -6560,7 +6559,7 @@ local function buildSessionPanel()
             alignment="MiddleLeft"/>
 
         <Text text="%s"
-            rectAlignment="UpperLeft" width="650" height="210"
+            rectAlignment="UpperLeft" width="650" height="150"
             offsetXY="18 -292" fontSize="15" color="#E4EFE7"
             alignment="UpperLeft" horizontalOverflow="Wrap"
             verticalOverflow="Overflow"/>
@@ -6575,24 +6574,24 @@ local function buildSessionPanel()
 
         <Text text="%s"
             rectAlignment="UpperLeft" width="650" height="34"
-            offsetXY="18 -536" fontSize="15" fontStyle="Bold"
+            offsetXY="18 -458" fontSize="15" fontStyle="Bold"
             color="%s" alignment="MiddleLeft"/>
 
         <Button id="session_reset" onClick="resetSessionAutomation"
             text="END SESSION"
             interactable="%s"
             rectAlignment="UpperLeft" width="330" height="50"
-            offsetXY="18 -582" fontSize="16" fontStyle="Bold"
+            offsetXY="18 -500" fontSize="16" fontStyle="Bold"
             color="%s" textColor="#FFFFFF"/>
 
         <Text text="END SESSION reloads magazine-fed weapons from existing shared ammo reserves, resets session-only counters and Motivation-use flags, and preserves permanent character values. If a magazine-fed weapon is completely empty with no reserve remaining, it receives one loaded magazine so the next session does not begin unusable."
-            rectAlignment="UpperLeft" width="690" height="104"
-            offsetXY="370 -574" fontSize="13" color="#A9B8AD"
+            rectAlignment="UpperLeft" width="690" height="90"
+            offsetXY="370 -492" fontSize="13" color="#A9B8AD"
             alignment="UpperLeft" horizontalOverflow="Wrap"/>
 
         <Text text="Home Time / Personal Pursuits are separate downtime activities between operations and are not triggered by END SESSION."
             rectAlignment="UpperLeft" width="1020" height="54"
-            offsetXY="18 -666" fontSize="13" color="#A9B8AD"
+            offsetXY="18 -596" fontSize="13" color="#A9B8AD"
             alignment="UpperLeft" horizontalOverflow="Wrap"/>
 
       </Panel>
