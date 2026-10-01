@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Red
--- Version: r82
+-- Version: r83
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -6513,14 +6513,19 @@ local function buildSessionPanel()
         "No failed skills are waiting for improvement."
 
     local p = state.psychology
-    local ready = #marked == 0
-    local readyText = ready and
-        "READY — session bookkeeping can be completed." or
-        string.format("%d SKILL IMPROVEMENT%s REMAIN",
-            #marked, #marked == 1 and "" or "S")
+    local endLabel =
+        #marked > 0 and
+        string.format("END SESSION — APPLY %d IMPROVEMENT%s",
+            #marked, #marked == 1 and "" or "S") or
+        "END SESSION"
+
+    local statusText =
+        #marked > 0 and
+        "Ending the session will automatically roll every marked skill's 1D4 improvement, then complete session cleanup." or
+        "READY — session bookkeeping can be completed."
 
     return string.format([[
-      <Panel rectAlignment="UpperLeft" width="1080" height="760"
+      <Panel rectAlignment="UpperLeft" width="1080" height="700"
           offsetXY="40 -112" color="#111A15CC">
 
         <Text text="END OF SESSION"
@@ -6553,45 +6558,36 @@ local function buildSessionPanel()
             offsetXY="18 -218" fontSize="18" fontStyle="Bold"
             color="#D2E5D6" alignment="MiddleLeft"/>
 
-        <Text text="Every failed skill marked with ★ gains 1D4%% at session end, to a maximum of 99%%."
+        <Text text="Every failed skill marked with ★ gains 1D4%% automatically when END SESSION is pressed."
             rectAlignment="UpperLeft" width="1020" height="34"
             offsetXY="18 -250" fontSize="13" color="#A9B8AD"
             alignment="MiddleLeft"/>
 
         <Text text="%s"
-            rectAlignment="UpperLeft" width="650" height="150"
+            rectAlignment="UpperLeft" width="1020" height="150"
             offsetXY="18 -292" fontSize="15" color="#E4EFE7"
             alignment="UpperLeft" horizontalOverflow="Wrap"
             verticalOverflow="Overflow"/>
 
-        <Button id="session_improve_all"
-            onClick="applyMarkedSkillImprovements"
-            text="IMPROVE ALL MARKED SKILLS"
-            interactable="%s"
-            rectAlignment="UpperRight" width="330" height="48"
-            offsetXY="-24 -300" fontSize="15" fontStyle="Bold"
-            color="%s" textColor="#FFFFFF"/>
-
         <Text text="%s"
-            rectAlignment="UpperLeft" width="650" height="34"
-            offsetXY="18 -458" fontSize="15" fontStyle="Bold"
-            color="%s" alignment="MiddleLeft"/>
+            rectAlignment="UpperLeft" width="1020" height="44"
+            offsetXY="18 -454" fontSize="14" fontStyle="Bold"
+            color="%s" alignment="MiddleLeft" horizontalOverflow="Wrap"/>
 
         <Button id="session_reset" onClick="resetSessionAutomation"
-            text="END SESSION"
-            interactable="%s"
-            rectAlignment="UpperLeft" width="330" height="50"
-            offsetXY="18 -500" fontSize="16" fontStyle="Bold"
-            color="%s" textColor="#FFFFFF"/>
+            text="%s"
+            rectAlignment="UpperLeft" width="420" height="54"
+            offsetXY="18 -506" fontSize="15" fontStyle="Bold"
+            color="#57492E" textColor="#FFFFFF"/>
 
-        <Text text="END SESSION reloads magazine-fed weapons from existing shared ammo reserves, resets session-only counters and Motivation-use flags, and preserves permanent character values. If a magazine-fed weapon is completely empty with no reserve remaining, it receives one loaded magazine so the next session does not begin unusable."
-            rectAlignment="UpperLeft" width="690" height="90"
-            offsetXY="370 -492" fontSize="13" color="#A9B8AD"
+        <Text text="After improvements finish: reload magazine-fed weapons from existing shared ammo reserves, reset session-only counters and Motivation-use flags, and preserve permanent character values. A completely empty magazine-fed weapon with no reserve receives one loaded magazine for the next session."
+            rectAlignment="UpperLeft" width="600" height="100"
+            offsetXY="460 -496" fontSize="13" color="#A9B8AD"
             alignment="UpperLeft" horizontalOverflow="Wrap"/>
 
-        <Text text="Home Time / Personal Pursuits are separate downtime activities between operations and are not triggered by END SESSION."
-            rectAlignment="UpperLeft" width="1020" height="54"
-            offsetXY="18 -596" fontSize="13" color="#A9B8AD"
+        <Text text="Home Time / Personal Pursuits are separate downtime activities between operations and are available from the HOME TIME tab."
+            rectAlignment="UpperLeft" width="1020" height="48"
+            offsetXY="18 -620" fontSize="13" color="#A9B8AD"
             alignment="UpperLeft" horizontalOverflow="Wrap"/>
 
       </Panel>
@@ -6607,13 +6603,63 @@ local function buildSessionPanel()
         esc(incidentBoxes(p.violenceIncidents,p.adaptedViolence)),
         esc(incidentBoxes(p.helplessnessIncidents,p.adaptedHelplessness)),
         esc(markedText),
-        #marked > 0 and "true" or "false",
-        #marked > 0 and "#426A52" or "#252B27",
-        esc(readyText),
-        ready and "#8FC79D" or "#E0BA75",
-        ready and "true" or "false",
-        ready and "#57492E" or "#252B27"
+        esc(statusText),
+        #marked > 0 and "#E0BA75" or "#8FC79D",
+        esc(endLabel)
     )
+end
+
+local function buildHomeTimePanel()
+    local bondText
+    if #(state.importedBonds or {}) == 0 then
+        bondText = "No Bonds are currently on the sheet. Home Time is still available; having no Bond does not hide this page."
+    else
+        local parts = {}
+        for _, bond in ipairs(state.importedBonds or {}) do
+            table.insert(parts,
+                string.format("%s (%d)",
+                    tostring(bond.name or "Bond"),
+                    tonumber(bond.score) or 0))
+        end
+        bondText = "Current Bonds: " .. table.concat(parts, ", ")
+    end
+
+    return string.format([[
+      <Panel rectAlignment="UpperLeft" width="1080" height="590"
+          offsetXY="40 -112" color="#111A15CC">
+
+        <Text text="HOME TIME / PERSONAL PURSUITS"
+            rectAlignment="UpperLeft" width="650" height="38"
+            offsetXY="18 -14" fontSize="20" fontStyle="Bold"
+            color="#D2E5D6" alignment="MiddleLeft"/>
+
+        <Text text="Home Time is separate from END SESSION. Use this page when the Handler says the Agent has downtime between operations."
+            rectAlignment="UpperLeft" width="1020" height="56"
+            offsetXY="18 -62" fontSize="14" color="#A9B8AD"
+            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+
+        <Text text="%s"
+            rectAlignment="UpperLeft" width="1020" height="70"
+            offsetXY="18 -128" fontSize="14" color="#D5E1D8"
+            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+
+        <Text text="PERSONAL PURSUIT CONTROLS"
+            rectAlignment="UpperLeft" width="450" height="34"
+            offsetXY="18 -220" fontSize="18" fontStyle="Bold"
+            color="#D2E5D6" alignment="MiddleLeft"/>
+
+        <Text text="The Home Time picker is kept separate from failed-skill ★ marks. Session improvements never consume a Home Time pursuit, and Home Time never clears session improvement marks."
+            rectAlignment="UpperLeft" width="1020" height="78"
+            offsetXY="18 -260" fontSize="14" color="#A9B8AD"
+            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+
+        <Text text="Home Time is available here even with no Bonds. Pursuits that affect a non-Delta Green Bond can handle that requirement when the pursuit is resolved."
+            rectAlignment="UpperLeft" width="1020" height="78"
+            offsetXY="18 -360" fontSize="14" color="#A9B8AD"
+            alignment="UpperLeft" horizontalOverflow="Wrap"/>
+
+      </Panel>
+    ]], esc(bondText))
 end
 
 local function buildPsychology()
@@ -6628,10 +6674,11 @@ local function buildPsychology()
     if tab == "psychology" then tab = "sanity" end
 
     local tabs =
-        psychologyTabButton("sanity","SANITY",tab=="sanity",40) ..
-        psychologyTabButton("bonds","BONDS",tab=="bonds",255) ..
-        psychologyTabButton("motivations","MOTIVATIONS",tab=="motivations",470) ..
-        psychologyTabButton("session","SESSION",tab=="session",685)
+        psychologyTabButton("sanity","SANITY",tab=="sanity",18) ..
+        psychologyTabButton("bonds","BONDS",tab=="bonds",230) ..
+        psychologyTabButton("motivations","MOTIVATIONS",tab=="motivations",442) ..
+        psychologyTabButton("session","SESSION",tab=="session",654) ..
+        psychologyTabButton("home","HOME TIME",tab=="home",866)
 
     local content = ""
     local pageHeight = 900
@@ -6651,7 +6698,11 @@ local function buildPsychology()
 
     elseif tab == "session" then
         content = buildSessionPanel()
-        pageHeight = 940
+        pageHeight = 880
+
+    elseif tab == "home" then
+        content = buildHomeTimePanel()
+        pageHeight = 780
 
     else
         content =
@@ -9742,7 +9793,8 @@ function switchPsychologySubtab(player, value, id)
     local sub = id:match("^psychology_tab_(.+)$")
 
     if sub == "sanity" or sub == "bonds" or
-       sub == "motivations" or sub == "session"
+       sub == "motivations" or sub == "session" or
+       sub == "home"
     then
         state.psychologySubtab = sub
         if getCachedHelper("psychology") then
@@ -10395,17 +10447,22 @@ end
 function resetSessionAutomation(player, value, id)
     ensureStructuredImportState()
 
+    if physicalRoll or genericPhysicalRoll then
+        broadcastToAll(
+            "[DG] Finish the current physical roll before ending the session.",
+            {1,0.65,0.25}
+        )
+        return
+    end
+
     local marked = markedSkillNames()
     if #marked > 0 then
-        broadcastToAll(
-            string.format(
-                "[DG] Resolve %d marked skill improvement%s before ending the session.",
-                #marked,
-                #marked == 1 and "" or "s"
-            ),
-            {1.0,0.65,0.25}
-        )
-        refreshPsychologyPage()
+        state.endSessionAfterImprovements = true
+
+        local started = applyMarkedSkillImprovements(player, value, id)
+        if not started then
+            state.endSessionAfterImprovements = false
+        end
         return
     end
 
@@ -12088,8 +12145,8 @@ function applyMarkedSkillImprovements(player, value, id)
     local header = agentName .. " - END SESSION SKILL IMPROVEMENTS"
     broadcastToAll(header, {0.35,0.75,1.0})
 
-    startGenericPhysicalDieRoll(
-        player.color,
+    return startGenericPhysicalDieRoll(
+        player and player.color or SHEET_COLOR,
         "d4",
         marked[1],
         marked,
@@ -13597,7 +13654,13 @@ local function finishGenericPhysicalRoll()
             else
                 state.homeTimeOpen = false
                 cachedPageDirty["psychology"] = true
-                refreshPsychologyPage()
+
+                if state.endSessionAfterImprovements == true then
+                    state.endSessionAfterImprovements = false
+                    resetSessionAutomation(nil, nil, nil)
+                else
+                    refreshPsychologyPage()
+                end
             end
         end, PHYSICAL_DICE_RETURN_DELAY)
 
