@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.10
+-- Version: v3.11
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -37,7 +37,7 @@ PLAYER_ORDER = {
     "Green",
     "Purple",
     "Pink",
-    "Orange"
+    "White"
 }
 
 local state = {
@@ -782,7 +782,7 @@ local function colorHex(colorName)
         Green = "#3D7048",
         Purple = "#674A82",
         Pink = "#9C5E78",
-        Orange = "#A3652E",
+        White = "#D9E0DC",
         Black = "#AAB2AC"
     }
     return map[colorName] or "#45574D"
@@ -1931,7 +1931,7 @@ local function buildInventory()
         handlerInventoryAgentButton("Green",362,-82),
         handlerInventoryAgentButton("Purple",528,-82),
         handlerInventoryAgentButton("Pink",694,-82),
-        handlerInventoryAgentButton("Orange",860,-82)
+        handlerInventoryAgentButton("White",860,-82)
     )
 
     local activeTab = tostring(state.inventorySubtab or "all")
@@ -2515,7 +2515,7 @@ local function buildHandlerAssignItemScreen(snapshot, selectedItem)
         handlerAssignmentButton("Green",720,-260),
         handlerAssignmentButton("Purple",20,-362),
         handlerAssignmentButton("Pink",370,-362),
-        handlerAssignmentButton("Orange",720,-362),
+        handlerAssignmentButton("White",720,-362),
         esc(status)
     )
 end
@@ -3832,6 +3832,26 @@ function onLoad(saved_data)
 
     state.currentTab = state.currentTab or "overview"
     state.agents = state.agents or {}
+
+    -- Orange player slot was retired and replaced by White.
+    -- Preserve any dashboard snapshot from older saves until White resyncs.
+    if state.agents["White"] == nil and state.agents["Orange"] ~= nil then
+        state.agents["White"] = state.agents["Orange"]
+        if type(state.agents["White"]) == "table" then
+            state.agents["White"].color = "White"
+        end
+    end
+    state.agents["Orange"] = nil
+
+    if state.addTargetColor == "Orange" then
+        state.addTargetColor = "White"
+    end
+    if state.inventoryColor == "Orange" then
+        state.inventoryColor = "White"
+    end
+    if state.addCatalogSourceColor == "Orange" then
+        state.addCatalogSourceColor = "White"
+    end
     state.rollHistory = state.rollHistory or {}
     state.homeHistory = state.homeHistory or {}
     state.rollChoice = state.rollChoice or "GUMSHOE"
