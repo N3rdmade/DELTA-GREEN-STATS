@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Purple
--- Version: r85
+-- Version: r86
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -12,10 +12,13 @@
 SHEET_COLOR = "Purple"
 
 -- Table nameplate object
-NAME_DISPLAY_GUID = "cd232a"
+NAME_DISPLAY_GUID = "6f92ac"
+
+-- Agent figurine/token. Only the object's Name field is synchronized.
+AGENT_FIGURINE_GUID = "77d3fa"
 
 -- Physical dice tower
-DICE_TOWER_GUID = "7f7c67"
+DICE_TOWER_GUID = "fce8bc"
 
 -- Shared dice storage
 SHARED_DICE_STORAGE_GUID = "a50074"
@@ -8999,8 +9002,29 @@ local function writeNameDisplayValue(newName)
     return true
 end
 
+local function writeAgentNameToFigurine(newName)
+    if not AGENT_FIGURINE_GUID or AGENT_FIGURINE_GUID == "" then
+        return false
+    end
+
+    local obj = getObjectFromGUID(AGENT_FIGURINE_GUID)
+    if not obj then
+        return false
+    end
+
+    newName = tostring(newName or "")
+
+    local ok = pcall(function()
+        obj.setName(newName)
+    end)
+
+    return ok
+end
+
 pushAgentNameToDisplay = function()
-    return writeNameDisplayValue(state.agent.name)
+    local displayOk = writeNameDisplayValue(state.agent.name)
+    local figurineOk = writeAgentNameToFigurine(state.agent.name)
+    return displayOk or figurineOk
 end
 
 local function pullAgentNameFromDisplay()
@@ -9684,6 +9708,13 @@ function onLoad(saved_data)
     Wait.frames(function()
         rebuildUI()
     end, 1)
+
+    -- Re-assert the saved Agent name onto both table name objects after load.
+    -- setName() changes only the figurine/token Name field; Description is untouched.
+    Wait.frames(function()
+        pushAgentNameToDisplay()
+    end, 3)
+
     Wait.frames(function()
         queueDashboardSnapshot(state.ownerColor, "status", "Sheet loaded")
     end, 10)
