@@ -1,5 +1,5 @@
 -- Delta Green TTS Handler Dashboard
--- Version: v3.11
+-- Version: v3.12
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -21,7 +21,6 @@ MAX_HOME_HISTORY = 30
 
 SHARED_DICE_STORAGE_GUID = "a50074"
 BLACK_DICE_TOWER_GUID = "a66071"
-RESULT_LOG_GUID = "ebc7e5"
 
 DICE_RETURN_DELAY = 2.5
 DICE_REST_FRAMES = 8
@@ -146,18 +145,6 @@ local function findHandlerDieGuid(storage, dieName)
     return findSharedNamedDieGuid(storage, dieName)
 end
 
-
-local function appendResultLog(text)
-    local log = getObjectFromGUID(RESULT_LOG_GUID)
-    if not log then return end
-
-    local old = tostring(log.getDescription() or "")
-    if old ~= "" then
-        old = old .. "\n"
-    end
-
-    log.setDescription(old .. tostring(text or ""))
-end
 
 local function towerPoint(localX)
     local tower = getObjectFromGUID(BLACK_DICE_TOWER_GUID)
@@ -400,8 +387,6 @@ local function finishHandlerRoll()
         { color = "Black", text = text },
         MAX_ROLL_HISTORY
     )
-
-    appendResultLog(text)
     broadcastToAll(text, {0.86,0.86,0.86})
     rebuildUI()
 
