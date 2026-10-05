@@ -1,5 +1,5 @@
 -- Delta Green TTS Agent Sheet — Red
--- Version: r86
+-- Version: r87
 -- Published by Hellhorde
 -- Date: 2026-09-30
 -- Free to use, modify, and share provided this credit header remains intact.
@@ -11,8 +11,8 @@
 -- Sheet identity
 SHEET_COLOR = "Red"
 
--- Table nameplate object
-NAME_DISPLAY_GUID = "f29ae6"
+-- Table nameplate is resolved live from its color tag.
+NAME_DISPLAY_TAG = "DG_NAMEPLATE_" .. string.upper(SHEET_COLOR)
 
 -- Agent figurine/token. Only the object's Name field is synchronized.
 AGENT_FIGURINE_GUID = "1884ba"
@@ -8896,11 +8896,25 @@ end
 
 
 local function getNameDisplayObject()
-    if not NAME_DISPLAY_GUID or NAME_DISPLAY_GUID == "" then
+    local wantedTag = tostring(NAME_DISPLAY_TAG or "")
+    if wantedTag == "" then
         return nil
     end
 
-    return getObjectFromGUID(NAME_DISPLAY_GUID)
+    -- Resolve the nameplate from its current table tag every time.
+    -- This deliberately does not cache a GUID, so rearranging seats or
+    -- retagging nameplates takes effect immediately.
+    for _, obj in ipairs(getAllObjects() or {}) do
+        local ok, has = pcall(function()
+            return obj.hasTag(wantedTag)
+        end)
+
+        if ok and has then
+            return obj
+        end
+    end
+
+    return nil
 end
 
 local function readNameDisplayValue()
