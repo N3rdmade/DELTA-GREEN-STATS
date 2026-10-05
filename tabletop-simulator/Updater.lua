@@ -1,5 +1,5 @@
 -- Delta Green TTS GitHub Updater / GUID Registry
--- Version: u2.0
+-- Version: u2.1
 -- Published by Hellhorde
 -- Central updater, tag-based object registry, and GitHub bootstrap.
 
@@ -35,8 +35,7 @@ local REGISTRY_TAGS = {
     "DG_DICE_TOWER_PURPLE","DG_DICE_TOWER_PINK","DG_DICE_TOWER_WHITE",
 
     "DG_SHARED_DICE_STORAGE",
-    "DG_HANDLER_DICE_TOWER",
-    "DG_RESULT_LOG"
+    "DG_HANDLER_DICE_TOWER"
 }
 
 local state = {
