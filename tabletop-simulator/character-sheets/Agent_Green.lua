@@ -27,9 +27,30 @@ SHARED_DICE_STORAGE_GUID = "a50074"
 HANDLER_DASHBOARD_GUID = ""
 
 local function getPhysicalDiceConfig(playerColor)
+    -- Resolve physical towers by their role tag, never by a historical GUID.
+    -- The updater publishes this registry on load and whenever it rescans.
+    local color = tostring(SHEET_COLOR or playerColor or ""):upper()
+    local towerTag = "DG_DICE_TOWER_" .. color
+    local registry = Global.getTable("DG_GUID_REGISTRY") or {}
+
+    local function taggedGuid(tag)
+        local guid = registry[tag]
+        local object = guid and getObjectFromGUID(guid) or nil
+        if object and object.hasTag(tag) then return guid end
+
+        -- Also work before the updater initializes or after a tower is replaced.
+        for _, candidate in ipairs(getAllObjects() or {}) do
+            if candidate.hasTag(tag) then return candidate.getGUID() end
+        end
+        return ""
+    end
+
+    local storageGuid = taggedGuid("DG_SHARED_DICE_STORAGE")
+    if storageGuid == "" then storageGuid = SHARED_DICE_STORAGE_GUID end
+
     return {
-        storage = SHARED_DICE_STORAGE_GUID,
-        tower = DICE_TOWER_GUID
+        storage = storageGuid,
+        tower = taggedGuid(towerTag)
     }
 end
 
